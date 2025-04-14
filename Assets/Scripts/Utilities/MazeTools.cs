@@ -298,7 +298,8 @@ public static class MazeTools
         if (path == null) { Debug.Log("Không tồn tại đường đi khả dụng"); return; }
 
         Vector3Int fixedAxis = GetFixedAxis(data.Width, data.Height, data.Depth);
-
+        Renderer startCellColor = GetWallRenderer(startCell, fixedAxis).GetComponent<Renderer>();
+        startCellColor.material.color = pathColor;
         foreach (Cell cell in path)
         {
             Renderer renderer = GetWallRenderer(cell, fixedAxis).GetComponent<Renderer>();
@@ -308,6 +309,7 @@ public static class MazeTools
                 renderer.material.color = pathColor;
             }
         }
+        
 
     }
 }

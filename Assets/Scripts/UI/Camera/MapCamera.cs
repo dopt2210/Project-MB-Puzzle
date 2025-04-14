@@ -6,7 +6,6 @@ public class MapCamera : MonoBehaviour
     [SerializeField] private MazeSO _mazeSO;
     private void Start()
     {
-        
         if (_camera != null && _camera.orthographic)
         {
             ResizeMap();

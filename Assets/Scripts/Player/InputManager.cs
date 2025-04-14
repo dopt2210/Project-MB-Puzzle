@@ -21,10 +21,10 @@ public class InputManager : MonoBehaviour
     public bool kOpenItem { get; private set; }
     public bool kOpenDebug { get; private set; }
     public bool kOpenMouse { get; private set; }
-    public bool kOpenPause { get; private set; }
-    public bool kClosePause { get; private set; }
     public bool kInteract { get; private set; }
     public bool kDetail { get; private set; }
+    public bool kOpenPause { get; private set; }
+    public bool kClosePause { get; private set; }
 
     private void Awake()
     {
@@ -34,12 +34,13 @@ public class InputManager : MonoBehaviour
         InputPlayer = GetComponent<PlayerInput>();
 
         _move = InputPlayer.actions["Move"];
-        _interact = InputPlayer.actions["Interact"];
+        _openMap = InputPlayer.actions["OpenMap"];
         _openItem = InputPlayer.actions["OpenItem"];
         _openDebug = InputPlayer.actions["OpenDebug"];
-        _openMap = InputPlayer.actions["OpenMap"];
         _openMouse = InputPlayer.actions["OpenMouse"];
+        _interact = InputPlayer.actions["Interact"];
         _detail = InputPlayer.actions["Detail"];
+
         _openPause = InputPlayer.actions["OpenPause"];
         _closePause = InputPlayer.actions["ClosePause"];
     }
@@ -52,15 +53,15 @@ public class InputManager : MonoBehaviour
     protected virtual void GatherInput()
     {
         Move = _move.ReadValue<Vector2>();
-        kInteract = _interact.WasPressedThisFrame();
-        kDetail = _detail.WasPressedThisFrame();
+        kOpenMap = _openMap.WasPressedThisFrame();
         kOpenItem = _openItem.WasPressedThisFrame();
         kOpenDebug = _openDebug.WasPressedThisFrame();
-        kOpenMap = _openMap.WasPressedThisFrame();
-        kOpenMouse = _openMouse.WasPressedThisFrame();
+        kOpenMouse = _openMouse.IsPressed();
+        kInteract = _interact.WasPressedThisFrame();
+        kDetail = _detail.WasPressedThisFrame();
+
         kOpenPause = _openPause.IsPressed();
         kClosePause = _closePause.IsPressed();
-
     }
 
     public static void DeactivatePlayerCtrl()

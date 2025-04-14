@@ -16,11 +16,6 @@ public class UIPause : MonoBehaviour
         buttons = GetComponentsInChildren<Button>();
         SetButtonEvent();
     }
-    void Update()
-    {
-
-    }
-
     private void SetButtonEvent()
     {
         RemoveButtonEvent();
@@ -42,7 +37,7 @@ public class UIPause : MonoBehaviour
     {
         foreach (var button in buttons)
         {
-            button.onClick.RemoveListener(Resume);
+            button.onClick.RemoveAllListeners();
         }
     }
     public void Show()
@@ -55,23 +50,15 @@ public class UIPause : MonoBehaviour
         gameObject.SetActive(false);
         InputManager.InputPlayer.SwitchCurrentActionMap("Player");
     }
-    private void OnPointerEnter(BaseEventData data)
-    {
-        SoundManager.Instance.PlaySound2D("Hover");
-    }
-    private void OnPointerClick(BaseEventData data)
-    {
-        SoundManager.Instance.PlaySound2D("Click");
-    }
     private void Resume()
     {
-        Time.timeScale = 1;
         Hide();
         UIHandler.IsPaused = false;
     }
     private void ResetGame()
     {
         Resume();
+        UIHandler.IsPaused = false;
         GameManager.Instance.ResetMaze();
 
     }
@@ -89,5 +76,13 @@ public class UIPause : MonoBehaviour
     {
         Debug.Log("QuitGame");
 
+    }
+    private void OnPointerEnter(BaseEventData data)
+    {
+        SoundManager.Instance.PlaySound2D("Hover");
+    }
+    private void OnPointerClick(BaseEventData data)
+    {
+        SoundManager.Instance.PlaySound2D("Click");
     }
 }

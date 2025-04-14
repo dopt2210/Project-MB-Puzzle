@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4290471883706179046}
   - component: {fileID: 9123144816076285644}
   - component: {fileID: 4737843339941605913}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 3462834808558552599}
   - component: {fileID: 7040490728561013679}
   - component: {fileID: 4264328796760114238}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -226,7 +226,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7710011479112347148}
   - component: {fileID: 4604914298989767912}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CellPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -288,7 +288,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 523157567519104674}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SpawnPoint
   m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
@@ -322,7 +322,7 @@ GameObject:
   - component: {fileID: 757894480740217084}
   - component: {fileID: 596767179592411397}
   - component: {fileID: 2861221369582400951}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bottom
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -430,7 +430,7 @@ GameObject:
   - component: {fileID: 698208206506164763}
   - component: {fileID: 4494162950456118143}
   - component: {fileID: 9029902077634051443}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -538,7 +538,7 @@ GameObject:
   - component: {fileID: 8910456828702767433}
   - component: {fileID: 5008106990294148105}
   - component: {fileID: 3520013935882764069}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -646,7 +646,7 @@ GameObject:
   - component: {fileID: 8577821833260223204}
   - component: {fileID: 7960132499389190605}
   - component: {fileID: 4924492886050928052}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}

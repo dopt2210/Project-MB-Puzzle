@@ -5,15 +5,15 @@ public class GameManager : MonoBehaviour
     private static GameManager instance;
     public static GameManager Instance { get { return instance; } }
     [SerializeField] private PlayerSO playerSO;
-    public MazeSO mazeSO;
-
+    [SerializeField] private MazeSO mazeSO;
     private System.Action[] mazeGenerators;
+    [SerializeField] private int currentLevelIndex = 0;
+
     private Cell currentPlayerCell;
     public GameObject player { get; set; }
     public Vector3 playerSpawnPoint {  get; set; }
-    public int maxLevel = 8;
-    [SerializeField] private int currentLevelIndex = 0;
-    public float cellSize;
+    private int maxLevel = 8;
+    private float cellSize;
 
     void Awake()
     {
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
         CreateLevel();
         CreateSpawnPoint();
         CreatePlayer();
-        cellSize = MazeGenerator.Instance.cellSize.x;
+        cellSize = mazeSO.cellPrefab.transform.GetChild(0).GetComponent<Renderer>().bounds.size.x;
 
 
     }
@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
     }
     public void CreatePlayer()
     {
+        Cursor.visible = false;
         player = Instantiate(playerSO.playerPrefab, playerSpawnPoint, Quaternion.identity, transform);
     }
     public void ResetMaze()

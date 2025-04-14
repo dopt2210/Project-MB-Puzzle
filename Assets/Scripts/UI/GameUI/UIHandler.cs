@@ -1,15 +1,13 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 public class UIHandler : MonoBehaviour
 {
-    private static UIHandler instance;
-    public static UIHandler Instance {  get { return instance; } }
-    
-    public Button setting;
+    //[SerializeField] private Button setting;
+    [SerializeField] private GameObject map;
 
     public static bool IsPaused { get; set; }
-
+    public static bool IsDebug { get; set; }
+     
     [Header("Sub UI Controllers")]
     [SerializeField] private UIDebug uiDebuger;
     [SerializeField] private UIPause uiPauser;
@@ -19,27 +17,55 @@ public class UIHandler : MonoBehaviour
 
     private void Start()
     {
-        uiDebuger.Show();
+        uiDebuger.Hide();
         uiPauser.Hide();
+        uICheatSheet.Hide();
         uiInformation.Show();
-        setting.onClick.AddListener(PauseGame);
+    }
+    private void Update()
+    {
+        if (IsPaused)
+        {
+            Time.timeScale = 0;
+        }
+        else Time.timeScale = 1;
+        if(InputManager.Instance.kOpenPause) PauseGame();
+        if(InputManager.Instance.kClosePause) ResumeGame();
+
+        if (InputManager.Instance.kOpenDebug) ToggleDebug();
+
+        if (InputManager.Instance.kOpenMap) OpenMap();
+
+        //if (InputManager.Instance.kOpenMouse) HandleMouseToggle();
+
     }
 
-    public void ToggleDebug()
+    private void ToggleDebug()
     {
         uiDebuger.Toggle();
+        uICheatSheet.Toggle();
+        IsDebug = false;
     }
 
-    public void PauseGame()
+    private void PauseGame()
     {
         uiPauser.Show();
-        Time.timeScale = 0;
         IsPaused = true;
     }
-
-    private void Awake()
+    private void ResumeGame()
     {
-        if (instance != null) { Destroy(gameObject); return; }
-        instance = this;
+        uiPauser.Hide();
+        IsPaused = false;
+    }
+    private void OpenMap()
+    {
+        map.gameObject.SetActive(!map.gameObject.activeSelf);
+    }
+    private void HandleMouseToggle()
+    {
+        bool showMouse = InputManager.Instance.kOpenMouse;
+
+        Cursor.visible = showMouse;
+        Cursor.lockState = showMouse ? CursorLockMode.None : CursorLockMode.Locked;
     }
 }
