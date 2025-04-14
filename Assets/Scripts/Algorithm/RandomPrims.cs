@@ -22,6 +22,8 @@ public class RandomPrims
 
     public void GenerateMazeInstant()
     {
+        UIDebug.Instance.UpdateAlgo("Prims");
+        UIInformation.Instance.UpdateLevel(6);
         // Bước 1: Bắt đầu từ một cell ngẫu nhiên
         Cell startCell = grid[rand.Next(width), rand.Next(height), rand.Next(depth)];
         startCell.visited = true;

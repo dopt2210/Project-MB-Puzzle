@@ -20,6 +20,8 @@ public class Sidewinder
 
     public void GenerateMazeInstant()
     {
+        UIDebug.Instance.UpdateAlgo("Sidewinder");
+        UIInformation.Instance.UpdateLevel(3);
         int primarySize = MazeTools.GetSize(MazeGenerator.Instance.GetDynamicAxes().Value.primary, boxSize);
         int secondarySize = MazeTools.GetSize(MazeGenerator.Instance.GetDynamicAxes().Value.secondary, boxSize);
 
@@ -29,7 +31,7 @@ public class Sidewinder
 
             for (int primary = 0; primary < primarySize; primary++)
             {
-                Cell current = MazeTools.GetCell(primary, secondary, grid);
+                Cell current = MazeTools.GetCellByAxes(primary, secondary, grid, boxSize);
                 if (current == null) continue;
 
                 runSet.Add(current);
@@ -41,7 +43,7 @@ public class Sidewinder
                 {
                     // Chọn một ô ngẫu nhiên trong tập hợp và mở đường lên trên (hoặc trục tương ứng)
                     Cell chosenCell = runSet[rand.Next(runSet.Count)];
-                    Cell next = GetCell(chosenCell.x, chosenCell.y, chosenCell.z, true, primarySize);
+                    Cell next = GetCell(chosenCell, MazeGenerator.Instance.GetDynamicAxes().Value.secondary, -1);
 
                     if (next != null)
                     {
@@ -53,7 +55,7 @@ public class Sidewinder
                 else
                 {
                     // Nếu không, mở đường theo trục chính (qua phải hoặc xuống)
-                    Cell next = GetCell(current.x, current.y, current.z, false, primarySize);
+                    Cell next = GetCell(current, MazeGenerator.Instance.GetDynamicAxes().Value.primary, +1);
                     if (next != null)
                     {
                         MazeTools.RemoveWallsBetween(current, next);
@@ -65,24 +67,11 @@ public class Sidewinder
         MazeGenerator.Instance.CreateExitPaths();
     }
 
-    private Cell GetCell(int x, int y, int z, bool moveUp, int primarySize)
+    private Cell GetCell(Cell current, int axis, int offset)
     {
-        int primaryProperty = MazeGenerator.Instance.GetDynamicAxes().Value.primary;
-        int secondaryProperty = MazeGenerator.Instance.GetDynamicAxes().Value.secondary;
+        Vector3Int nextPos = new Vector3Int(current.x, current.y, current.z);
+        nextPos[axis] += offset;
 
-        if (moveUp)
-        {
-            if (secondaryProperty == 0 && x > 0) return grid[x - 1, y, z];
-            if (secondaryProperty == 1 && y > 0) return grid[x, y - 1, z];
-            if (secondaryProperty == 2 && z > 0) return grid[x, y, z - 1];
-        }
-        else
-        {
-            if (primaryProperty == 0 && x < primarySize - 1) return grid[x + 1, y, z];
-            if (primaryProperty == 1 && y < primarySize - 1) return grid[x, y + 1, z];
-            if (primaryProperty == 2 && z < primarySize - 1) return grid[x, y, z + 1];
-        }
-
-        return null;
+        return MazeTools.IsInBounds(nextPos, boxSize) ? grid[nextPos.x, nextPos.y, nextPos.z] : null;
     }
 }

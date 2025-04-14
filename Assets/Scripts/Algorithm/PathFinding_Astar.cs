@@ -17,11 +17,31 @@ public class PathFinding_Astar
 
         boxSize = new Vector3Int(width, height, depth);
     }
+    public GameObject GetGameObjectAtCell(Cell cell)
+    {
+        Vector3 targetPos = new Vector3(cell.x, cell.y, cell.z);
+
+        foreach (GameObject obj in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        {
+            if (Vector3.Distance(obj.transform.position, targetPos) < 0.1f)
+            {
+                return obj;
+            }
+        }
+        return null;
+    }
 
     public List<Cell> FindPath(Cell start, Cell end)
     {
+        if (start == null || end == null)
+        {
+            Debug.Log("Không thể xác định được cell từ gameObject.");
+            return null;
+        }
+
         List<Cell> openSet = new List<Cell> { start };
         HashSet<Cell> closedSet = new HashSet<Cell>();
+
         Dictionary<Cell, Cell> cameFrom = new Dictionary<Cell, Cell>();
         Dictionary<Cell, float> gScore = new Dictionary<Cell, float>();
         Dictionary<Cell, float> fScore = new Dictionary<Cell, float>();
@@ -66,7 +86,7 @@ public class PathFinding_Astar
             }
         }
 
-        return null; // Không tìm thấy đường đi
+        return null; 
     }
 
     private List<Cell> GetWalkableNeighbors(Cell cell)
@@ -86,7 +106,12 @@ public class PathFinding_Astar
 
         return neighbors;
     }
-
+    /// <summary>
+    /// Tính khoảng cách dựa trên công thức manhattan
+    /// </summary>
+    /// <param name="a">Vị trí cell a</param>
+    /// <param name="b">Vị trí cell b</param>
+    /// <returns>Khoảng cách giữa 2 điểm trong không gian</returns>
     private float Heuristic(Cell a, Cell b)
     {
         return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y) + Mathf.Abs(a.z - b.z);
@@ -104,25 +129,5 @@ public class PathFinding_Astar
         return path;
     }
 
-    public void ColorPath(Color pathColor)
-    {
-        Cell startCell = grid[0, 0, 0];
-        Cell endCell = grid[width - 1, height - 1, depth - 1];
-        List<Cell> path = FindPath(startCell, endCell);
-        if (path == null) { Debug.Log("Không tồn tại đường đi khả dụng"); return; }
-
-        Vector3Int fixedAxis = MazeTools.GetFixedAxis(width, height, depth);
-
-        foreach (Cell cell in path)
-        {
-            Renderer renderer = MazeTools.GetWallRenderer(cell, fixedAxis).GetComponent<Renderer>();
-            Debug.Log(MazeTools.GetWallRenderer(cell, fixedAxis));
-            if (renderer != null)
-            {
-                renderer.material.color = pathColor;
-            }
-        }
-        
-    }
 
 }

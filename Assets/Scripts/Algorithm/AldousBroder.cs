@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class AldousBroder
 {
@@ -22,16 +20,18 @@ public class AldousBroder
 
     public void GenerateMazeInstant()
     {
+        UIDebug.Instance.UpdateAlgo("Aldous - Broder");
+        UIInformation.Instance.UpdateLevel(4);
         int primarySize = rand.Next(MazeTools.GetSize(MazeGenerator.Instance.GetDynamicAxes().Value.primary, boxSize));
         int secondarySize = rand.Next(MazeTools.GetSize(MazeGenerator.Instance.GetDynamicAxes().Value.secondary, boxSize));
 
-        Cell current = MazeTools.GetCell(primarySize, secondarySize, grid);
+        Cell current = MazeTools.GetCellByAxes(primarySize, secondarySize, grid, boxSize);
         current.visited = true;
         int unvisitedCells = width * height * depth - 1;
 
         while (unvisitedCells > 0)
         {
-            Cell next = GetRandomNeighbor(current);
+            Cell next = MazeTools.GetRandomNeighbor(current, grid, boxSize);
             if (next != null)
             {
                 if (!next.visited)
@@ -45,31 +45,4 @@ public class AldousBroder
         }
         MazeGenerator.Instance.CreateExitPaths();
     }
-
-    private Cell GetRandomNeighbor(Cell cell)
-    {
-        List<Cell> neighbors = new List<Cell>();
-
-        Vector3Int[] directions =
-        {
-        MazeTools.CreateDirection(-1, 0, MazeGenerator.Instance.GetDynamicAxes()), // Trái
-        MazeTools.CreateDirection(1, 0, MazeGenerator.Instance.GetDynamicAxes()),  // Phải
-        MazeTools.CreateDirection(0, -1, MazeGenerator.Instance.GetDynamicAxes()), // Dưới
-        MazeTools.CreateDirection(0, 1, MazeGenerator.Instance.GetDynamicAxes())   // Trên
-        };
-
-        foreach (var dir in directions)
-        {
-            Vector3Int neighborPos = new Vector3Int(cell.x, cell.y, cell.z) + dir;
-            if (MazeTools.IsInBounds(neighborPos,boxSize))
-            {
-                Cell neighbor = grid[neighborPos.x, neighborPos.y, neighborPos.z];
-                neighbors.Add(neighbor);
-            }
-        }
-
-        return neighbors.Count > 0 ? neighbors[rand.Next(neighbors.Count)] : null;
-    }
-
-
 }
