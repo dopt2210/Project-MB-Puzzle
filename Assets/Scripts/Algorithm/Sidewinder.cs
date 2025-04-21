@@ -20,8 +20,6 @@ public class Sidewinder
 
     public void GenerateMazeInstant()
     {
-        UIDebug.Instance.UpdateAlgo("Sidewinder");
-        UIInformation.Instance.UpdateLevel(3);
         int primarySize = MazeTools.GetSize(MazeGenerator.Instance.GetDynamicAxes().Value.primary, boxSize);
         int secondarySize = MazeTools.GetSize(MazeGenerator.Instance.GetDynamicAxes().Value.secondary, boxSize);
 

@@ -14,11 +14,8 @@ public class MusicManager : MonoBehaviour
     {
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
-
-        LoadAudio();
     }
-    
-    void LoadAudio()
+    private void Reset()
     {
         musicLibrary = Resources.Load<MusicLibrary>("Prefab/Audio/MusicLibrary");
         musicSource = transform.GetChild(1).GetComponent<AudioSource>();

@@ -24,8 +24,6 @@ public class Eller
 
     public void GenerateMazeInstant()
     {
-        UIDebug.Instance.UpdateAlgo("Eller");
-        UIInformation.Instance.UpdateLevel(8);
         int primarySize = MazeTools.GetSize(MazeGenerator.Instance.GetDynamicAxes().Value.primary, boxSize);
         int secondarySize = MazeTools.GetSize(MazeGenerator.Instance.GetDynamicAxes().Value.secondary, boxSize);
 

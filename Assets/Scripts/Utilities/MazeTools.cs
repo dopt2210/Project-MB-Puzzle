@@ -287,7 +287,7 @@ public static class MazeTools
         int y = Mathf.FloorToInt(pos.y / cellSize);
         int z = Mathf.FloorToInt(pos.z / cellSize);
 
-        return MazeTools.GetCellByAxes(x, y, z, grid, boxSize);
+        return GetCellByAxes(x, y, z, grid, boxSize);
     }
 
 
