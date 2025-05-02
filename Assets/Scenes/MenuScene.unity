@@ -499,6 +499,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6379491986621046592, guid: 91aa95373a9f7154c948e94505535c35, type: 3}
+      propertyPath: _document
+      value: 
+      objectReference: {fileID: 1836822195}
+    - target: {fileID: 6379491986621046592, guid: 91aa95373a9f7154c948e94505535c35, type: 3}
       propertyPath: audioMixer
       value: 
       objectReference: {fileID: 24100000, guid: b47f28cafa991224e9dd071a2fa07aa1, type: 2}
@@ -508,6 +512,10 @@ PrefabInstance:
       objectReference: {fileID: 9197481963319205126, guid: 12fca3419f436794dbd257ad1d07f0bc, type: 3}
     - target: {fileID: 6379491986621046592, guid: 91aa95373a9f7154c948e94505535c35, type: 3}
       propertyPath: _optionPanelTemplate
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: 12fca3419f436794dbd257ad1d07f0bc, type: 3}
+    - target: {fileID: 6379491986621046592, guid: 91aa95373a9f7154c948e94505535c35, type: 3}
+      propertyPath: pauseSetup.optionPanelAsset
       value: 
       objectReference: {fileID: 9197481963319205126, guid: 12fca3419f436794dbd257ad1d07f0bc, type: 3}
     m_RemovedComponents: []
@@ -530,6 +538,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2a32b6d87306134e93d1a1e196f9c57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1836822195 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4620700869945352107, guid: 91aa95373a9f7154c948e94505535c35, type: 3}
+  m_PrefabInstance: {fileID: 1393840259}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2100458628

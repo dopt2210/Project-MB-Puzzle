@@ -2,31 +2,20 @@
     <Style src="project://database/Assets/UI%20Toolkit/Menu.uss?fileID=7433441132597879392&amp;guid=6c959ceb034cecc45a6f17d4fc1c88c4&amp;type=3#Menu" />
     <engine:VisualElement name="OptionElement" class="container" style="flex-direction: column; background-color: rgba(0, 0, 0, 0.77);">
         <engine:VisualElement name="OptionTab" class="tabOption">
-            <engine:Button text="Graphic" name="TabGraphic" class="button" style="width: 200px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; height: 60px;" />
+            <engine:Button text="Graphic" name="FisrtElement" class="button" style="width: 200px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; height: 60px;" />
             <engine:Button text="Volume" name="TabVolume" class="button" style="width: 200px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; height: 60px;" />
             <engine:Button text="Guide" name="TabGuide" class="button" style="width: 200px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; height: 60px;" />
-            <engine:Button text="Menu" name="TabMenu" class="exit button" style="width: 200px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; height: 60px;" />
+            <engine:Button text="X" name="TabMenu" class="exit button" style="width: 50px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; height: 50px; position: absolute; right: 0; bottom: auto; top: 0; left: auto;" />
         </engine:VisualElement>
-        <engine:VisualElement name="Graphic" class="buttonParent tab">
+        <engine:VisualElement name="Graphic" class="buttonParent tab" style="display: none;">
             <engine:Label text="Graphic" style="font-size: 50px; color: rgb(255, 0, 0); -unity-text-align: upper-center;" />
-            <engine:Button text="Back" name="backToNavBtn" class="button" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; position: absolute; top: auto; left: auto; right: 0; bottom: 0; width: 80px; font-size: 30px;" />
         </engine:VisualElement>
         <engine:VisualElement name="Volume" class="buttonParent tab">
             <engine:Slider label="Music" value="0" name="music" high-value="0" low-value="-40" class="slider" />
             <engine:Slider label="Sound" value="0" high-value="0" name="sound" low-value="-40" class="slider" />
-            <engine:Button text="Back" name="backToNavBtn" class="button" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; position: absolute; top: auto; left: auto; right: 0; bottom: 0; width: 80px; font-size: 30px;" />
         </engine:VisualElement>
-        <engine:VisualElement name="Guide" class="buttonParent tab">
+        <engine:VisualElement name="Guide" class="buttonParent tab" style="display: none;">
             <engine:Label text="Guide" style="font-size: 50px; color: rgb(255, 0, 0); -unity-text-align: upper-center;" />
-            <engine:Button text="Back" name="backToNavBtn" class="button" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; position: absolute; top: auto; left: auto; right: 0; bottom: 0; width: 80px; font-size: 30px;" />
-        </engine:VisualElement>
-        <engine:VisualElement name="Menu" class="buttonParent tab" style="justify-content: space-evenly;">
-            <engine:Button text="Continue" class="button" style="align-self: center; align-items: center; align-content: center; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
-            <engine:Button text="Reset" class="button" style="align-self: center; align-items: center; align-content: center; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
-            <engine:Button text="Load" class="button" style="align-self: center; align-items: center; align-content: center; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
-            <engine:Button text="Save" class="button" style="align-self: center; align-items: center; align-content: center; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
-            <engine:Button text="Quit" class="button" style="align-self: center; align-items: center; align-content: center; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
-            <engine:Button text="Back" name="backToNavBtn" class="button" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; position: absolute; top: auto; left: auto; right: 0; bottom: 0; width: 80px; font-size: 30px;" />
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>

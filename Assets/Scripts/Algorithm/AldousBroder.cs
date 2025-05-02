@@ -1,5 +1,15 @@
 ﻿using UnityEngine;
-
+/// <summary>
+/// Thuật toán Aldous-Broder để sinh mê cung.
+/// 
+/// Ý tưởng: Bắt đầu từ một ô ngẫu nhiên, liên tục đi ngẫu nhiên đến một ô lân cận.
+/// Nếu ô đó chưa được thăm, phá vỡ tường giữa hai ô.
+/// Tiếp tục quá trình cho đến khi tất cả các ô đã được thăm.
+/// 
+/// Đặc điểm:
+/// - Đảm bảo toàn bộ mê cung kết nối.
+/// - Không thiên vị, nhưng rất kém hiệu quả (rất nhiều bước thừa).
+/// </summary>
 public class AldousBroder
 {
     private System.Random rand = new System.Random();

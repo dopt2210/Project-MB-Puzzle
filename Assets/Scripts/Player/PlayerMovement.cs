@@ -11,9 +11,10 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 _movementInput;
     private Rigidbody _rb;
+    private bool _running;
     private void Reset()
     {
-        _playerSO = Resources.Load<PlayerSO>("Scriptable/PlayerSO");
+        _playerSO = Resources.Load<PlayerSO>("Scriptable/playerSO");
     }
     private void Awake()
     {
@@ -21,7 +22,8 @@ public class PlayerMovement : MonoBehaviour
     }
     void Update()
     {
-        _movementInput = new Vector2(InputManager.Instance.Move.x, InputManager.Instance.Move.y);
+        _running = InputManager.Instance.Movement.IsRunning;
+        _movementInput = new Vector2(InputManager.Instance.Movement.Move.x, InputManager.Instance.Movement.Move.y);
     }
     void FixedUpdate()
     {
@@ -29,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void MoveByVelocity()
     {
-        IsRunning = canRun && InputManager.Instance.kRun;
+        IsRunning = canRun && _running;
 
         float targetMovingSpeed = IsRunning ? _playerSO.runSpeed : _playerSO.moveSpeed;
         if (speedOverrides.Count > 0)
@@ -41,31 +43,4 @@ public class PlayerMovement : MonoBehaviour
 
         _rb.linearVelocity = transform.rotation * new Vector3(targetVelocity.x, _rb.linearVelocity.y, targetVelocity.y);
     }
-
-    //void Move()
-    //{
-    //    Vector3 moveDir = new Vector3(_movementInput.x, 0, _movementInput.y).normalized;
-
-    //    if (moveDir.magnitude > 0.1f)
-    //    {
-    //        // Xoay hướng di chuyển theo góc cm
-    //        Vector3 cameraForward = cameraTransform.forward;
-    //        cameraForward.y = 0;
-    //        cameraForward.Normalize();
-
-    //        Vector3 cameraRight = cameraTransform.right;
-    //        cameraRight.y = 0;
-    //        cameraRight.Normalize();
-
-    //        Vector3 moveDirection = (cameraForward * moveDir.z + cameraRight * moveDir.x).normalized;
-
-    //        if (_rb.linearVelocity.magnitude < _playerSO.maxSpeed)
-    //        {
-    //            _rb.AddForce(moveDirection * _playerSO.moveSpeed, ForceMode.Acceleration);
-    //        }
-    //        // Xoay nhân vật theo hướng di chuyển
-    //        Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-    //        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _playerSO.rotationSpeed * Time.deltaTime);
-    //    }
-    //}
 }

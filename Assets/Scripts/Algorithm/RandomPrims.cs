@@ -1,7 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Thuật toán Randomized Prim's để sinh mê cung.
+/// 
+/// Ý tưởng:
+/// 1. Bắt đầu từ một ô ngẫu nhiên và đánh dấu là đã thăm.
+/// 2. Thêm các cạnh của ô bắt đầu vào danh sách frontier.
+/// 3. Tiến hành mở rộng mê cung bằng cách chọn một cạnh ngẫu nhiên từ frontier và kiểm tra các ô liền kề chưa được thăm.
+/// 4. Nếu ô liền kề chưa được thăm, xóa tường giữa hai ô và thêm các cạnh của ô đó vào frontier.
+/// 5. Lặp lại quá trình cho đến khi toàn bộ mê cung được tạo ra.
+/// 
+/// Đặc điểm:
+/// - Thuật toán này tạo ra mê cung với đường đi rộng rãi và không có chu trình.
+/// - Phù hợp để tạo ra các mê cung với nhiều nhánh và ít ngõ cụt.
 public class RandomPrims
 {
     private System.Random rand = new System.Random();

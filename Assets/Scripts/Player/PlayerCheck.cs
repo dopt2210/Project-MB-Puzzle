@@ -14,7 +14,7 @@ public class PlayerCheck : MonoBehaviour
     Vector3 RaycastOrigin => transform.position + Vector3.up * _playerSO.OriginOffset;
     private void Reset()
     {
-        _playerSO = Resources.Load<PlayerSO>("Scriptable/PlayerSO");
+        _playerSO = Resources.Load<PlayerSO>("Scriptable/playerSO");
     }
 
     void LateUpdate()

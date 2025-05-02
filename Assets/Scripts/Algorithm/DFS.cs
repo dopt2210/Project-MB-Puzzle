@@ -1,6 +1,16 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Thuật toán Depth-First Search (DFS) để sinh mê cung.
+/// 
+/// Ý tưởng: Bắt đầu từ một ô ban đầu, đi sâu liên tục vào ô chưa thăm,
+/// mỗi lần đi sẽ phá tường giữa ô hiện tại và ô tiếp theo.
+/// Nếu không còn ô chưa thăm lân cận, quay lui (backtrack) để tìm ô khác.
+/// 
+/// Đặc điểm:
+/// - Sinh ra mê cung dạng "ống" nhiều ngõ cụt.
+/// - Rất nhanh và đơn giản.
+/// </summary>
 public class DFS
 {
     private List<Cell> stack = new List<Cell>();

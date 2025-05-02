@@ -437,7 +437,7 @@
                 {
                     "name": "",
                     "id": "a07da1d5-f5ae-49f8-8657-bd4d46d0ce1a",
-                    "path": "<Keyboard>/escape",
+                    "path": "<Keyboard>/p",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
@@ -1006,7 +1006,7 @@
                 {
                     "name": "",
                     "id": "8d5e7e17-4b90-4edd-b603-7cddd5aae59a",
-                    "path": "<Keyboard>/escape",
+                    "path": "<Keyboard>/p",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",

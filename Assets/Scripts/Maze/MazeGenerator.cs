@@ -33,7 +33,18 @@ public class MazeGenerator : MonoBehaviour
     #region Grid
     public void RecreateGrid()
     {
-        Debug.Log("reset required");
+        isDoneCreatOne = false;
+
+        for (int x = 0; x < mazeSO.Width; x++)
+        {
+            for (int y = 0; y < mazeSO.Height; y++)
+            {
+                for (int z = 0; z < mazeSO.Depth; z++)
+                {
+                    grid[x, y, z].ResetState();
+                }
+            }
+        }
     }
 
     public void CreateGrid()
@@ -67,27 +78,27 @@ public class MazeGenerator : MonoBehaviour
 
     public void ResetGrid()
     {
-        foreach (Transform child in transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        CreateGrid();
+        //foreach (Transform child in transform)
+        //{
+        //    Destroy(child.gameObject);
+        //}
+        //CreateGrid();
+        RecreateGrid();
     }
 
     public void CreateExitPaths()
     {
         Vector3Int fixedAxis = MazeTools.GetFixedAxis(mazeSO.Width, mazeSO.Height, mazeSO.Depth);
-        
-        Vector3Int entrance = Vector3Int.zero;
-        Vector3Int exit = new Vector3Int(mazeSO.Width - 1, mazeSO.Height - 1, mazeSO.Depth - 1);
 
-        Vector3Int entranceDirection = MazeTools.CreateDirection(-1, 0, _dynamicAxes.Value); // Mở theo hướng lùi
-        Vector3Int exitDirection = MazeTools.CreateDirection(1, 0, _dynamicAxes.Value); // Mở theo hướng tiến
+        //Vector3Int entrance = Vector3Int.zero;
+        //Vector3Int exit = new Vector3Int(mazeSO.Width - 1, mazeSO.Height - 1, mazeSO.Depth - 1);
 
-        grid[entrance.x, entrance.y, entrance.z].RemoveWall(entranceDirection);
+        //Vector3Int entranceDirection = MazeTools.CreateDirection(-1, 0, _dynamicAxes.Value); // Mở theo hướng lùi
+        //Vector3Int exitDirection = MazeTools.CreateDirection(1, 0, _dynamicAxes.Value); // Mở theo hướng tiến
 
-        grid[exit.x, exit.y, exit.z].RemoveWall(exitDirection);
+        //grid[entrance.x, entrance.y, entrance.z].RemoveWall(entranceDirection);
+
+        //grid[exit.x, exit.y, exit.z].RemoveWall(exitDirection);
 
         foreach (var cell in grid)
         {
