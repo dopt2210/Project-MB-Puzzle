@@ -19,10 +19,11 @@ public class Cell : MonoBehaviour
     }
     public void HighlightForMiniMap(Color color)
     {
-        Renderer cellRenderer = bottomWall.GetComponent<Renderer>();
-        if (cellRenderer != null)
+        SpriteRenderer rendererColor = bottomWall.GetComponentInChildren<SpriteRenderer>();
+        
+        if (rendererColor != null)
         {
-            cellRenderer.material.color = color;
+            rendererColor.color = color;
         }
     }
     public void ResetState()

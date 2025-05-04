@@ -64,6 +64,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0efc3a8954660439fa2ba684c3f127, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _document: {fileID: 0}
-  _panelOption: {fileID: 0}
-  _panelGuide: {fileID: 0}
+  audioMixer: {fileID: 24100000, guid: b47f28cafa991224e9dd071a2fa07aa1, type: 2}
+  _document: {fileID: 4620700869945352107}
+  pauseSetup:
+    optionPanelAsset: {fileID: 9197481963319205126, guid: 12fca3419f436794dbd257ad1d07f0bc, type: 3}

@@ -128,5 +128,6 @@ public class UIHandler : MonoBehaviour
     private void ToggleBag()
     {
         uIInventory.Toggle();
+        uIInventory.RefreshUI();
     }
 }

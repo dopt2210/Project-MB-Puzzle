@@ -1,68 +1,80 @@
-﻿using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIInventory : MonoBehaviour
 {
-    public GameObject slotPrefab;
-    public Transform contentParent;
+    [SerializeField] private Transform contentParent;
+    [SerializeField] private GameObject itemPrefab;
 
-    public GameObject infoPanel;
-    public TMP_Text infoText;
+    [SerializeField] private GameObject infoPanel;
+    [SerializeField] private TMP_Text infoText;
+    [SerializeField] private Button[] buttons;
 
-    [SerializeField] private List<GameObject> uiSlots = new();
-    //[SerializeField] private InventorySlotUI slotUI;
-    public void Show() => gameObject.SetActive(true);
-    public void Hide() => gameObject.SetActive(false);
-    public void Toggle() => gameObject.SetActive(!gameObject.activeSelf);
-    void Start()
+    private InventorySystem inventory => InventorySystem.Instance;
+    private void OnEnable()
     {
-        Inventory.Instance.OnInventoryChanged += OnInventoryChanged;
+        InventorySystem.Instance.OnItemAdd += UpdateSlot;
+
     }
-
-    void OnDestroy()
+    private void OnDisable()
     {
-        Inventory.Instance.OnInventoryChanged -= OnInventoryChanged;
-    }
-
-    void OnInventoryChanged()
-    {
-        if (gameObject.activeInHierarchy)
-        {
-            RefreshUI();
-        }
+        InventorySystem.Instance.OnItemAdd -= UpdateSlot;
     }
     
     private void Reset()
     {
         contentParent = transform.GetComponentInChildren<GridLayoutGroup>().transform;
-        GameObject contentPanel = transform.GetChild(0).gameObject;
+        GameObject contentPanel = transform.GetChild(1).gameObject;
         infoPanel = contentPanel.GetComponentInChildren<Image>().gameObject;
         infoText = contentPanel.GetComponentInChildren<TextMeshProUGUI>();
+        buttons = contentPanel.GetComponentsInChildren<Button>();
     }
     public void RefreshUI()
     {
-        foreach (var slot in uiSlots) Destroy(slot);
-        uiSlots.Clear();
+        if (!gameObject.activeSelf) return;
 
-        foreach (var slotData in Inventory.Instance.Slots)
+        for (int i = 0; i < contentParent.childCount; i++)
         {
-            var slot = Instantiate(slotPrefab,  contentParent);
-            var qty = slot.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-            var icon = slot.transform.GetChild(1).GetComponent<Image>();
-            //slotUI = slot.GetComponent<InventorySlotUI>();
-            //slotUI.Setup(slotData.item, slotData.quantity);
-
-            icon.sprite = slotData.item.icon;
-            qty.text = slotData.item.stackable ? slotData.quantity.ToString() : "";
-            slot.GetComponent<Button>().onClick.AddListener(() => { ShowItemInfo(slotData.item); });
-
-            uiSlots.Add(slot);
+            Transform slot = contentParent.GetChild(i);
+            InventoryData data = inventory.GetItemAt(i);
+            SetupSlotUI(slot, data);
         }
     }
+
+    private void UpdateSlot(int index)
+    {
+        if (index < 0 || index >= contentParent.childCount) return;
+        Transform slot = contentParent.GetChild(index);
+        InventoryData data = inventory.GetItemAt(index);
+        SetupSlotUI(slot, data);
+    }
+
+    private void SetupSlotUI(Transform slot, InventoryData data)
+    {
+        // Xóa item cũ nếu khác loại hoặc số lượng 0
+        foreach (Transform child in slot)
+            Destroy(child.gameObject);
+
+        if (data == null) return;
+
+        GameObject itemGO = Instantiate(itemPrefab, slot);
+        InventoryItem item = itemGO.GetComponent<InventoryItem>();
+        item.tParrent = slot;
+        item.itemData = data;
+        item.image.sprite = data.item.icon;
+        item.qty.text = data.quantity.ToString();
+
+        Button btn = item.GetComponentInChildren<Button>();
+        btn.onClick.RemoveAllListeners();
+        btn.onClick.AddListener(() => ShowItemInfo(data.item));
+    }
+
     public void ShowItemInfo(ItemSO item)
     {
         infoText.text = $"{item.itemDescription}";
     }
+    public void Show() => gameObject.SetActive(true);
+    public void Hide() => gameObject.SetActive(false);
+    public void Toggle() => gameObject.SetActive(!gameObject.activeSelf);
 }

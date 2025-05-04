@@ -45,8 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62a9d6483e0dee44694bf6f11791cc0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _document: {fileID: 7541686073239181295}
   audioMixer: {fileID: 24100000, guid: b47f28cafa991224e9dd071a2fa07aa1, type: 2}
+  _document: {fileID: 7541686073239181295}
+  pauseSetup:
+    optionPanelAsset: {fileID: 9197481963319205126, guid: 12fca3419f436794dbd257ad1d07f0bc, type: 3}
 --- !u!114 &7541686073239181295
 MonoBehaviour:
   m_ObjectHideFlags: 0
