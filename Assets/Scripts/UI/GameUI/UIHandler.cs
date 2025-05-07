@@ -11,7 +11,7 @@ public class UIHandler : MonoBehaviour
 
     [Header("Sub UI Controllers")]
     [SerializeField] private UIDebug uiDebuger;
-    [SerializeField] private CustomFocusRing uiPauser;
+    [SerializeField] private PauseMenuUI uiPauser;
     [SerializeField] private UIInformation uiInformation;
     [SerializeField] private UICheatSheet uICheatSheet;
     [SerializeField] private UIInventory uIInventory;
@@ -19,7 +19,7 @@ public class UIHandler : MonoBehaviour
     {
         map = GameObject.FindGameObjectWithTag("MapHolder");
         uiDebuger = GetComponentInChildren<UIDebug>();
-        uiPauser = GetComponentInChildren<CustomFocusRing>();
+        uiPauser = GetComponentInChildren<PauseMenuUI>();
         uiInformation = GetComponentInChildren<UIInformation>();
         uICheatSheet = GetComponentInChildren<UICheatSheet>();
         uIInventory = GetComponentInChildren<UIInventory>();
@@ -47,12 +47,23 @@ public class UIHandler : MonoBehaviour
     {
         if (InputManager.Instance.Action.Pause && !IsPaused) PauseGame();
         else if (InputManager.Instance.Action.Resume && IsPaused) ResumeGame();
-   
+
+        if (IsPaused)
+        {
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
+
+
         if (InputManager.Instance.Action.OpenDebug) ToggleUI();
 
         if (InputManager.Instance.Action.OpenMap) OpenMap();
         
         if(InputManager.Instance.Action.OpenItem) ToggleBag();
+        else if(InputManager.Instance.Action.CloseItem) ToggleBag();
     }
     private void LateUpdate()
     {
@@ -86,10 +97,6 @@ public class UIHandler : MonoBehaviour
     {
         uiDebuger.UpdateCoord(newCell);
     }
-    private void ExcuteCheatSheet()
-    {
-
-    }
     private void ToggleUI()
     {
         uiDebuger.Toggle();
@@ -99,25 +106,21 @@ public class UIHandler : MonoBehaviour
     public void PauseGame()
     {
         IsPaused = true;
-        Time.timeScale = 0;
-        InputManager.InputPlayer.SwitchCurrentActionMap("UI");
         MouseLock.Instance.AutoHandleMouseLockByPause(IsPaused);
+        InputManager.InputPlayer.SwitchCurrentActionMap("UI");
         uiPauser.Show();
     }
 
     public void ResumeGame()
     {
         IsPaused = false;
-        Time.timeScale = 1;
-        InputManager.InputPlayer.SwitchCurrentActionMap("Player");
         MouseLock.Instance.AutoHandleMouseLockByPause(IsPaused);
+        InputManager.InputPlayer.SwitchCurrentActionMap("Player");
         uiPauser.Hide();
     }
     public void BackToMainMenu()
     {
         IsPaused = false;
-        Time.timeScale = 1;
-        InputManager.InputPlayer.SwitchCurrentActionMap("Player");
         SceneManager.LoadScene("MenuScene");
         MusicManager.Instance.PlayMusic("Start");
     }

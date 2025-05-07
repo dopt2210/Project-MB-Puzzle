@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
     public static GameManager Instance { get { return instance; } }
     [SerializeField] private MiniMapCamera miniMapCamera;
+    [SerializeField] private FogOfWarMask fog;
 
     #region Action callback
     public static event System.Action OnLevelUpgraded;
@@ -50,6 +52,7 @@ public class GameManager : MonoBehaviour
         playerSO = Resources.Load<PlayerSO>("Scriptable/playerSO");
         mazeSO = Resources.Load<MazeSO>("Scriptable/MazeSO");
         miniMapCamera = GetComponentInChildren<MiniMapCamera>();
+        fog = GetComponent<FogOfWarMask>();
     }
     void Awake()
     {
@@ -65,6 +68,7 @@ public class GameManager : MonoBehaviour
         CreateSpawnPoint(MazeGenerator.grid[0, 0, 0]);
         CreatePlayer();
         cellSize = mazeSO.cellPrefab.transform.GetChild(0).GetComponent<Renderer>().bounds.size.x;
+        fog.SetUpSize(mazeSO, cellSize);
     }
     private void Update()
     {
@@ -76,10 +80,14 @@ public class GameManager : MonoBehaviour
             CurrentCell.flagVisited = true;
             CurrentCell.HighlightForMiniMap(Color.red);
         }
+        
     }
     private void LateUpdate()
     {
         miniMapCamera.FollowCamera(player);
+        //List<Cell> revealCell = MazeTools.GetNeighborsInSquare(CurrentCell, MazeGenerator.grid, mazeSO.boxSize);
+        //fog.RevealCells(revealCell);
+        fog.Reveal(player.transform.position);
     }
     #region Maze Handler
     public void PlayGame()
@@ -89,14 +97,11 @@ public class GameManager : MonoBehaviour
     public void ResetMaze()
     {
         MazeGenerator.Instance.ResetGrid();
-
-        // Tạm thời disable controller để tránh va chạm/nhảy vị trí
+        fog.ResetFog();
         controller.enabled = false;
 
-        // Gán lại vị trí
         player.transform.position = playerSpawnPoint;
 
-        // Bật lại controller
         controller.enabled = true;
 
         OnLevelReset?.Invoke();
@@ -105,13 +110,11 @@ public class GameManager : MonoBehaviour
     public void CreateSpawnPoint(Cell cellPosition)
     {
         playerSpawnPoint = cellPosition.transform.Find("SpawnPoint").position;
-        Debug.Log($"{playerSpawnPoint}");
     }
     public void CreatePlayer()
     {
         player = Instantiate(playerSO.playerPrefab, playerSpawnPoint, Quaternion.identity, transform);
         controller = player.GetComponent<CharacterController>();
-
     }
     public void CreateLevel()
     {

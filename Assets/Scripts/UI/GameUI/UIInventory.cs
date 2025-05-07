@@ -76,5 +76,13 @@ public class UIInventory : MonoBehaviour
     }
     public void Show() => gameObject.SetActive(true);
     public void Hide() => gameObject.SetActive(false);
-    public void Toggle() => gameObject.SetActive(!gameObject.activeSelf);
+    public void Toggle()
+    {
+        bool isActive = gameObject.activeSelf;
+        gameObject.SetActive(!isActive);
+        string inputMap = isActive ? "Player" : "UI";
+        InputManager.InputPlayer.SwitchCurrentActionMap(inputMap);
+        MouseLock.Instance.AutoHandleMouseLockByPause(!isActive);
+
+    }
 }

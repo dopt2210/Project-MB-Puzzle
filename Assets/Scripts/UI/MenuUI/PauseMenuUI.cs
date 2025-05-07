@@ -4,12 +4,12 @@ using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-public class CustomFocusRing : MonoBehaviour
+public class PauseMenuUI : MonoBehaviour
 {
     [SerializeField] private AudioMixer audioMixer;
 
     [SerializeField] private UIDocument _document;
-    [SerializeField] private PauseSetup pauseSetup;
+    [SerializeField] private OptionUI pauseSetup;
 
     List<Button> _inPauseContent_buttons = new List<Button>();
 
@@ -22,9 +22,8 @@ public class CustomFocusRing : MonoBehaviour
         _document = GetComponent<UIDocument>();
         audioMixer = Resources.Load<AudioMixer>("Master");
     }
-    private void OnEnable()
+    private void Awake()
     {
-        _document = GetComponent<UIDocument>();
         _root = _document.rootVisualElement;
 
         SetElement();
@@ -58,11 +57,7 @@ public class CustomFocusRing : MonoBehaviour
         }
         foreach (Button button in _inPauseContent_buttons)
         {
-            //button.RegisterCallback<PointerDownEvent>(UITools.OnPointerClick);
             button.RegisterCallback<FocusInEvent>(UITools.OnPointerEnter);
-            //button.RegisterCallback<PointerEnterEvent>(UITools.OnPointerEnter);
-            //button.RegisterCallback<ClickEvent>(UITools.OnPointerClick);
-            //button.RegisterCallback<KeyDownEvent>(UITools.OnPointerClick);
         }
 
     }
@@ -75,12 +70,13 @@ public class CustomFocusRing : MonoBehaviour
     #region panel action
     public void Show()
     {
-        gameObject.SetActive(true);
-        FocusElement();
+        _root.style.display = DisplayStyle.Flex;
+
     }
     public void Hide()
     {
-        gameObject.SetActive(false);
+        _root.style.display = DisplayStyle.None;
+
     }
     private void FocusElement()
     {
@@ -100,13 +96,11 @@ public class CustomFocusRing : MonoBehaviour
     {
         _root.Clear();
         _root.Add(pauseSetup.OptionElement);
-        FocusElement();
     }
     private void HideOptionPanel()
     {
         _root.Clear();
         _root.Add(_container);
-        FocusElement();
     }
     private void Continue()
     {

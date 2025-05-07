@@ -4,12 +4,12 @@ using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-public class MenuUiToolkit : MonoBehaviour
+public class MainMenuUI : MonoBehaviour
 {
     [SerializeField] private AudioMixer audioMixer;
 
     [SerializeField] private UIDocument _document;
-    [SerializeField] private PauseSetup pauseSetup;
+    [SerializeField] private OptionUI pauseSetup;
 
     List<Button> _inLeftContent_buttons = new List<Button>();
     List<Button> _inStartChoice_buttons = new List<Button>();

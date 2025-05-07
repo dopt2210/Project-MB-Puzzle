@@ -40,10 +40,10 @@ public class Cell : MonoBehaviour
         setID = 0;
 
         // Reset lại màu minimap nếu có
-        Renderer cellRenderer = bottomWall?.GetComponent<Renderer>();
+        SpriteRenderer cellRenderer = bottomWall?.GetComponentInChildren<SpriteRenderer>();
         if (cellRenderer != null)
         {
-            cellRenderer.material.color = Color.white;
+            cellRenderer.color = Color.white;
         }
     }
 

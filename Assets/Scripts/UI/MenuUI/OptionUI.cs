@@ -4,7 +4,7 @@ using UnityEngine.Audio;
 using UnityEngine.UIElements;
 
 [System.Serializable]
-public class PauseSetup
+public class OptionUI
 {
     [SerializeField] private VisualTreeAsset optionPanelAsset;
 
