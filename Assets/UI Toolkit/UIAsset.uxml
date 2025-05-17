@@ -1,7 +1,7 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/Menu.uss?fileID=7433441132597879392&amp;guid=6c959ceb034cecc45a6f17d4fc1c88c4&amp;type=3#Menu" />
     <engine:VisualElement name="Container" class="container">
-        <engine:Label text="MB - Puzzle" class="header" style="color: rgb(255, 255, 255); text-shadow: 0 200px 10px rgb(0, 0, 0); -unity-text-outline-color: rgb(0, 0, 0); -unity-text-outline-width: 2px; position: absolute;" />
+        <engine:Label text="SIGEA" class="header" style="color: rgb(255, 255, 255); position: absolute; font-size: 200px; -unity-font-definition: url(&quot;project://database/Assets/Font/UI/GrutchShaded.ttf?fileID=12800000&amp;guid=ae611acc75380b446b5f248af0358244&amp;type=3#GrutchShaded&quot;); -unity-font-style: normal; -unity-text-outline-width: 1px; -unity-text-outline-color: rgb(0, 0, 0); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; translate: 0 0; rotate: 5deg; letter-spacing: 5px; text-shadow: -100px 100px 5px rgb(0, 0, 0);" />
         <engine:VisualElement name="LeftContent" class="buttonParent" style="flex-direction: column; flex-wrap: nowrap; align-items: center; justify-content: center; align-self: center; align-content: center; height: 720px; width: 960px; display: flex; overflow: visible;">
             <engine:Button text="Start" name="StartBtn" enable-rich-text="true" class="button" />
             <engine:Button text="Option" name="OptionBtn" class="button" />
@@ -14,6 +14,6 @@
             <engine:Button text="Quit" name="backBtn" class="button" style="transition-property: all;" />
         </engine:VisualElement>
         <engine:VisualElement name="RightContent" class="logo" style="background-image: resource(&apos;Image/maze2&apos;); border-top-left-radius: 50px; border-top-right-radius: 50px; border-bottom-right-radius: 50px; border-bottom-left-radius: 50px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; -unity-background-scale-mode: scale-and-crop; -unity-background-image-tint-color: rgb(208, 229, 255); right: 50px; width: 910px; height: 720px; left: 0;" />
-        <engine:Label text="#dopt2210" class="header" style="top: auto; bottom: 50px; right: auto; width: 400px; height: 100px; align-items: center; color: rgb(255, 0, 0); font-size: 50px; -unity-font-style: italic;" />
+        <engine:Label text="#dopt2210" class="header" style="top: auto; bottom: 50px; right: auto; width: 400px; height: 100px; align-items: center; color: rgb(255, 255, 255); font-size: 50px; -unity-font-style: italic; -unity-font-definition: url(&quot;project://database/Assets/Font/UI/BlackCasper.ttf?fileID=12800000&amp;guid=6ad56470aca5a20408f005e04b43c8e1&amp;type=3#BlackCasper&quot;); -unity-text-outline-width: 2px; -unity-text-outline-color: rgb(0, 0, 0); letter-spacing: 5px;" />
     </engine:VisualElement>
 </engine:UXML>

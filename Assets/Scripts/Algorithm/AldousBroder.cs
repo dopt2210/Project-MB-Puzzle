@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 /// <summary>
 /// Thuật toán Aldous-Broder để sinh mê cung.
 /// 
@@ -17,13 +18,17 @@ public class AldousBroder
     private Cell[,,] grid;
 
     private Vector3Int boxSize;
+    private float scale;
 
+    private List<Cell> visitedCells = new List<Cell>();
+    private Cell farCorner, centerish;
     public AldousBroder(MazeSO data)
     {
         width = data.Width;
         height = data.Height;
         depth = data.Depth;
         grid = MazeGenerator.grid;
+        scale = data.cellPrefab.transform.GetChild(0).GetComponent<Renderer>().bounds.size.x;
 
         boxSize = new Vector3Int(width, height, depth);
     }
@@ -35,6 +40,7 @@ public class AldousBroder
 
         Cell current = MazeTools.GetCellByAxes(primarySize, secondarySize, grid, boxSize);
         current.visited = true;
+        visitedCells.Add(current);
         int unvisitedCells = width * height * depth - 1;
 
         while (unvisitedCells > 0)
@@ -47,9 +53,17 @@ public class AldousBroder
                     MazeTools.RemoveWallsBetween(current, next);
                     next.visited = true;
                     unvisitedCells--;
+                    visitedCells.Add(next);
                 }
                 current = next;
             }
+        }
+        if (visitedCells.Count >= 3)
+        {
+            farCorner = visitedCells[1]; // Vị trí xa đầu tiên
+            centerish = visitedCells[visitedCells.Count / 2]; // Gần trung tâm lộ trình
+            MazeTools.PlacePuzzle(farCorner, MazeAlgorithmType.AldousBroder, scale, 0);
+            MazeTools.PlacePuzzle(centerish, MazeAlgorithmType.AldousBroder, scale, 0);
         }
         MazeGenerator.Instance.CreateExitPaths();
     }

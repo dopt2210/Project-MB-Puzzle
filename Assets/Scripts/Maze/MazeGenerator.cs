@@ -72,8 +72,8 @@ public class MazeGenerator : MonoBehaviour
         }
 
         _dynamicAxes = MazeTools.IdentifyDynamicAxes(mazeSO.Width, mazeSO.Height, mazeSO.Depth);
-        if (_dynamicAxes.HasValue) Debug.Log($"Co truc ({_dynamicAxes.Value.primary}, {_dynamicAxes.Value.secondary})");
-        else Debug.Log("Khong hop le");
+        //if (_dynamicAxes.HasValue) Debug.Log($"Co truc ({_dynamicAxes.Value.primary}, {_dynamicAxes.Value.secondary})");
+        //else Debug.Log("Khong hop le");
     }
 
     public void ResetGrid()
