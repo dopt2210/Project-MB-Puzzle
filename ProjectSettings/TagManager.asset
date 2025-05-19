@@ -5,17 +5,18 @@ TagManager:
   serializedVersion: 3
   tags:
   - Ground
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
+  - Wall
   - 
   - 
-  - 
-  - 
+  - MapDisplay
   - 
   - 
   - 

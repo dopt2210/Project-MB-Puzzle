@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Eller
 {
-    private System.Random rand = new System.Random();
     private int width, height, depth;
     private Cell[,,] grid;
+    private Dictionary<int, List<Cell>> sets;
+    private int nextSetID = 1;
+    private float randomSeed = 0.5f;
     private Vector3Int boxSize;
 
     public Eller(MazeSO data)
@@ -14,99 +17,164 @@ public class Eller
         height = data.Height;
         depth = data.Depth;
         grid = MazeGenerator.grid;
+
         boxSize = new Vector3Int(width, height, depth);
+        sets = new Dictionary<int, List<Cell>>();
     }
 
     public void GenerateMazeInstant()
     {
-        DynamicAxes? axes = MazeGenerator.Instance.GetDynamicAxes();
-        if (!axes.HasValue)
+        UIDebug.Instance.UpdateAlgo("Eller");
+        UIInformation.Instance.UpdateLevel(8);
+        int primarySize = MazeTools.GetSize(MazeGenerator.Instance.GetDynamicAxes().Value.primary, boxSize);
+        int secondarySize = MazeTools.GetSize(MazeGenerator.Instance.GetDynamicAxes().Value.secondary, boxSize);
+
+        for (int secondary = 0; secondary < secondarySize; secondary++)
         {
-            Debug.LogError("Không thể xác định trục động!");
-            return;
-        }
-
-        int primaryAxisSize = MazeTools.GetSize(axes.Value.primary, boxSize);
-        int secondaryAxisSize = MazeTools.GetSize(axes.Value.secondary, boxSize);
-
-        Dictionary<Vector2Int, int> cellSet = new Dictionary<Vector2Int, int>();
-        int nextSetId = 1;
-
-        for (int primary = 0; primary < primaryAxisSize; primary++)
-        {
-            // Gán set ID cho từng ô nếu chưa có
-            for (int secondary = 0; secondary < secondaryAxisSize; secondary++)
+            AssignSets(secondary, primarySize);
+            ConnectHorizontal(secondary, primarySize);
+            if (secondary < secondarySize - 1)
             {
-                Vector2Int cellKey = new Vector2Int(primary, secondary);
-                if (!cellSet.ContainsKey(cellKey))
-                {
-                    cellSet[cellKey] = nextSetId++;
-                }
-            }
-
-            // Hợp nhất ngẫu nhiên các ô ngang cùng hàng
-            for (int secondary = 0; secondary < secondaryAxisSize - 1; secondary++)
-            {
-                Vector2Int currentKey = new Vector2Int(primary, secondary);
-                Vector2Int nextKey = new Vector2Int(primary, secondary + 1);
-
-                if (rand.Next(2) == 0 && cellSet[currentKey] != cellSet[nextKey])
-                {
-                    Cell current = MazeTools.GetCell(primary, secondary, grid);
-                    Cell next = MazeTools.GetCell(primary, secondary + 1, grid);
-
-                    MazeTools.RemoveWallsBetween(current, next);
-
-                    int oldSet = cellSet[nextKey];
-                    int newSet = cellSet[currentKey];
-
-                    foreach (var key in new List<Vector2Int>(cellSet.Keys))
-                    {
-                        if (cellSet[key] == oldSet)
-                        {
-                            cellSet[key] = newSet;
-                        }
-                    }
-                }
-            }
-
-            // Tạo liên kết dọc
-            Dictionary<int, List<Vector2Int>> setsInRow = new Dictionary<int, List<Vector2Int>>();
-
-            for (int secondary = 0; secondary < secondaryAxisSize; secondary++)
-            {
-                Vector2Int cellKey = new Vector2Int(primary, secondary);
-                int setId = cellSet[cellKey];
-
-                if (!setsInRow.ContainsKey(setId))
-                {
-                    setsInRow[setId] = new List<Vector2Int>();
-                }
-                setsInRow[setId].Add(cellKey);
-            }
-
-            if (primary < primaryAxisSize - 1)
-            {
-                foreach (var set in setsInRow)
-                {
-                    bool hasConnected = false;
-
-                    foreach (var cellKey in set.Value)
-                    {
-                        if (rand.Next(2) == 0 || !hasConnected)
-                        {
-                            Cell current = MazeTools.GetCell(cellKey.x, cellKey.y, grid);
-                            Cell below = MazeTools.GetCell(cellKey.x + 1, cellKey.y, grid);
-
-                            MazeTools.RemoveWallsBetween(current, below);
-                            cellSet[new Vector2Int(cellKey.x + 1, cellKey.y)] = set.Key;
-                            hasConnected = true;
-                        }
-                    }
-                }
+                CreateVertical(secondary, primarySize, secondarySize);
             }
         }
 
+        ConnectLast(primarySize, secondarySize);
         MazeGenerator.Instance.CreateExitPaths();
+    }
+
+    private void AssignSets(int secondary, int primarySize)
+    {
+        Debug.Log($"Hàng {secondary}: Gán tập hợp cho các ô");
+
+        for (int primary = 0; primary < primarySize; primary++)
+        {
+            Cell cell = MazeTools.GetCellByAxes(primary, secondary, grid, boxSize);
+            if (cell.setID == 0)
+            {
+                cell.setID = nextSetID++;
+            }
+
+            if (!sets.ContainsKey(cell.setID))
+            {
+                sets[cell.setID] = new List<Cell>();
+            }
+            sets[cell.setID].Add(cell);
+            Debug.Log($"Cell ({cell.x}, {cell.y}, {cell.z}) - SetID: {cell.setID}");
+        }
+    }
+
+
+    private void ConnectHorizontal(int secondary, int primarySize)
+    {
+        for (int primary = 0; primary < primarySize - 1; primary++)
+        {
+            Cell current = MazeTools.GetCellByAxes(primary, secondary, grid, boxSize);
+            Cell next = MazeTools.GetCellByAxes(primary + 1, secondary, grid, boxSize);
+
+            if (current.setID != next.setID && Random.value > randomSeed)
+            {
+                MergeSets(current, next);
+            }
+        }
+
+        Debug.Log($"Sau khi kết nối ngang, số set còn lại: {sets.Count}");
+    }
+
+
+    private void CreateVertical(int secondary, int primarySize, int secondarySize)
+    {
+        Debug.Log($"Hàng {secondary}: Tạo kết nối dọc xuống dưới");
+        HashSet<int> processedSets = new HashSet<int>();
+
+        int secondaryAxis = MazeGenerator.Instance.GetDynamicAxes().Value.secondary;
+
+        for (int primary = 0; primary < primarySize; primary++)
+        {
+            Cell cell = MazeTools.GetCellByAxes(primary, secondary, grid, boxSize);
+
+            if (!processedSets.Contains(cell.setID))
+            {
+                processedSets.Add(cell.setID);
+                List<Cell> setCells = sets[cell.setID].FindAll(c => MazeTools.GetAxisValue(secondaryAxis, c) == secondary);
+
+                int count = 0;
+                
+                foreach (var current in setCells)
+                {
+                    if (count == 0 || Random.value > randomSeed)
+                    {
+                        if (secondary + 1 < secondarySize)
+                        {
+                            int primaryCoord = MazeTools.GetAxisValue(MazeGenerator.Instance.GetDynamicAxes().Value.primary, current);
+                            Cell below = MazeTools.GetCellByAxes(primaryCoord, secondary + 1, grid, boxSize);
+
+                            if (below != null)
+                            {
+                                MazeTools.RemoveWallsBetween(current, below);
+                                Debug.Log($"Xóa tường xuống Current({current.x},{current.y},{current.z}) và Below({below.x},{below.y},{below.z})");
+                                below.setID = current.setID;
+                                count++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        Debug.Log($"=== Danh sách sets sau khi kết nối dọc ở hàng {secondary} ===");
+        foreach (var set in sets)
+        {
+            string cellList = string.Join(", ", set.Value.ConvertAll(cell => $"({cell.x}, {cell.y}, {cell.z})"));
+            Debug.Log($"Set {set.Key}: {cellList}");
+        }
+    }
+
+
+    private void ConnectLast(int primarySize, int secondarySize)
+    {
+        Debug.Log("Kết nối các ô còn lại");
+
+        for (int primary = 0; primary < primarySize - 1; primary++)
+        {
+            Cell current = MazeTools.GetCellByAxes(primary, secondarySize - 1, grid, boxSize);
+            Cell next = MazeTools.GetCellByAxes(primary + 1, secondarySize - 1, grid, boxSize);
+
+            if (current.setID != next.setID)
+            {
+                MazeTools.RemoveWallsBetween(current, next);
+                MergeSets(current, next);
+            }
+
+        }
+
+        Debug.Log($"Số tập hợp sau khi hoàn thành: {sets.Count}");
+        foreach (var set in sets)
+        {
+            Debug.Log($"Set {set.Key} chứa {set.Value.Count} ô.");
+        }
+    }
+
+    private void MergeSets(Cell current, Cell next)
+    {
+        MazeTools.RemoveWallsBetween(current, next);
+        int oldSet = next.setID;
+
+        if (!sets.ContainsKey(oldSet)) return;
+
+        if (!sets.ContainsKey(current.setID))
+        {
+            sets[current.setID] = new List<Cell>();
+        }
+
+        List<Cell> oldCells = sets[oldSet];
+
+        foreach (var cell in oldCells)
+        {
+            cell.setID = current.setID;
+            sets[current.setID].Add(cell);
+        }
+
+        sets.Remove(oldSet); 
     }
 }

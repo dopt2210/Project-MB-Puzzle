@@ -24,6 +24,8 @@ public class RandomKruskal
 
     public void GenerateMazeInstant()
     {
+        UIDebug.Instance.UpdateAlgo("Kruskal");
+        UIInformation.Instance.UpdateLevel(7);
         // Khởi tạo tập hợp cha của mỗi ô
         foreach (var cell in grid)
         {
@@ -42,7 +44,7 @@ public class RandomKruskal
                     foreach (var dir in MazeTools.GetValidDirections())
                     {
                         Vector3Int neighborPos = new Vector3Int(x, y, z) + dir;
-                        if (IsInBounds(neighborPos))
+                        if (MazeTools.IsInBounds(neighborPos, boxSize))
                         {
                             Cell neighbor = grid[neighborPos.x, neighborPos.y, neighborPos.z];
                             edges.Add(new Edge(current, neighbor));
@@ -102,13 +104,6 @@ public class RandomKruskal
             (list[i], list[j]) = (list[j], list[i]);
         }
         return list;
-    }
-
-    private bool IsInBounds(Vector3Int pos)
-    {
-        return pos.x >= 0 && pos.x < width &&
-               pos.y >= 0 && pos.y < height &&
-               pos.z >= 0 && pos.z < depth;
     }
 
     private class Edge
