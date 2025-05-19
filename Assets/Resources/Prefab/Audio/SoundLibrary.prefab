@@ -51,3 +51,9 @@ MonoBehaviour:
   - groupID: Click
     clips:
     - {fileID: 8300000, guid: 39e241865d68cf142823d3f5cd41d2d5, type: 3}
+  - groupID: stepping
+    clips:
+    - {fileID: 8300000, guid: b490b4c8bf70f864cb1f90cb6c44cb36, type: 3}
+  - groupID: running
+    clips:
+    - {fileID: 8300000, guid: 290ba4a69177ee642b583b9ceec0ea5b, type: 3}

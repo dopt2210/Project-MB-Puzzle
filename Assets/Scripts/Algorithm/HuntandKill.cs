@@ -20,8 +20,6 @@ public class HuntandKill
 
     public void GenerateMazeInstant()
     {
-        UIDebug.Instance.UpdateAlgo("Hunt And Kill");
-        UIInformation.Instance.UpdateLevel(5);
         Cell current = grid[rand.Next(width), rand.Next(height), rand.Next(depth)];
         current.visited = true;
 

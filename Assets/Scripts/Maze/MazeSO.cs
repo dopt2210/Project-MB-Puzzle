@@ -10,6 +10,7 @@ public class MazeSO : ScriptableObject
     [SerializeField] private int width = 15;
     [SerializeField] private int height = 15;
     [SerializeField] private int depth = 1;
+    public int mazeLevel = 8;
     public Vector3Int boxSize;
 
     public GameObject cellPrefab;

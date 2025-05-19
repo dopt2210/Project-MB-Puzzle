@@ -15,9 +15,14 @@ MonoBehaviour:
   GroundLayer:
     serializedVersion: 2
     m_Bits: 0
-  playerPrefab: {fileID: 2460663234404698255, guid: f09044deafcb5e445b9cde459cb22ee8, type: 3}
+  playerPrefab: {fileID: 6534405932772870135, guid: a3be3bdc5c12d244b832eae036ffceb2, type: 3}
   moveSpeed: 15
+  runSpeed: 25
+  crouchSpeed: 9
   Acceleration: 16
   Deceleration: 13
-  maxSpeed: 4.5
   rotationSpeed: 4.5
+  maxSpeed: 4.5
+  distanceThreshold: 0.15
+  RaycastDistance: 0.15100001
+  OriginOffset: 0.001

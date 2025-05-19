@@ -13,10 +13,8 @@ public class SoundManager : MonoBehaviour
     {
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
-
-        LoadAudio();
     }
-    void LoadAudio()
+    private void Reset()
     {
         sfxLibrary = Resources.Load<SoundLibrary>("Prefab/Audio/SoundLibrary");
         sfx2DSource = transform.GetChild(0).GetComponent<AudioSource>();
@@ -38,4 +36,9 @@ public class SoundManager : MonoBehaviour
     {
         sfx2DSource.PlayOneShot(sfxLibrary.GetClipFromName(soundName));
     }
+
+    public AudioClip GetFromLibrary(string clip)
+    {
+        return sfxLibrary.GetClipFromName(clip);
+    } 
 }

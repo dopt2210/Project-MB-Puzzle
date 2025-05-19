@@ -24,8 +24,6 @@ public class RandomKruskal
 
     public void GenerateMazeInstant()
     {
-        UIDebug.Instance.UpdateAlgo("Kruskal");
-        UIInformation.Instance.UpdateLevel(7);
         // Khởi tạo tập hợp cha của mỗi ô
         foreach (var cell in grid)
         {

@@ -21,8 +21,6 @@ public class DFS
 
     public void GenerateMazeInstant()
     {
-        UIDebug.Instance.UpdateAlgo("DFS");
-        UIInformation.Instance.UpdateLevel(1);
         Cell startCell = grid[0, 0, 0];
         startCell.visited = true;
         stack.Add(startCell);

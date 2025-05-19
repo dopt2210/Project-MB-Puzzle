@@ -22,8 +22,6 @@ public class BinaryTree
     /// </summary>
     public void GenerateMazeInstant()
     {
-        UIDebug.Instance.UpdateAlgo("Binary Tree");
-        UIInformation.Instance.UpdateLevel(2);
         int primarySize = MazeTools.GetSize(MazeGenerator.Instance.GetDynamicAxes().Value.primary, boxSize);
         int secondarySize = MazeTools.GetSize(MazeGenerator.Instance.GetDynamicAxes().Value.secondary, boxSize);
 

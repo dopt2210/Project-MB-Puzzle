@@ -1,6 +1,8 @@
-
-using UnityEngine.EventSystems;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
 public static class UITools
 {
@@ -40,4 +42,42 @@ public static class UITools
         }
         return true;
     }
+    #region event
+    public static IEnumerator DelayedAction(System.Action action)
+    {
+        SoundManager.Instance.PlaySound2D("Click");
+        yield return new WaitForSeconds(0.15f);
+        action?.Invoke();
+    }
+    public static void OnPointerEnter(PointerEnterEvent data)
+    {
+        SoundManager.Instance.PlaySound2D("Hover");
+    }
+    public static void OnPointerEnter(FocusInEvent data)
+    {
+        SoundManager.Instance.PlaySound2D("Hover");
+    }
+    public static void OnPointerClick(PointerDownEvent data)
+    {
+        SoundManager.Instance.PlaySound2D("Click");
+    }  
+    public static void OnPointerClick(ClickEvent data)
+    {
+        SoundManager.Instance.PlaySound2D("Click");
+    }
+    public static void OnPointerClick(KeyDownEvent data)
+    {
+        SoundManager.Instance.PlaySound2D("Click");
+    }
+    public static void UpdateMusicVolume(float volume, AudioMixer audioMixer)
+    {
+        float newVolume = Mathf.Log10(Mathf.Clamp(volume, 0.0001f, 1f)) * 20f;
+        audioMixer.SetFloat("MusicVolume", volume);
+    }
+    public static void UpdateSFXVolume(float volume, AudioMixer audioMixer)
+    {
+        float newVolume = Mathf.Log10(Mathf.Clamp(volume, 0.0001f, 1f)) * 20f;
+        audioMixer.SetFloat("SFXVolume", volume);
+    }
+    #endregion
 }

@@ -20,8 +20,6 @@ public class AldousBroder
 
     public void GenerateMazeInstant()
     {
-        UIDebug.Instance.UpdateAlgo("Aldous - Broder");
-        UIInformation.Instance.UpdateLevel(4);
         int primarySize = rand.Next(MazeTools.GetSize(MazeGenerator.Instance.GetDynamicAxes().Value.primary, boxSize));
         int secondarySize = rand.Next(MazeTools.GetSize(MazeGenerator.Instance.GetDynamicAxes().Value.secondary, boxSize));
 

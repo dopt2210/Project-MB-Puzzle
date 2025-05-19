@@ -176,7 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa6a7bd00c737c144977b0f13f0ca8d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicLibrary: {fileID: 0}
+  musicLibrary: {fileID: 8594863369678845266, guid: e7daf95722f40a44ab9bcf3a79205197, type: 3}
   musicSource: {fileID: 6411315757418003663}
 --- !u!114 &103568772226732267
 MonoBehaviour:
@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaf4f2a1ffef04a40b09f401416bfe50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sfxLibrary: {fileID: 0}
+  sfxLibrary: {fileID: 7181819052037955083, guid: bfe9d49040e93c74dab569b36fa5d82d, type: 3}
   sfx2DSource: {fileID: 2153847627342601547}
 --- !u!1 &8674712986988186794
 GameObject:
