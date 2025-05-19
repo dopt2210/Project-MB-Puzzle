@@ -96,9 +96,9 @@ public class MazeGenerator : MonoBehaviour
         //Vector3Int entranceDirection = MazeTools.CreateDirection(-1, 0, _dynamicAxes.Value); // Mở theo hướng lùi
         //Vector3Int exitDirection = MazeTools.CreateDirection(1, 0, _dynamicAxes.Value); // Mở theo hướng tiến
 
-        //grid[entrance.x, entrance.y, entrance.z].RemoveWall(entranceDirection);
+        //boardLayout[entrance.x, entrance.y, entrance.z].RemoveWall(entranceDirection);
 
-        //grid[exit.x, exit.y, exit.z].RemoveWall(exitDirection);
+        //boardLayout[exit.x, exit.y, exit.z].RemoveWall(exitDirection);
 
         foreach (var cell in grid)
         {

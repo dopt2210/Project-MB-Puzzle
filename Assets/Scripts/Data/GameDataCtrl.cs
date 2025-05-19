@@ -57,7 +57,7 @@ public class GameDataCtrl : MonoBehaviour
     {
         if (this.gameData == null)
         {
-            Debug.LogWarning("No data found");
+            Debug.LogWarning("No levelData found");
             return;
         }
         foreach (IGameData data in gameDatas)
@@ -78,7 +78,7 @@ public class GameDataCtrl : MonoBehaviour
 
         if (gameData == null)
         {
-            Debug.LogWarning("No data found");
+            Debug.LogWarning("No levelData found");
             return;
         }
         foreach (IGameData data in gameDatas)

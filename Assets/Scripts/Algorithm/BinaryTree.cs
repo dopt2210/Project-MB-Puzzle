@@ -52,8 +52,8 @@ public class BinaryTree
                     puzzle2Cell = current;
             }
         }
-        MazeTools.PlacePuzzle(puzzle1Cell, MazeAlgorithmType.BinaryTree, scale, 0);
-        MazeTools.PlacePuzzle(puzzle2Cell, MazeAlgorithmType.BinaryTree, scale, 1);
+        MazeTools.PlacePuzzle(puzzle1Cell, MazeAlgorithmType.BinaryTree, scale, 0, GameManager.Instance.ItemClones);
+        MazeTools.PlacePuzzle(puzzle2Cell, MazeAlgorithmType.BinaryTree, scale, 1, GameManager.Instance.ItemClones);
         MazeGenerator.Instance.CreateExitPaths();
     }
 

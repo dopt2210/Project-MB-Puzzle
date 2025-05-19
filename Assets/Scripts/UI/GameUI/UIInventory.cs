@@ -7,7 +7,6 @@ public class UIInventory : MonoBehaviour
     [SerializeField] private Transform contentParent;
     [SerializeField] private GameObject itemPrefab;
 
-    [SerializeField] private GameObject infoPanel;
     [SerializeField] private TMP_Text infoText;
     [SerializeField] private Button[] buttons;
 
@@ -26,9 +25,13 @@ public class UIInventory : MonoBehaviour
     {
         contentParent = transform.GetComponentInChildren<GridLayoutGroup>().transform;
         GameObject contentPanel = transform.GetChild(1).gameObject;
-        infoPanel = contentPanel.GetComponentInChildren<Image>().gameObject;
         infoText = contentPanel.GetComponentInChildren<TextMeshProUGUI>();
         buttons = contentPanel.GetComponentsInChildren<Button>();
+    }
+    private void Update()
+    {
+        if (InputManager.Instance.Action.OpenItem) OpenBag();
+        else if (InputManager.Instance.Action.CloseItem) CloseBag();
     }
     public void RefreshUI()
     {
@@ -74,8 +77,17 @@ public class UIInventory : MonoBehaviour
     {
         infoText.text = $"{item.itemDescription}";
     }
-    public void Show() => gameObject.SetActive(true);
-    public void Hide() => gameObject.SetActive(false);
+    public void OpenBag()
+    {
+        CameraSwitch.Instance.ShowInventoryCam();
+        MouseLock.Instance.UnlockMouse();
+
+    }
+    public void CloseBag()
+    {
+        CameraSwitch.Instance.ShowGameplayCam();
+        MouseLock.Instance.LockMouse();
+    }
     public void Toggle()
     {
         bool isActive = gameObject.activeSelf;

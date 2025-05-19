@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 429124b93ef49a24eb703928ef114d7e, type: 3}
+  m_Name: WordleSO
+  m_EditorClassIdentifier: 
+  targetWords:
+  - aegis
+  - evade
+  - guilt
+  - mazes
+  - heart
+  - alive
+  - truth
+  - yours
+  wordLength: 5
+  rows: 6

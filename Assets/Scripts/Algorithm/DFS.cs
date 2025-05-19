@@ -38,7 +38,7 @@ public class DFS
         stack.Add(startCell);
 
         puzzle1Cell = grid[1, 0, 1];
-        MazeTools.PlacePuzzle(puzzle1Cell, MazeAlgorithmType.DFS, scale, 0);
+        MazeTools.PlacePuzzle(puzzle1Cell, MazeAlgorithmType.DFS, scale, 0, GameManager.Instance.ItemClones);
         farthestDeadEnd = startCell;
         int maxDistance = 0;
 
@@ -68,7 +68,7 @@ public class DFS
                 stack.RemoveAt(stack.Count - 1);
             }
         }
-        MazeTools.PlacePuzzle(farthestDeadEnd, MazeAlgorithmType.DFS, scale, 1);
+        MazeTools.PlacePuzzle(farthestDeadEnd, MazeAlgorithmType.DFS, scale, 1, GameManager.Instance.ItemClones);
 
         MazeGenerator.Instance.CreateExitPaths();
     }

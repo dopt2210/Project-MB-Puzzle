@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
@@ -48,7 +47,7 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region For puzzle
-
+    public Transform ItemClones;
     #endregion
 
     private void Reset()
@@ -89,7 +88,7 @@ public class GameManager : MonoBehaviour
     private void LateUpdate()
     {
         miniMapCamera.FollowCamera(player);
-        //List<Cell> revealCell = MazeTools.GetNeighborsInSquare(CurrentCell, MazeGenerator.grid, mazeSO.boxSize);
+        //List<Cell> revealCell = MazeTools.GetNeighborsInSquare(CurrentCell, MazeGenerator.boardLayout, mazeSO.boxSize);
         //fog.RevealCells(revealCell);
         fog.Reveal(player.transform.position);
     }

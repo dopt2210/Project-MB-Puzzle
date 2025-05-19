@@ -7,7 +7,7 @@ public class PickupItem : Action
         bool success = InventorySystem.Instance.AddItem(itemData);
         if (success)
         {
-            Destroy(transform.root.gameObject);
+            Destroy(triggerActionCtrl.transform.parent.gameObject);
         }
     }
 }
