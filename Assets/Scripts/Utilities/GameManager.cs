@@ -47,6 +47,10 @@ public class GameManager : MonoBehaviour
     ? mazeAlgorithms[_currentLevelIndex].Name : "Unknown";
     #endregion
 
+    #region For puzzle
+
+    #endregion
+
     private void Reset()
     {
         playerSO = Resources.Load<PlayerSO>("Scriptable/playerSO");
@@ -167,4 +171,15 @@ public struct MazeAlgorithm
         Name = name;
         Generate = generate;
     }
+}
+public enum MazeAlgorithmType
+{
+    DFS,
+    BinaryTree,
+    Sidewinder,
+    AldousBroder,
+    HuntandKill,
+    RandomPrims,
+    RandomKruskal,
+    Eller
 }

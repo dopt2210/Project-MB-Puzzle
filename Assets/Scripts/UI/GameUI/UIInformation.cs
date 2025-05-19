@@ -21,14 +21,14 @@ public class UIInformation : MonoBehaviour
     {
         if (texts[0] != null)
         {
-            texts[0].text = $"Level: {level}";
+            texts[0].text = $"Maze Level: {level}";
         }
     }
     public void UpdateTime(float time)
     {
         if (texts[1] != null)
         {
-            texts[1].text = $"Time: {time:F1}s";
+            texts[1].text = $"{time:F1}s";
         }
     }
     public void ResetTime()
@@ -36,21 +36,14 @@ public class UIInformation : MonoBehaviour
         timePlay = 0;
         if (texts[1] != null)
         {
-            texts[1].text = $"Time: {timePlay:F1}s";
-        }
-    }
-    public void UpdateNumberCount(int number)
-    {
-        if (texts[2] != null)
-        {
-            texts[2].text = $"Puzzle Count: {number}";
+            texts[1].text = $"{timePlay:F1}s";
         }
     }
     public void ShowHint(string hint)
     {
-        if (texts[3] != null)
+        if (texts[2] != null)
         {
-            texts[3].text = $"Hint: {hint}";
+            texts[2].text = $"Key Infomation \n{hint}";
         }
     }
     public void Show() => gameObject.SetActive(true);

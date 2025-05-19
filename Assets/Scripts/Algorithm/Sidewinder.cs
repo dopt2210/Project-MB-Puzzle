@@ -7,6 +7,7 @@ public class Sidewinder
     private Cell[,,] grid;
     private int width, height, depth;
     private Vector3Int boxSize;
+    private float scale;
 
     public Sidewinder(MazeSO data)
     {
@@ -14,6 +15,7 @@ public class Sidewinder
         height = data.Height;
         depth = data.Depth;
         grid = MazeGenerator.grid;
+        scale = data.cellPrefab.transform.GetChild(0).GetComponent<Renderer>().bounds.size.x;
 
         boxSize = new Vector3Int(width, height, depth);
     }
@@ -22,6 +24,8 @@ public class Sidewinder
     {
         int primarySize = MazeTools.GetSize(MazeGenerator.Instance.GetDynamicAxes().Value.primary, boxSize);
         int secondarySize = MazeTools.GetSize(MazeGenerator.Instance.GetDynamicAxes().Value.secondary, boxSize);
+
+        List<Cell> lastRunSet = null;
 
         for (int secondary = 0; secondary < secondarySize; secondary++)
         {
@@ -60,6 +64,24 @@ public class Sidewinder
                     }
                 }
             }
+            // Lưu lại runSet của hàng cuối để sau này chọn ô đặt puzzle
+            if (secondary == secondarySize - 1)
+            {
+                lastRunSet = runSet;
+            }
+        }
+        // Đặt puzzle tại ô đầu của hàng cuối cùng
+        if (secondarySize > 0)
+        {
+            Cell puzzleCellA = MazeTools.GetCellByAxes(0, secondarySize - 1, grid, boxSize);
+            MazeTools.PlacePuzzle(puzzleCellA, MazeAlgorithmType.Sidewinder, scale, 0);
+        }
+
+        if (lastRunSet != null && lastRunSet.Count > 0)
+        {
+            Cell puzzleCellB = lastRunSet[rand.Next(lastRunSet.Count)];
+            MazeTools.PlacePuzzle(puzzleCellB, MazeAlgorithmType.Sidewinder, scale, 1);
+
         }
 
         MazeGenerator.Instance.CreateExitPaths();

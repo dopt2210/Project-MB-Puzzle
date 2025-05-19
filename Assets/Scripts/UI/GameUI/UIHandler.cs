@@ -13,7 +13,6 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private UIDebug uiDebuger;
     [SerializeField] private PauseMenuUI uiPauser;
     [SerializeField] private UIInformation uiInformation;
-    [SerializeField] private UICheatSheet uICheatSheet;
     [SerializeField] private UIInventory uIInventory;
     private void Reset()
     {
@@ -21,7 +20,6 @@ public class UIHandler : MonoBehaviour
         uiDebuger = GetComponentInChildren<UIDebug>();
         uiPauser = GetComponentInChildren<PauseMenuUI>();
         uiInformation = GetComponentInChildren<UIInformation>();
-        uICheatSheet = GetComponentInChildren<UICheatSheet>();
         uIInventory = GetComponentInChildren<UIInventory>();
     }
     private void Awake()
@@ -39,7 +37,6 @@ public class UIHandler : MonoBehaviour
         UpdateUIInfomation();
         uiDebuger.Hide();
         uiPauser.Hide();
-        uICheatSheet.Hide();
         uiInformation.Show();
         uIInventory.Hide();
     }
@@ -60,7 +57,7 @@ public class UIHandler : MonoBehaviour
 
         if (InputManager.Instance.Action.OpenDebug) ToggleUI();
 
-        if (InputManager.Instance.Action.OpenMap) OpenMap();
+        if (InputManager.Instance.Action.OpenMap) ToggleMap();
         
         if(InputManager.Instance.Action.OpenItem) ToggleBag();
         else if(InputManager.Instance.Action.CloseItem) ToggleBag();
@@ -100,7 +97,6 @@ public class UIHandler : MonoBehaviour
     private void ToggleUI()
     {
         uiDebuger.Toggle();
-        uICheatSheet.Toggle();
     }
 
     public void PauseGame()
@@ -124,11 +120,11 @@ public class UIHandler : MonoBehaviour
         SceneManager.LoadScene("MenuScene");
         MusicManager.Instance.PlayMusic("Start");
     }
-    private void OpenMap()
+    public void ToggleMap()
     {
         map.gameObject.SetActive(!map.gameObject.activeSelf);
     }
-    private void ToggleBag()
+    public void ToggleBag()
     {
         uIInventory.Toggle();
         uIInventory.RefreshUI();

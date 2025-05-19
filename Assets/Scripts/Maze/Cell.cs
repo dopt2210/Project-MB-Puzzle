@@ -46,5 +46,12 @@ public class Cell : MonoBehaviour
             cellRenderer.color = Color.white;
         }
     }
+    public Vector3 GetWorldPosition(float scale)
+    {
+        float x = this.x * scale;
+        float z = this.z * scale;
+        Vector3 pos = new Vector3(x + scale / 2, this.y + 1, z + scale / 2);
+        return pos;
+    }
 
 }

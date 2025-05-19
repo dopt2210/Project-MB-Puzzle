@@ -18,12 +18,13 @@ public class MapCamera : MonoBehaviour
     }
     void ResizeMap()
     {
-        Vector3 pos = _camera.transform.localPosition;
-        float delta = mazeSO.cellPrefab.transform.GetChild(0).GetComponent<Renderer>().bounds.size.x;
-        float x = 5 * delta - 640;
-        float z = 5 * delta;
-        float newSize = 7.5f * delta;
-        _camera.transform.localPosition = new Vector3(x, pos.y, z);
-        _camera.orthographicSize = newSize;
+        float scale = mazeSO.cellPrefab.transform.GetChild(0).GetComponent<Renderer>().bounds.size.x;
+        Vector3 pos = _camera.transform.position;
+        float x = (mazeSO.Width - 1) * scale / 2f;
+        float z = (mazeSO.Depth - 1) * scale / 2f;
+        float newSize = Mathf.Max(x, z);
+        Vector3 mazeCenter = new Vector3(x, pos.y, z);
+        _camera.transform.position = mazeCenter;
+        _camera.orthographicSize = newSize + scale;
     }
 }

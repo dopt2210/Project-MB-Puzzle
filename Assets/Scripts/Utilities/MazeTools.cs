@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public static class MazeTools
 {
@@ -339,6 +340,19 @@ public static class MazeTools
         }
         
 
+    }
+
+    public static void PlacePuzzle(Cell cell, MazeAlgorithmType type, float scale, int index)
+    {
+        List<GameObject> prefabs = PuzzleGenerator.Instance.GetPuzzlePrefabs(type);
+        if (prefabs != null)
+        {
+            Object.Instantiate(prefabs[index], cell.GetWorldPosition(scale), Quaternion.identity);
+        }
+        else
+        {
+            Debug.LogWarning("Puzzle prefabs not assigned properly in PuzzleGenerator.");
+        }
     }
 }
 public struct DynamicAxes

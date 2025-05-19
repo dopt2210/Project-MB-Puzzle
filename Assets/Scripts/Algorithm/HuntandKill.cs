@@ -18,6 +18,11 @@ public class HuntandKill
     private Cell[,,] grid;
 
     private Vector3Int boxSize;
+    private float scale;
+
+    private Cell firstHuntCell = null;
+    private Cell farthestCell = null;
+
 
     public HuntandKill(MazeSO data)
     {
@@ -25,6 +30,7 @@ public class HuntandKill
         height = data.Height;
         depth = data.Depth;
         grid = MazeGenerator.grid;
+        scale = data.cellPrefab.transform.GetChild(0).GetComponent<Renderer>().bounds.size.x;
 
         boxSize = new Vector3Int(width, height, depth);
     }
@@ -33,8 +39,8 @@ public class HuntandKill
     {
         Cell current = grid[rand.Next(width), rand.Next(height), rand.Next(depth)];
         current.visited = true;
-
-        while (true)
+        MazeTools.PlacePuzzle(current, MazeAlgorithmType.HuntandKill, scale, 0);
+        while (current != null)
         {
             // Bước 1: Random Walk
             Cell next = MazeTools.GetUnvisitedNeighbor(current, grid, boxSize);
@@ -48,8 +54,18 @@ public class HuntandKill
             {
                 // Bước 2: Hunt Mode
                 current = HuntForNewStart();
-                if (current == null) break;
+                if (current != null && firstHuntCell == null)
+                {
+                    firstHuntCell = current;
+                    MazeTools.PlacePuzzle(current, MazeAlgorithmType.HuntandKill, scale, 1);
+                }
             }
+        }
+        Vector3Int exit = new Vector3Int(width - 2, height - 1, depth - 2);
+        farthestCell = MazeGenerator.grid[exit.x, exit.y, exit.z];
+        if (farthestCell != null)
+        {
+            MazeTools.PlacePuzzle(farthestCell, MazeAlgorithmType.HuntandKill, scale, 2);
         }
         MazeGenerator.Instance.CreateExitPaths();
     }
@@ -74,4 +90,5 @@ public class HuntandKill
         }
         return null;
     }
+
 }

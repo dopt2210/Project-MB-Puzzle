@@ -5,6 +5,8 @@ public class BinaryTree
     private System.Random rand = new System.Random();
     private Cell[,,] grid;
     private int width, height, depth;
+    private float scale;
+    Cell puzzle1Cell = null, puzzle2Cell = null;
 
     Vector3Int boxSize;
 
@@ -14,7 +16,7 @@ public class BinaryTree
         height = data.Height;
         depth = data.Depth;
         grid = MazeGenerator.grid;
-
+        scale = data.cellPrefab.transform.GetChild(0).GetComponent<Renderer>().bounds.size.x;
         boxSize = new Vector3Int(width, height, depth);
     }
     /// <summary>
@@ -42,9 +44,16 @@ public class BinaryTree
 
                 Cell next = goPrimary ? MazeTools.GetCellByAxes(primary + 1, secondary, grid, boxSize) : MazeTools.GetCellByAxes(primary, secondary + 1, grid, boxSize);
                 MazeTools.RemoveWallsBetween(current, next);
+
+                if (primary == primarySize - 1 && secondary == 0)
+                    puzzle1Cell = current;
+
+                if (primary == 0 && secondary == secondarySize - 1)
+                    puzzle2Cell = current;
             }
         }
-
+        MazeTools.PlacePuzzle(puzzle1Cell, MazeAlgorithmType.BinaryTree, scale, 0);
+        MazeTools.PlacePuzzle(puzzle2Cell, MazeAlgorithmType.BinaryTree, scale, 1);
         MazeGenerator.Instance.CreateExitPaths();
     }
 

@@ -8,14 +8,14 @@
             <engine:Button text="X" name="TabMenu" class="exit button" style="width: 50px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; height: 50px; position: absolute; right: 0; bottom: auto; top: 0; left: auto;" />
         </engine:VisualElement>
         <engine:VisualElement name="Graphic" class="buttonParent tab" style="display: none;">
-            <engine:Label text="Graphic" style="font-size: 50px; color: rgb(255, 0, 0); -unity-text-align: upper-center;" />
+            <engine:Label text="Graphic" style="font-size: 50px; color: rgb(255, 0, 0); -unity-text-align: upper-center; -unity-font-definition: url(&quot;project://database/Assets/Font/UI/3Dumb.ttf?fileID=12800000&amp;guid=7508765d653a4e341b9f7408c5e85ad7&amp;type=3#3Dumb&quot;);" />
         </engine:VisualElement>
         <engine:VisualElement name="Volume" class="buttonParent tab">
             <engine:Slider label="Music" value="0" name="music" high-value="0" low-value="-40" class="slider" />
             <engine:Slider label="Sound" value="0" high-value="0" name="sound" low-value="-40" class="slider" />
         </engine:VisualElement>
         <engine:VisualElement name="Guide" class="buttonParent tab" style="display: none;">
-            <engine:Label text="Guide" style="font-size: 50px; color: rgb(255, 0, 0); -unity-text-align: upper-center;" />
+            <engine:Label text="Guide" style="font-size: 50px; color: rgb(255, 0, 0); -unity-text-align: upper-center; -unity-font-definition: url(&quot;project://database/Assets/Font/UI/3Dumb.ttf?fileID=12800000&amp;guid=7508765d653a4e341b9f7408c5e85ad7&amp;type=3#3Dumb&quot;);" />
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>
