@@ -17,4 +17,34 @@ public class Cell : MonoBehaviour
         if (direction == Vector3.up) if (topWall != null) topWall.SetActive(false);
         if (direction == Vector3.down) if (bottomWall != null) bottomWall.SetActive(false);
     }
+    public void HighlightForMiniMap(Color color)
+    {
+        SpriteRenderer rendererColor = bottomWall.GetComponentInChildren<SpriteRenderer>();
+        
+        if (rendererColor != null)
+        {
+            rendererColor.color = color;
+        }
+    }
+    public void ResetState()
+    {
+        topWall?.SetActive(true);
+        bottomWall?.SetActive(true);
+        leftWall?.SetActive(true);
+        rightWall?.SetActive(true);
+        frontWall?.SetActive(true);
+        backWall?.SetActive(true);
+
+        visited = false;
+        flagVisited = false;
+        setID = 0;
+
+        // Reset lại màu minimap nếu có
+        SpriteRenderer cellRenderer = bottomWall?.GetComponentInChildren<SpriteRenderer>();
+        if (cellRenderer != null)
+        {
+            cellRenderer.color = Color.white;
+        }
+    }
+
 }

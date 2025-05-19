@@ -1,24 +1,37 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIHandler : MonoBehaviour
 {
+    public static UIHandler Instance;
     [SerializeField] private GameObject map;
-    public static bool IsPaused { get; set; }
+    public static bool IsPaused { get; set; } = false;
     public static bool IsDebug { get; set; }
     public static bool IsPlaying { get; set; }
-     
+
     [Header("Sub UI Controllers")]
     [SerializeField] private UIDebug uiDebuger;
-    [SerializeField] private CustomFocusRing uiPauser;
+    [SerializeField] private PauseMenuUI uiPauser;
     [SerializeField] private UIInformation uiInformation;
     [SerializeField] private UICheatSheet uICheatSheet;
+    [SerializeField] private UIInventory uIInventory;
     private void Reset()
     {
         map = GameObject.FindGameObjectWithTag("MapHolder");
         uiDebuger = GetComponentInChildren<UIDebug>();
-        uiPauser = GetComponentInChildren<CustomFocusRing>();
+        uiPauser = GetComponentInChildren<PauseMenuUI>();
         uiInformation = GetComponentInChildren<UIInformation>();
         uICheatSheet = GetComponentInChildren<UICheatSheet>();
+        uIInventory = GetComponentInChildren<UIInventory>();
+    }
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
     }
     private void Start()
     {
@@ -28,23 +41,33 @@ public class UIHandler : MonoBehaviour
         uiPauser.Hide();
         uICheatSheet.Hide();
         uiInformation.Show();
+        uIInventory.Hide();
     }
     private void Update()
     {
+        if (InputManager.Instance.Action.Pause && !IsPaused) PauseGame();
+        else if (InputManager.Instance.Action.Resume && IsPaused) ResumeGame();
+
         if (IsPaused)
         {
-            Time.timeScale = 0;
+            Time.timeScale = 0f;
         }
-        else Time.timeScale = 1;
+        else
+        {
+            Time.timeScale = 1f;
+        }
 
 
-        if (InputManager.Instance.kOpenPause) PauseGame();
-        if (InputManager.Instance.kClosePause) ResumeGame();
+        if (InputManager.Instance.Action.OpenDebug) ToggleUI();
 
-        if (InputManager.Instance.kOpenDebug) ToggleUI();
-
-        if (InputManager.Instance.kOpenMap) OpenMap();
-
+        if (InputManager.Instance.Action.OpenMap) OpenMap();
+        
+        if(InputManager.Instance.Action.OpenItem) ToggleBag();
+        else if(InputManager.Instance.Action.CloseItem) ToggleBag();
+    }
+    private void LateUpdate()
+    {
+        
     }
     private void OnEnable()
     {
@@ -74,32 +97,40 @@ public class UIHandler : MonoBehaviour
     {
         uiDebuger.UpdateCoord(newCell);
     }
-    private void ExcuteCheatSheet()
-    {
-
-    }
     private void ToggleUI()
     {
         uiDebuger.Toggle();
         uICheatSheet.Toggle();
     }
 
-    private void PauseGame()
+    public void PauseGame()
     {
         IsPaused = true;
-        uiPauser.Show();
         MouseLock.Instance.AutoHandleMouseLockByPause(IsPaused);
-        //uiPauser.ShowOptionPanel();
+        InputManager.InputPlayer.SwitchCurrentActionMap("UI");
+        uiPauser.Show();
     }
-    private void ResumeGame()
+
+    public void ResumeGame()
     {
         IsPaused = false;
-        uiPauser.HideOptionPanel();
-        uiPauser.Hide();
         MouseLock.Instance.AutoHandleMouseLockByPause(IsPaused);
+        InputManager.InputPlayer.SwitchCurrentActionMap("Player");
+        uiPauser.Hide();
+    }
+    public void BackToMainMenu()
+    {
+        IsPaused = false;
+        SceneManager.LoadScene("MenuScene");
+        MusicManager.Instance.PlayMusic("Start");
     }
     private void OpenMap()
     {
         map.gameObject.SetActive(!map.gameObject.activeSelf);
+    }
+    private void ToggleBag()
+    {
+        uIInventory.Toggle();
+        uIInventory.RefreshUI();
     }
 }

@@ -39,7 +39,7 @@ public class UICheatSheet : MonoBehaviour
     public void FindPath()
     {
         Debug.Log($"Finding");
-        Cell start = MazeGenerator.grid[0, 0, 0];
+        Cell start = GameManager.Instance.CurrentCell;
         Cell end = MazeGenerator.grid[mazeSO.Width - 1, mazeSO.Height - 1, mazeSO.Depth - 1];
         MazeTools.ColorPath(Color.yellow, start, end, mazeSO);
     }

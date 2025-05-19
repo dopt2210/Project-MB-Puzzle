@@ -1,5 +1,16 @@
 ﻿using UnityEngine;
-
+/// <summary>
+/// Thuật toán Hunt and Kill để sinh mê cung.
+/// 
+/// Ý tưởng: 
+/// 1. Chạy theo kiểu "random walk", đi ngẫu nhiên đến các ô chưa thăm.
+/// 2. Khi không thể đi tiếp, chuyển sang "hunt mode", tìm một ô đã thăm và chưa kết nối với mê cung, 
+/// rồi tiếp tục "random walk" từ đó.
+/// 
+/// Đặc điểm:
+/// - Kết hợp giữa phương pháp tìm kiếm theo chiều sâu (DFS) và tìm kiếm ngẫu nhiên.
+/// - Có thể tạo ra mê cung với nhiều ngõ cụt và các vùng không đồng đều.
+/// </summary>
 public class HuntandKill
 {
     private System.Random rand = new System.Random();

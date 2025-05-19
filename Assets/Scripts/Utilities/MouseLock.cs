@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class MouseLock : MonoBehaviour
@@ -5,7 +6,11 @@ public class MouseLock : MonoBehaviour
     public static MouseLock Instance { get; private set; }
 
     public bool IsMouseFree { get; private set; } = false;
-
+    [SerializeField] CinemachineInputAxisController cam;
+    private void Reset()
+    {
+        cam = GetComponentInChildren<CinemachineInputAxisController>();
+    }
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -23,7 +28,7 @@ public class MouseLock : MonoBehaviour
 
     private void Update()
     {
-        if (InputManager.Instance.kOpenMouse)
+        if (InputManager.Instance.Action.OpenMouse)
         {
             if (IsNotLocked)
                 LockMouse();
@@ -39,14 +44,16 @@ public class MouseLock : MonoBehaviour
         && IsMouseFree == false;
     public void LockMouse()
     {
-        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        LockCamera(true);
         IsMouseFree = false;
     }
     public void UnlockMouse()
     {
-        Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        LockCamera(false);
         IsMouseFree = true;
     }
     public void AutoHandleMouseLockByPause(bool isPaused)
@@ -55,5 +62,9 @@ public class MouseLock : MonoBehaviour
             UnlockMouse();
         else
             LockMouse();
+    }
+    void LockCamera(bool value)
+    {
+        cam.enabled = value;
     }
 }

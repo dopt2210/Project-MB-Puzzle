@@ -46,6 +46,7 @@ public static class UITools
     public static IEnumerator DelayedAction(System.Action action)
     {
         SoundManager.Instance.PlaySound2D("Click");
+        Debug.Log("invoke");
         yield return new WaitForSeconds(0.15f);
         action?.Invoke();
     }

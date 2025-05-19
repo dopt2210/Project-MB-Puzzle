@@ -1,6 +1,16 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Thuật toán Randomized Kruskal để sinh mê cung.
+/// 
+/// Ý tưởng:
+/// 1. Bắt đầu với tất cả các cạnh giữa các ô trong mê cung.
+/// 2. Xáo trộn các cạnh và áp dụng thuật toán Kruskal để chọn các cạnh tạo thành mê cung.
+/// 3. Các cạnh được thêm vào mê cung chỉ khi chúng không tạo ra chu trình, tức là kết nối các ô chưa thuộc cùng một tập hợp.
+/// 
+/// Đặc điểm:
+/// - Thuật toán này sử dụng phương pháp Union-Find để kiểm tra chu trình.
+/// - Tạo ra mê cung với các đường đi không đồng đều và nhiều ngõ cụt.
 public class RandomKruskal
 {
     private System.Random rand = new System.Random();

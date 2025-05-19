@@ -15,14 +15,23 @@ MonoBehaviour:
   GroundLayer:
     serializedVersion: 2
     m_Bits: 0
-  playerPrefab: {fileID: 6534405932772870135, guid: a3be3bdc5c12d244b832eae036ffceb2, type: 3}
-  moveSpeed: 15
-  runSpeed: 25
-  crouchSpeed: 9
+  playerPrefab: {fileID: 4153189371444632087, guid: dd06d183552b9d641b29996705344eae, type: 3}
+  moveSpeed: 5
+  runSpeed: 10
+  crouchSpeed: 2
+  JumpHeight: 2
+  JumpCount: 0
+  JumpCutOffMultipiler: 0.5
+  JumpApexTime: 1.2
+  JumpForce: 3.3333333
   Acceleration: 16
   Deceleration: 13
-  rotationSpeed: 4.5
-  maxSpeed: 4.5
+  rotationSpeed: 3.5
+  maxSpeed: 1.5
+  DefaultGravityScale: 0.28315777
+  GravityStrength: -2.7777777
+  JumpFallGravity: 1.9
+  gravity: -9.81
   distanceThreshold: 0.15
   RaycastDistance: 0.15100001
   OriginOffset: 0.001

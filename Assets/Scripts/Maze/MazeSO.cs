@@ -1,10 +1,9 @@
-using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "MazeSO", menuName = "Scriptable Objects/MazeSO")]
 public class MazeSO : ScriptableObject
 {
-    public event Action OnDataChanged;
+    public event System.Action OnDataChanged;
 
     [Header("Maze")]
     [SerializeField] private int width = 15;

@@ -18,7 +18,10 @@ public class BinaryTree
         boxSize = new Vector3Int(width, height, depth);
     }
     /// <summary>
-    /// Thuật toán Binary Tree tạo mê cung bằng cách duyệt từng ô theo một trật tự cố định (từ trên xuống dưới, từ trái sang phải). Mỗi ô sẽ kết nối với ô bên phải hoặc ô bên dưới, đảm bảo rằng toàn bộ mê cung có một đường đi duy nhất
+    /// Thuật toán Binary Tree tạo mê cung bằng cách duyệt từng ô theo một trật tự cố định 
+    /// (từ trên xuống dưới, từ trái sang phải). 
+    /// Mỗi ô sẽ kết nối với ô bên phải hoặc ô bên dưới, 
+    /// đảm bảo rằng toàn bộ mê cung có một đường đi duy nhất
     /// </summary>
     public void GenerateMazeInstant()
     {

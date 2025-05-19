@@ -42,15 +42,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Crouch",
-                    "type": "Button",
-                    "id": "c08a21d1-f1dd-4189-9ede-a6a59c565599",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Detail",
                     "type": "Button",
                     "id": "6c2ab1b8-8984-453a-af3d-a3c78ae1679a",
@@ -381,17 +372,6 @@
                 },
                 {
                     "name": "",
-                    "id": "dec0f259-17fe-4564-8467-59e0b5838d5c",
-                    "path": "<Keyboard>/leftCtrl",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Crouch",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "1c04ea5f-b012-41d1-a6f7-02e963b52893",
                     "path": "<Keyboard>/e",
                     "interactions": "",
@@ -415,7 +395,7 @@
                 {
                     "name": "",
                     "id": "a619c6c4-a1bd-4f12-b2f6-34787e75afe3",
-                    "path": "<Keyboard>/tab",
+                    "path": "<Keyboard>/m",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
@@ -437,7 +417,7 @@
                 {
                     "name": "",
                     "id": "a07da1d5-f5ae-49f8-8657-bd4d46d0ce1a",
-                    "path": "<Keyboard>/escape",
+                    "path": "<Keyboard>/p",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
@@ -473,7 +453,18 @@
                     "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "19d43293-f81b-4efd-9f39-0792fb53166c",
+                    "path": "<Keyboard>/rightShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
                     "action": "Run",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -578,6 +569,15 @@
                     "name": "ClosePause",
                     "type": "Button",
                     "id": "84c0f2b0-6253-4fa2-bc15-f1f734d4fb37",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CloseItem",
+                    "type": "Button",
+                    "id": "40dd9f2c-6e81-4f33-9f33-c08286fb374a",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -851,6 +851,17 @@
                 },
                 {
                     "name": "",
+                    "id": "444e4752-b7ca-4f62-814c-b1bd2e22ab55",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "CloseItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "9e92bb26-7e3b-4ec4-b06b-3c8f8e498ddc",
                     "path": "*/{Submit}",
                     "interactions": "",
@@ -1006,7 +1017,7 @@
                 {
                     "name": "",
                     "id": "8d5e7e17-4b90-4edd-b603-7cddd5aae59a",
-                    "path": "<Keyboard>/escape",
+                    "path": "<Keyboard>/p",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",

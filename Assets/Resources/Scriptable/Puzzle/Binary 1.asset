@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82abcb75c09465b45890668ad273cfda, type: 3}
+  m_Name: Binary 1
+  m_EditorClassIdentifier: 
+  itemPrefab: {fileID: 0}
+  itemName: Binary_2
+  icon: {fileID: 21300000, guid: d60343d228ca54740a7b396d55c84814, type: 3}
+  itemDescription: "M\u1ED7i \xF4 s\u1EBD k\u1EBFt n\u1ED1i v\u1EDBi \xF4 b\xEAn
+    ph\u1EA3i ho\u1EB7c \xF4 b\xEAn d\u01B0\u1EDBi, \u0111\u1EA3m b\u1EA3o r\u1EB1ng
+    to\xE0n b\u1ED9 m\xEA cung c\xF3 m\u1ED9t \u0111\u01B0\u1EDDng \u0111i duy nh\u1EA5t"
+  stackable: 1

@@ -1,10 +1,9 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerLook : MonoBehaviour
 {
     [SerializeField] Transform character;
-    public float sensitivity = 2;
+    public float sensitivity = 0.5f;
     public float smoothing = 1.5f;
 
     Vector2 velocity;
@@ -12,7 +11,7 @@ public class PlayerLook : MonoBehaviour
 
     private void Reset()
     {
-        character = GetComponentInParent<PlayerMovement>().transform;
+        character = GetComponent<PlayerMovement>().transform;
     }
     private void Update()
     {
@@ -21,7 +20,7 @@ public class PlayerLook : MonoBehaviour
     private void CameraLookSetUp()
     {
         if (MouseLock.Instance != null && MouseLock.Instance.IsMouseFree) return;
-        Vector2 mouseDelta = InputManager.Instance.Look;
+        Vector2 mouseDelta = InputManager.Instance.Movement.Look;
 
         Vector2 rawFrameVelocity = Vector2.Scale(mouseDelta, Vector2.one * sensitivity);
         frameVelocity = Vector2.Lerp(frameVelocity, rawFrameVelocity, 1 / smoothing);

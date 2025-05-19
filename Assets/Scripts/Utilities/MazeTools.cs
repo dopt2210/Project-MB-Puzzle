@@ -166,6 +166,34 @@ public static class MazeTools
     {
         return GetVisitedNeighbor(cell, grid, boxSize) != null;
     }
+    public static List<Cell> GetNeighborsInSquare(Cell cell, Cell[,,] grid, Vector3Int boxSize)
+    {
+        List<Cell> neighbors = new List<Cell>();
+        int width = grid.GetLength(0);
+        int depth = grid.GetLength(2);
+
+        for (int dx = -1; dx <= 1; dx++)
+        {
+            for (int dz = -1; dz <= 1; dz++)
+            {
+                if (dx == 0 && dz == 0)
+                    continue; 
+
+                int newX = cell.x + dx;
+                int newZ = cell.z + dz;
+                Vector3Int neighborPos = new Vector3Int(newX, cell.y, newZ);
+                // Kiểm tra có nằm trong giới hạn không
+                if (IsInBounds(neighborPos, boxSize))
+                {
+                    Cell neighbor = grid[newX, cell.y, newZ];
+                    if (neighbor != null)
+                        neighbors.Add(neighbor);
+                }
+            }
+        }
+
+        return neighbors;
+    }
     /// <summary>
     /// Lấy danh sách các hướng di chuyển hợp lệ trong mê cung, được xác định bởi các trục động của mê cung.
     /// </summary>
@@ -298,15 +326,15 @@ public static class MazeTools
         if (path == null) { Debug.Log("Không tồn tại đường đi khả dụng"); return; }
 
         Vector3Int fixedAxis = GetFixedAxis(data.Width, data.Height, data.Depth);
-        Renderer startCellColor = GetWallRenderer(startCell, fixedAxis).GetComponent<Renderer>();
-        startCellColor.material.color = pathColor;
+        //Renderer startCellColor = GetWallRenderer(startCell, fixedAxis).GetComponent<Renderer>();
+        //startCellColor.material.color = pathColor;
         foreach (Cell cell in path)
         {
-            Renderer renderer = GetWallRenderer(cell, fixedAxis).GetComponent<Renderer>();
+            SpriteRenderer renderer = GetWallRenderer(cell, fixedAxis).GetComponentInChildren<SpriteRenderer>();
             
             if (renderer != null)
             {
-                renderer.material.color = pathColor;
+                renderer.color = pathColor;
             }
         }
         

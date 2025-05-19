@@ -1,7 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Thuật toán Eller để sinh mê cung.
+/// 
+/// Ý tưởng:
+/// 1. Sử dụng thuật toán Eller để tạo ra mê cung với các ô liên kết theo chiều ngang và dọc.
+/// 2. Thuật toán sẽ chia mê cung thành các tập hợp và kết nối các ô trong các tập hợp đó.
+/// 3. Kết nối các ô theo chiều ngang và chiều dọc, đồng thời quản lý các tập hợp thông qua một từ điển.
+/// 4. Sử dụng xác suất ngẫu nhiên để quyết định việc kết nối các ô.
+/// 5. Thuật toán tiếp tục cho đến khi toàn bộ mê cung được tạo ra.
 public class Eller
 {
     private int width, height, depth;
