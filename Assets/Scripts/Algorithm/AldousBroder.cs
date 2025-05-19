@@ -62,8 +62,8 @@ public class AldousBroder
         {
             farCorner = visitedCells[1]; // Vị trí xa đầu tiên
             centerish = visitedCells[visitedCells.Count / 2]; // Gần trung tâm lộ trình
-            MazeTools.PlacePuzzle(farCorner, MazeAlgorithmType.AldousBroder, scale, 0);
-            MazeTools.PlacePuzzle(centerish, MazeAlgorithmType.AldousBroder, scale, 0);
+            MazeTools.PlacePuzzle(farCorner, MazeAlgorithmType.AldousBroder, scale, 0, GameManager.Instance.ItemClones);
+            MazeTools.PlacePuzzle(centerish, MazeAlgorithmType.AldousBroder, scale, 1, GameManager.Instance.ItemClones);
         }
         MazeGenerator.Instance.CreateExitPaths();
     }

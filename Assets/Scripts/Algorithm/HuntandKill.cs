@@ -39,7 +39,7 @@ public class HuntandKill
     {
         Cell current = grid[rand.Next(width), rand.Next(height), rand.Next(depth)];
         current.visited = true;
-        MazeTools.PlacePuzzle(current, MazeAlgorithmType.HuntandKill, scale, 0);
+        MazeTools.PlacePuzzle(current, MazeAlgorithmType.HuntandKill, scale, 0, GameManager.Instance.ItemClones);
         while (current != null)
         {
             // Bước 1: Random Walk
@@ -57,7 +57,7 @@ public class HuntandKill
                 if (current != null && firstHuntCell == null)
                 {
                     firstHuntCell = current;
-                    MazeTools.PlacePuzzle(current, MazeAlgorithmType.HuntandKill, scale, 1);
+                    MazeTools.PlacePuzzle(current, MazeAlgorithmType.HuntandKill, scale, 1, GameManager.Instance.ItemClones);
                 }
             }
         }
@@ -65,7 +65,7 @@ public class HuntandKill
         farthestCell = MazeGenerator.grid[exit.x, exit.y, exit.z];
         if (farthestCell != null)
         {
-            MazeTools.PlacePuzzle(farthestCell, MazeAlgorithmType.HuntandKill, scale, 2);
+            MazeTools.PlacePuzzle(farthestCell, MazeAlgorithmType.HuntandKill, scale, 2, GameManager.Instance.ItemClones);
         }
         MazeGenerator.Instance.CreateExitPaths();
     }

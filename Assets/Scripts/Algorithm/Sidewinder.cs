@@ -74,13 +74,13 @@ public class Sidewinder
         if (secondarySize > 0)
         {
             Cell puzzleCellA = MazeTools.GetCellByAxes(0, secondarySize - 1, grid, boxSize);
-            MazeTools.PlacePuzzle(puzzleCellA, MazeAlgorithmType.Sidewinder, scale, 0);
+            MazeTools.PlacePuzzle(puzzleCellA, MazeAlgorithmType.Sidewinder, scale, 0, GameManager.Instance.ItemClones);
         }
 
         if (lastRunSet != null && lastRunSet.Count > 0)
         {
             Cell puzzleCellB = lastRunSet[rand.Next(lastRunSet.Count)];
-            MazeTools.PlacePuzzle(puzzleCellB, MazeAlgorithmType.Sidewinder, scale, 1);
+            MazeTools.PlacePuzzle(puzzleCellB, MazeAlgorithmType.Sidewinder, scale, 1, GameManager.Instance.ItemClones);
 
         }
 
