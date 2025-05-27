@@ -304,8 +304,8 @@ MonoBehaviour:
   texts:
   - {fileID: 5555326685309542006}
   - {fileID: 1180192311064529788}
-  - {fileID: 0}
   - {fileID: 5039821386571297970}
+  - {fileID: 7568531558703656591}
   autoUpdateTime: 1
   timePlay: 0
 --- !u!1 &3221334732226751777

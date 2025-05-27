@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 /// <summary>
 /// Thuật toán Eller để sinh mê cung.
 /// 
@@ -9,23 +10,26 @@ using UnityEngine;
 /// 3. Kết nối các ô theo chiều ngang và chiều dọc, đồng thời quản lý các tập hợp thông qua một từ điển.
 /// 4. Sử dụng xác suất ngẫu nhiên để quyết định việc kết nối các ô.
 /// 5. Thuật toán tiếp tục cho đến khi toàn bộ mê cung được tạo ra.
-public class Eller
+public class Eller : IMazeGenerator
 {
-    private int width, height, depth;
-    private Cell[,,] grid;
     private Dictionary<int, List<Cell>> sets;
     private int nextSetID = 1;
     private float randomSeed = 0.5f;
-    private Vector3Int boxSize;
 
-    public Eller(MazeSO data)
+    private Cell[,,] grid;
+    private int width, height, depth;
+    private Vector3Int boxSize;
+    private float scale;
+
+    public Eller(MazeSO data, float scale)
     {
         width = data.Width;
         height = data.Height;
         depth = data.Depth;
-        grid = MazeGenerator.grid;
+        boxSize = data.BoxSize;
+        this.scale = scale;
 
-        boxSize = new Vector3Int(width, height, depth);
+        grid = MazeGenerator.MazeGrid;
         sets = new Dictionary<int, List<Cell>>();
     }
 
@@ -45,7 +49,7 @@ public class Eller
         }
 
         ConnectLast(primarySize, secondarySize);
-        MazeGenerator.Instance.CreateExitPaths();
+        MazeGenerator.Instance.CreateExitPaths(width, height, depth);
     }
 
     private void AssignSets(int secondary, int primarySize)

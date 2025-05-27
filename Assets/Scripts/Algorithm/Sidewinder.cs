@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class Sidewinder
+public class Sidewinder : IMazeGenerator
 {
     private System.Random rand = new System.Random();
     private Cell[,,] grid;
@@ -9,15 +9,15 @@ public class Sidewinder
     private Vector3Int boxSize;
     private float scale;
 
-    public Sidewinder(MazeSO data)
+    public Sidewinder(MazeSO data, float scale)
     {
         width = data.Width;
         height = data.Height;
         depth = data.Depth;
-        grid = MazeGenerator.grid;
-        scale = data.cellPrefab.transform.GetChild(0).GetComponent<Renderer>().bounds.size.x;
+        boxSize = data.BoxSize;
+        this.scale = scale;
 
-        boxSize = new Vector3Int(width, height, depth);
+        grid = MazeGenerator.MazeGrid;
     }
 
     public void GenerateMazeInstant()
@@ -64,27 +64,27 @@ public class Sidewinder
                     }
                 }
             }
-            // Lưu lại runSet của hàng cuối để sau này chọn ô đặt puzzle
+            // Lưu lại runSet của hàng cuối để sau này chọn ô đặt _puzzleObj
             if (secondary == secondarySize - 1)
             {
                 lastRunSet = runSet;
             }
         }
-        // Đặt puzzle tại ô đầu của hàng cuối cùng
+        // Đặt _puzzleObj tại ô đầu của hàng cuối cùng
         if (secondarySize > 0)
         {
             Cell puzzleCellA = MazeTools.GetCellByAxes(0, secondarySize - 1, grid, boxSize);
-            MazeTools.PlacePuzzle(puzzleCellA, MazeAlgorithmType.Sidewinder, scale, 0, GameManager.Instance.ItemClones);
+            MazeTools.PlacePuzzle(puzzleCellA, MazeAlgorithmType.Sidewinder, scale, 0, GameManager.Instance.PoolClone);
         }
 
         if (lastRunSet != null && lastRunSet.Count > 0)
         {
             Cell puzzleCellB = lastRunSet[rand.Next(lastRunSet.Count)];
-            MazeTools.PlacePuzzle(puzzleCellB, MazeAlgorithmType.Sidewinder, scale, 1, GameManager.Instance.ItemClones);
+            MazeTools.PlacePuzzle(puzzleCellB, MazeAlgorithmType.Sidewinder, scale, 1, GameManager.Instance.PoolClone);
 
         }
 
-        MazeGenerator.Instance.CreateExitPaths();
+        MazeGenerator.Instance.CreateExitPaths(width, height, depth);
     }
 
     private Cell GetCell(Cell current, int axis, int offset)

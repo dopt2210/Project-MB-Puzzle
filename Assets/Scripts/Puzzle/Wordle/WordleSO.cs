@@ -3,11 +3,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "WordleSO", menuName = "Scriptable Objects/WordleSO")]
 public class WordleSO : ScriptableObject
 {
+    [HideInInspector] public string uniqueId;
+
     public string[] targetWords;
 
-    public int wordLength = 5;
+    [HideInInspector] public int wordLength = 5;
 
-    public int rows = 6;
+    [HideInInspector] public int rows = 6;
 
     private static readonly char[] ALPHABET =
     "abcdefghijklmnopqrstuvwxyz".ToCharArray();
@@ -25,4 +27,14 @@ public class WordleSO : ScriptableObject
 
         return new string(buff);
     }
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (string.IsNullOrEmpty(uniqueId))
+        {
+            uniqueId = System.Guid.NewGuid().ToString();
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+    }
+#endif
 }

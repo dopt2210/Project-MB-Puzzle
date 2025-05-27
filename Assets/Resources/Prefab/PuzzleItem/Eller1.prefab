@@ -44,7 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 161329585d187af45bf34d98b9c67d0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerActionCtrl: {fileID: 0}
   itemData: {fileID: 11400000, guid: ab22a54191068f042a59fa16da5d44f3, type: 2}
 --- !u!1 &5809967504862174253
 GameObject:
@@ -223,8 +222,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 705de063d132d2744a1271e1e7f379ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerActionCtrl: {fileID: 0}
-  col: {fileID: 0}
 --- !u!1 &7817525916664919772
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,7 +264,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7817525916664919772}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c35514ec24f69f844831a611f0b130e7, type: 3}
+  m_Script: {fileID: 11500000, guid: 84e55f108fd601f4e87a5d96aa558366, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   listPair: []

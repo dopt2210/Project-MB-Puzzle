@@ -1,23 +1,24 @@
 ﻿using UnityEngine;
 
-public class BinaryTree
+public class BinaryTree: IMazeGenerator
 {
     private System.Random rand = new System.Random();
+    private Cell puzzle1Cell = null, puzzle2Cell = null;
+
     private Cell[,,] grid;
     private int width, height, depth;
+    private Vector3Int boxSize;
     private float scale;
-    Cell puzzle1Cell = null, puzzle2Cell = null;
 
-    Vector3Int boxSize;
-
-    public BinaryTree(MazeSO data)
+    public BinaryTree(MazeSO data, float scale)
     {
         width = data.Width;
         height = data.Height;
         depth = data.Depth;
-        grid = MazeGenerator.grid;
-        scale = data.cellPrefab.transform.GetChild(0).GetComponent<Renderer>().bounds.size.x;
-        boxSize = new Vector3Int(width, height, depth);
+        boxSize = data.BoxSize;
+        this.scale = scale;
+
+        grid = MazeGenerator.MazeGrid;
     }
     /// <summary>
     /// Thuật toán Binary Tree tạo mê cung bằng cách duyệt từng ô theo một trật tự cố định 
@@ -52,9 +53,9 @@ public class BinaryTree
                     puzzle2Cell = current;
             }
         }
-        MazeTools.PlacePuzzle(puzzle1Cell, MazeAlgorithmType.BinaryTree, scale, 0, GameManager.Instance.ItemClones);
-        MazeTools.PlacePuzzle(puzzle2Cell, MazeAlgorithmType.BinaryTree, scale, 1, GameManager.Instance.ItemClones);
-        MazeGenerator.Instance.CreateExitPaths();
+        MazeTools.PlacePuzzle(puzzle1Cell, MazeAlgorithmType.BinaryTree, scale, 0, GameManager.Instance.PoolClone);
+        MazeTools.PlacePuzzle(puzzle2Cell, MazeAlgorithmType.BinaryTree, scale, 1, GameManager.Instance.PoolClone);
+        MazeGenerator.Instance.CreateExitPaths(width, height, depth);
     }
 
 }

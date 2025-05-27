@@ -2,15 +2,6 @@ using UnityEngine;
 
 public class TriggerPlayer : Trigger
 {
-    public CapsuleCollider col;
-    protected override void Awake()
-    {
-        base.Awake();
-        col = GetComponent<CapsuleCollider>();
-        if (col == null) return;
-        col.isTrigger = true;
-
-    }
     protected override void OnTriggerEnter(Collider collision)
     {
         if (collision.CompareTag("Player"))

@@ -62,7 +62,7 @@ public class MainMenuUI : MonoBehaviour
         _container = _root.Q<VisualElement>("Container");
 
         _leftContentElement = _root.Q<VisualElement>("LeftContent");
-        _startElement = _root.Q<VisualElement>("StartChoice");
+        _startElement = _root.Q<VisualElement>("StartNotifyChoice");
 
         _inLeftContent_buttons = _leftContentElement.Query<Button>().ToList();
         _inStartChoice_buttons = _startElement.Query<Button>().ToList();
@@ -103,6 +103,8 @@ public class MainMenuUI : MonoBehaviour
     {
         SceneManager.LoadScene("GameScene");
         MusicManager.Instance.PlayMusic("BGM");
+        SceneLoadManager.instance.EnableLoading();
+
     }
     private void ShowInformationPanel()
     {

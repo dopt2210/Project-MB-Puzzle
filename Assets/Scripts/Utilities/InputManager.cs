@@ -50,6 +50,7 @@ public class PlayerMovementInput
 public class PlayerActionInput
 {
     private readonly InputAction _interact;
+    private readonly InputAction _detail;
     private readonly InputAction _openPause;
     private readonly InputAction _closePause;
     private readonly InputAction _openMap;
@@ -59,6 +60,7 @@ public class PlayerActionInput
     private readonly InputAction _openMouse;
 
     public bool Interact => _interact.WasPressedThisFrame();
+    public bool Detail => _detail.WasPressedThisFrame();
     public bool Pause => _openPause.WasPressedThisFrame();
     public bool Resume => _closePause.WasPressedThisFrame();
     public bool OpenMap => _openMap.WasPressedThisFrame();
@@ -70,6 +72,7 @@ public class PlayerActionInput
     public PlayerActionInput(PlayerInput playerInput)
     {
         _interact = playerInput.actions["Interact"];
+        _detail = playerInput.actions["Detail"];
         _openPause = playerInput.actions["OpenPause"];
         _closePause = playerInput.actions["ClosePause"];
         _openMap = playerInput.actions["OpenMap"];

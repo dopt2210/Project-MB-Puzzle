@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _running;
     private void Reset()
     {
-        _playerSO = Resources.Load<PlayerSO>("Scriptable/playerSO");
+        _playerSO = Resources.Load<PlayerSO>("Scriptable/_playerSO");
     }
     private void Awake()
     {

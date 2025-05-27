@@ -5,10 +5,9 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TileSwapBoard : MonoBehaviour, IBoardButton
+public class TileSwapBoard : PuzzleBoardBase<TileSwapSO>
 {
     [Header("Refs")]
-    [SerializeField] private TileSwapSO levelData;
     [SerializeField] private TileSwap tilePrefab;
     [SerializeField] private TileSwap blankPrefab;
 
@@ -17,7 +16,6 @@ public class TileSwapBoard : MonoBehaviour, IBoardButton
     #region Process vars
     int _size;
     float _cellSize;
-    [SerializeField] bool _isEndGame = true;
     TileSwap[,] _tiles;              
     Vector2Int _emptyCoord;
     #endregion
@@ -28,48 +26,32 @@ public class TileSwapBoard : MonoBehaviour, IBoardButton
     }
     private void OnEnable()
     {
-        if (levelData == null || tilePrefab == null || blankPrefab == null)
+        if (tilePrefab == null || blankPrefab == null)
         {
             Debug.LogWarning("You must drag prefab Resources/Prefab/PuzzleGame/TileSwap/TileSwap");
             Debug.LogWarning("You must drag prefab Resources/Prefab/PuzzleGame/TileSwap/Blank");
-            Debug.LogWarning("You must drag level data Resources/Scriptabel/TileSwapSO");
             return;
         }
-
-        _size = levelData.boardSize;    
-        _cellSize = boardLayout.cellSize.x;
     }
 
     #region UI function
-    public void StartGame()
+    protected override void ResetState()
     {
-        if (_isEndGame)
-        {
-            BuildTiled();
-        }
-        else Debug.Log("You must finish game first");
-    }
-
-    public void ResetGame()
-    {
-        foreach (Transform child in boardLayout.transform)
-            Destroy(child.gameObject);
+        foreach (Transform t in boardLayout.transform) Destroy(t.gameObject);
 
         _tiles = null;
         _emptyCoord = Vector2Int.zero;
-
-        BuildTiled();
     }
-
-    public void CloseGame() => transform.gameObject.SetActive(false);
-
     #endregion
 
     #region Build game
-    private void BuildTiled()
+    protected override void BuildBoard(TileSwapSO levelData)
     {
-        _isEndGame = false;
-        boardLayout.constraintCount = _size;
+        _size = levelData.boardSize;
+
+        _cellSize = boardLayout.GetComponent<RectTransform>().rect.width / _size;
+        boardLayout.cellSize = new Vector2(_cellSize, _cellSize);
+
         _tiles = new TileSwap[_size, _size];
 
         var pieces = SliceSprite(levelData.sourceImage, _size);
@@ -140,12 +122,6 @@ public class TileSwapBoard : MonoBehaviour, IBoardButton
                     return false;
             }
         return true;
-    }
-    private void OnPuzzleSolved()
-    {
-        Debug.Log("Tile‑Swap completed!");
-        // TODO: Play SFX, invoke UnityEvent, unlock door, etc.
-        _isEndGame = true;
     }
     #endregion
 

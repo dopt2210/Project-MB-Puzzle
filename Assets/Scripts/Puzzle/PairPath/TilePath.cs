@@ -36,7 +36,6 @@ public class TilePath : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     public void OnPointerClick(PointerEventData eventData)
     {
         LineDraw.Instance.CellClicked(this);
-        Debug.Log("OnPointerClick");
     }
 
     public void OnPointerEnter(PointerEventData eventData)

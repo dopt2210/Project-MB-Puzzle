@@ -4,12 +4,10 @@ public class CameraSwitch : MonoBehaviour
 {
     public static CameraSwitch Instance { get; private set; }
 
-    [SerializeField] private Camera gameplayCam;
-    //[SerializeField] private Camera puzzleCam;
-    //[SerializeField] private Camera inventoryCam;
+    [SerializeField] private Camera _playerCamera;
 
-    [SerializeField] private CamXCan puzzle;
-    [SerializeField] private CamXCan inven;
+    [SerializeField] private ObjectOrder _puzzleObj;
+    [SerializeField] private ObjectOrder _inventoryObj;
 
     private void Awake()
     {
@@ -20,43 +18,38 @@ public class CameraSwitch : MonoBehaviour
         }
         Instance = this;
 
-        gameplayCam.enabled = true;
+        _playerCamera.enabled = true;
     }
-    public void ShowGameplayCam()
+    public void SwitchPlayerCamera()
     {
-        gameplayCam.enabled = true;
-        //game.SetOn();
+        _playerCamera.enabled = true;
 
         InputManager.InputPlayer.SwitchCurrentActionMap("Player");
 
     }
-    public void ShowInventoryCam()
+    public void SwitchInventoryCamera()
     {
-        //inventoryCam.enabled = true;
+        _playerCamera.enabled = false;
 
-        gameplayCam.enabled = false;
+        _inventoryObj.SetOn();
+        _puzzleObj.SetOff();
 
-        inven.SetOn();
-
-        puzzle.SetOff();
         InputManager.InputPlayer.SwitchCurrentActionMap("UI");
 
     }
-    public void ShowPuzzleCam()
+    public void SwitchPuzzleCamera()
     {
-        gameplayCam.enabled = false;
+        _playerCamera.enabled = false;
 
-        //puzzleCam.enabled = true;
-        //inventoryCam.enabled = false;
-        puzzle.SetOn();
-
-        inven.SetOff();
+        _puzzleObj.SetOn();
+        _inventoryObj.SetOff();
 
         InputManager.InputPlayer.SwitchCurrentActionMap("UI");
     }
 }
+
 [System.Serializable]
-public struct CamXCan
+public struct ObjectOrder
 {
     public Canvas canvas;
     public Camera camera;

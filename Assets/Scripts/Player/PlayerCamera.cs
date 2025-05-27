@@ -13,7 +13,7 @@ public class PlayerCamera : MonoBehaviour
 
     void Awake()
     {
-        // Get the cm on this gameObject and the defaultZoom.
+        // Spawn the cm on this gameObject and the defaultZoom.
         cm = GetComponent<Camera>();
         if (cm)
         {

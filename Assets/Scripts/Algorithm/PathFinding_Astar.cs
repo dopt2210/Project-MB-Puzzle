@@ -13,7 +13,7 @@ public class PathFinding_Astar
         width = data.Width;
         height = data.Height;
         depth = data.Depth;
-        grid = MazeGenerator.grid;
+        grid = MazeGenerator.MazeGrid;
 
         boxSize = new Vector3Int(width, height, depth);
     }

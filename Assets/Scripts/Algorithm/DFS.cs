@@ -11,24 +11,26 @@ using UnityEngine;
 /// - Sinh ra mê cung dạng "ống" nhiều ngõ cụt.
 /// - Rất nhanh và đơn giản.
 /// </summary>
-public class DFS
+public class DFS: IMazeGenerator
 {
     private List<Cell> stack = new List<Cell>();
-    private Cell[,,] grid;
+
     private Cell puzzle1Cell, farthestDeadEnd;
+
+    private Cell[,,] grid;
     private int width, height, depth;
     private Vector3Int boxSize;
     private float scale;
 
-    public DFS(MazeSO data)
+    public DFS(MazeSO data, float scale)
     {
         width = data.Width;
         height = data.Height;
         depth = data.Depth;
-        grid = MazeGenerator.grid;
-        scale = data.cellPrefab.transform.GetChild(0).GetComponent<Renderer>().bounds.size.x;
+        boxSize = data.BoxSize;
+        this.scale = scale;
 
-        boxSize = new Vector3Int(width, height, depth);
+        grid = MazeGenerator.MazeGrid;
     }
 
     public void GenerateMazeInstant()
@@ -38,7 +40,7 @@ public class DFS
         stack.Add(startCell);
 
         puzzle1Cell = grid[1, 0, 1];
-        MazeTools.PlacePuzzle(puzzle1Cell, MazeAlgorithmType.DFS, scale, 0, GameManager.Instance.ItemClones);
+        MazeTools.PlacePuzzle(puzzle1Cell, MazeAlgorithmType.DFS, scale, 0, GameManager.Instance.PoolClone);
         farthestDeadEnd = startCell;
         int maxDistance = 0;
 
@@ -68,8 +70,8 @@ public class DFS
                 stack.RemoveAt(stack.Count - 1);
             }
         }
-        MazeTools.PlacePuzzle(farthestDeadEnd, MazeAlgorithmType.DFS, scale, 1, GameManager.Instance.ItemClones);
+        MazeTools.PlacePuzzle(farthestDeadEnd, MazeAlgorithmType.DFS, scale, 1, GameManager.Instance.PoolClone);
 
-        MazeGenerator.Instance.CreateExitPaths();
+        MazeGenerator.Instance.CreateExitPaths(width, height, depth);
     }
 }

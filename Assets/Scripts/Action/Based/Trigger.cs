@@ -1,18 +1,26 @@
 using UnityEngine;
-
+[RequireComponent (typeof(Collider))]
 public class Trigger : MonoBehaviour
 {
-    public ActionTriggerCtrl triggerActionCtrl;
-
+    public TriggerActionCtrl triggerActionCtrl { get; private set; }
+    public Collider col {  get; private set; }
+    public bool hasTrigger { get; private set; } = false;
+    public int insideCount { get; private set; } = 0;
     protected virtual void Awake()
     {
-        triggerActionCtrl = transform.GetComponentInParent<ActionTriggerCtrl>();
+        triggerActionCtrl = GetComponentInParent<TriggerActionCtrl>();
+        col = GetComponent<Collider>();
+        if (col == null) return;
+        col.isTrigger = true;
     }
     protected virtual void OnTriggerEnter(Collider collision)
     {
-        if (triggerActionCtrl.triggerAndAction.TryGetValue(this, out Action action))
+        if (!hasTrigger && triggerActionCtrl.triggerAndAction.TryGetValue(this, out Action action))
         {
+            insideCount++;
+            if (insideCount != 1) return;
             action.Act();
+            hasTrigger = true;
         }
 
     }
@@ -28,9 +36,12 @@ public class Trigger : MonoBehaviour
 
     protected virtual void OnTriggerExit(Collider collision)
     {
-        if (triggerActionCtrl.triggerAndAction.TryGetValue(this, out Action action))
+        if (hasTrigger && triggerActionCtrl.triggerAndAction.TryGetValue(this, out Action action))
         {
+            insideCount--;
+            if (insideCount != 0) return;
             action.CancelAct();
+            hasTrigger = false;
         }
     }
 }

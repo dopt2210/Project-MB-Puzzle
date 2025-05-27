@@ -15,6 +15,8 @@
     width: 700px;
     height: 70px;
     color: rgb(255, 0, 0);
+    background-image: url("project://database/Assets/Project/Image/SquareBorder.png?fileID=2800000&guid=7781676a8faad97498aaed22efbfdefc&type=3#SquareBorder");
+    -unity-font-definition: url("project://database/Assets/Project/Font/UI/3Dumb.ttf?fileID=12800000&guid=7508765d653a4e341b9f7408c5e85ad7&type=3#3Dumb");
 }
 
 .button {
@@ -28,11 +30,11 @@
     font-size: 40px;
     -unity-text-align: middle-center;
     background-color: rgba(0, 0, 0, 0.51);
-    background-image: resource('Image/SquareBorder');
+    background-image: url("project://database/Assets/Project/Image/SquareBorder.png?fileID=2800000&guid=7781676a8faad97498aaed22efbfdefc&type=3#SquareBorder");
     -unity-background-image-tint-color: rgb(255, 255, 255);
     color: rgb(255, 255, 255);
     -unity-font-style: bold;
-    -unity-font-definition: url("project://database/Assets/Font/UI/3Dumb.ttf?fileID=12800000&guid=7508765d653a4e341b9f7408c5e85ad7&type=3#3Dumb");
+    -unity-font-definition: url("project://database/Assets/Project/Font/UI/3Dumb.ttf?fileID=12800000&guid=7508765d653a4e341b9f7408c5e85ad7&type=3#3Dumb");
     top: 0;
     left: 0;
     right: auto;
@@ -85,7 +87,8 @@
     -unity-font-style: bold;
     -unity-text-align: middle-center;
     position: absolute;
-    -unity-font-definition: url("project://database/Assets/Font/UI/GrutchShaded.ttf?fileID=12800000&guid=ae611acc75380b446b5f248af0358244&type=3#GrutchShaded");
+    -unity-font-definition: url("project://database/Assets/Project/Font/UI/GrutchShaded.ttf?fileID=12800000&guid=ae611acc75380b446b5f248af0358244&type=3#GrutchShaded");
+    background-image: none;
 }
 
 .slider {
@@ -105,7 +108,7 @@
     margin-bottom: 20px;
     font-size: 35px;
     -unity-font-style: bold;
-    -unity-font-definition: url("project://database/Assets/Font/UI/3Dumb.ttf?fileID=12800000&guid=7508765d653a4e341b9f7408c5e85ad7&type=3#3Dumb");
+    -unity-font-definition: url("project://database/Assets/Project/Font/UI/3Dumb.ttf?fileID=12800000&guid=7508765d653a4e341b9f7408c5e85ad7&type=3#3Dumb");
 }
 
 .tab {
@@ -127,6 +130,7 @@
     justify-content: center;
     align-self: center;
     display: none;
+    -unity-font-definition: url("project://database/Assets/Project/Font/UI/3Dumb.ttf?fileID=12800000&guid=7508765d653a4e341b9f7408c5e85ad7&type=3#3Dumb");
 }
 
 .tabOption {
@@ -141,6 +145,7 @@
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     border-bottom-left-radius: 20px;
+    -unity-font-definition: url("project://database/Assets/Project/Font/UI/3Dumb.ttf?fileID=12800000&guid=7508765d653a4e341b9f7408c5e85ad7&type=3#3Dumb");
 }
 
 .container {

@@ -26,19 +26,37 @@ public class PuzzleManager : MonoBehaviour
         wordlePuzzleTransform.gameObject.SetActive(false);
 
     }
-    public void PlayTileSwapPuzzle()
+    public void PlayTileSwapPuzzle(TileSwapSO data)
     {
+        CameraSwitch.Instance.SwitchPuzzleCamera();
         tilePuzzleTransform.gameObject.SetActive(true);
+        tilePuzzleTransform.GetComponent<TileSwapBoard>().LoadLevelData(data);
     }
-    public void PlayPairPathPuzzle()
+    public void PlayPairPathPuzzle(PairPathSO data)
     {
+        CameraSwitch.Instance.SwitchPuzzleCamera();
         pairPuzzleTransform.gameObject.SetActive(true);
-
+        pairPuzzleTransform.GetComponent<PairPathBoard>().LoadLevelData(data);
     }
-    public void PlayWordlePuzzle()
+    public void PlayWordlePuzzle(WordleSO data)
     {
+        CameraSwitch.Instance.SwitchPuzzleCamera();
         wordlePuzzleTransform.gameObject.SetActive(true);
-
+        wordlePuzzleTransform.GetComponent<WordleBoard>().LoadLevelData(data);
     }
 
 }
+public enum PuzzleType
+{
+    None,
+    TilePuzzle,
+    WordlePuzzle,
+    PairPuzzle
+}
+public enum PuzzleState
+{
+    NotStarted,
+    InProgress,
+    Solved
+}
+
