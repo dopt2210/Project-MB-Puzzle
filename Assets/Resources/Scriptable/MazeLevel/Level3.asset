@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0b3148f8a0906d4f9ae49207eca802a, type: 3}
   m_Name: Level3
   m_EditorClassIdentifier: 
-  width: 13
-  depth: 13
-  BoxSize: {x: 13, y: 1, z: 13}
-  CellMap: {fileID: 2213498992395453746, guid: 33ff6736cb8162c4996af7f5facecff8, type: 3}
+  width: 11
+  depth: 11
+  BoxSize: {x: 11, y: 1, z: 11}
+  CellMap: {fileID: 6210117556039323036, guid: 00f2980fea887c740ac80a4e532db1ce, type: 3}
   CellPuzzle: {fileID: 0}
-  GoalPrefab: {fileID: 5661638577392735144, guid: ff7a4a43d9553fa4a84ca27b2daa5933, type: 3}
+  GoalPrefab: {fileID: 4155503496674346491, guid: aa76be517239ebd4b813d64e546b353d, type: 3}
   MazeAlgorithm:
     algorithmType: 2

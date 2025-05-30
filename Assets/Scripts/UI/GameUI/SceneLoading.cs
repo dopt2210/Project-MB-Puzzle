@@ -1,45 +1,21 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SceneLoading : MonoBehaviour
 {
-    [SerializeField] private Image loadingBar;
-    [SerializeField] private TextMeshProUGUI loadingText;
+    [SerializeField] private Image _loadingBar;
+    [SerializeField] private TextMeshProUGUI _loadingText;
 
-    private float loadProgress = 0f;
-    [SerializeField] private float loadTime = 2f;
 
-    private void OnEnable()
+    public void UpdateProgress(float ratio)
     {
-        loadProgress = 0f;
-        loadingBar.fillAmount = 0f;
-    }
+        if (_loadingBar != null)
+            _loadingBar.fillAmount = ratio;
 
-    private void Update()
-    {
-        SimulateLoading();
-    }
-
-    private void SimulateLoading()
-    {
-        if (loadProgress < loadTime)
-        {
-            loadProgress += Time.deltaTime;
-
-            float progressRatio = loadProgress / loadTime;
-
-            loadingBar.fillAmount = progressRatio;
-
-            if (loadingText != null)
-            {
-                loadingText.text = $"{(progressRatio * 100):0}%";
-            }
-        }
-        else
-        {
-            SceneLoadManager.instance.DisabelLoading();
-        }
+        if (_loadingText != null)
+            _loadingText.text = $"{(ratio * 100f):0}%";
     }
 
 }

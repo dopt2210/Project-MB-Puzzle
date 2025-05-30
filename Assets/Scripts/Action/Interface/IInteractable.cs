@@ -1,10 +1,8 @@
-using UnityEngine;
-
 public interface IInteractable
 {
     bool IsInteractable { get; set; }
     bool IsInRange { get; set; }
-    public void Interact();
+    public void DoInteract();
     public void DisableInteract();
-    public void SetInteract(bool value);
+    public event System.Action<bool> OnRangeChanged; // Optional: Event to notify when interaction occurs
 }

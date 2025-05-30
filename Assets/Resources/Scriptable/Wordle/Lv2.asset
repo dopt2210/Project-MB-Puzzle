@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 429124b93ef49a24eb703928ef114d7e, type: 3}
   m_Name: Lv2
   m_EditorClassIdentifier: 
-  uniqueId: bf0fc94a-b2f9-4754-8dcc-6e100469e202
+  uniqueId: bf0fc94a-j0k1-4754-8dcc-6e100469e202
   targetWords:
   - aegis
   - evade

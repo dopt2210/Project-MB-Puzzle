@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "_playerSO", menuName = "Scriptable Objects/_playerSO")]
+[CreateAssetMenu(fileName = "PlayerSO", menuName = "Scriptable Objects/PlayerSO")]
 public class PlayerSO : ScriptableObject
 {
     public LayerMask GroundLayer;

@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-public class PauseMenuUI : MonoBehaviour
+public class PauseMenuUI : MonoBehaviour, IGameData
 {
-    [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] private AudioMixer _audioMixer;
 
     [SerializeField] private UIDocument _document;
     [SerializeField] private OptionUI pauseSetup;
@@ -15,21 +14,27 @@ public class PauseMenuUI : MonoBehaviour
 
     private VisualElement _root, _container;
     private VisualElement _pauseElement;
-    
+
+    private float musicVolume, sfxVolume;
 
     private void Reset()
     {
         _document = GetComponent<UIDocument>();
-        audioMixer = Resources.Load<AudioMixer>("Master");
+        _audioMixer = Resources.Load<AudioMixer>("Master");
     }
     private void Awake()
     {
         _root = _document.rootVisualElement;
 
         SetElement();
-        pauseSetup.Initialize(_root, audioMixer);
+        pauseSetup.Initialize(_root, _audioMixer);
         SetEvent();
         SetButtonsEvent();
+    }
+    private void Start()
+    {
+        UITools.UpdateMusicVolume(musicVolume, _audioMixer);
+        UITools.UpdateSFXVolume(sfxVolume, _audioMixer);
     }
     #region SetUp
     void SetElement()
@@ -78,20 +83,6 @@ public class PauseMenuUI : MonoBehaviour
         _root.style.display = DisplayStyle.None;
 
     }
-    private void FocusElement()
-    {
-        // Lấy phần tử muốn focus (ví dụ: nút đầu tiên trong menu)
-        var firstButton = _root.Q<Button>("FisrtElement");
-
-        if (firstButton != null)
-        {
-            // Dùng schedule để delay focus sau khi layout hoàn tất
-            _root.schedule.Execute(() =>
-            {
-                firstButton.Focus();
-            }).ExecuteLater(1); // Chờ 1 frame
-        }
-    }
     private void ShowOptionPanel()
     {
         _root.Clear();
@@ -114,7 +105,22 @@ public class PauseMenuUI : MonoBehaviour
     }
     private void QuitGame()
     {
+        GameDataManager.Instance.SaveGame();
         UIHandler.Instance.BackToMainMenu();
     }
+
     #endregion
+    public void LoadData(GameData gameData)
+    {
+        musicVolume = gameData.musicVolume;
+        sfxVolume = gameData.sfxVolume;
+        pauseSetup._musicSlider?.SetValueWithoutNotify(musicVolume);
+        pauseSetup._sfxSlider?.SetValueWithoutNotify(sfxVolume);
+    }
+
+    public void SaveData(ref GameData gameData)
+    {
+        gameData.musicVolume = pauseSetup._musicSlider.value;
+        gameData.sfxVolume = pauseSetup._sfxSlider.value;
+    }
 }

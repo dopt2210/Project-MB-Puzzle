@@ -10,10 +10,10 @@ public class Interacting : Action
     }
     public override void Act()
     {
-        obj.SetInteract(true);
+        obj.IsInRange = true;
     }
     public override void CancelAct()
     {
-        obj.SetInteract(false);
+        obj.IsInRange = false;
     }
 }

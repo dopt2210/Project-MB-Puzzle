@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "WordleSO", menuName = "Scriptable Objects/WordleSO")]
 public class WordleSO : ScriptableObject
 {
-    [HideInInspector] public string uniqueId;
+    public string uniqueId;
 
     public string[] targetWords;
 

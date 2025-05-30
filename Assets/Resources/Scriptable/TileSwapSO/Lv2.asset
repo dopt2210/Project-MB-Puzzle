@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1691d534ef2140342a1c168dd39512f3, type: 3}
   m_Name: Lv2
   m_EditorClassIdentifier: 
-  uniqueId: 65336d19-0888-4450-a998-f16d7c4a9888
+  uniqueId: 55668d19-0888-4450-a998-f16d7c4a9888
   seed: -1
   sourceImage: {fileID: 21300000, guid: f82915c81047e1c43ab28638ef0dde70, type: 3}
   boardSize: 4

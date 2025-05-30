@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "TileSwapSO", menuName = "Scriptable Objects/TileSwapSO")]
 public class TileSwapSO : ScriptableObject
 {
-    [HideInInspector] public string uniqueId;
+    public string uniqueId;
 
     [Tooltip("Seed = -1 => random each play")]
     [HideInInspector] public int seed = -1;

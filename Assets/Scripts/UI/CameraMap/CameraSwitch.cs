@@ -24,7 +24,7 @@ public class CameraSwitch : MonoBehaviour
     {
         _playerCamera.enabled = true;
 
-        InputManager.InputPlayer.SwitchCurrentActionMap("Player");
+        GameManager.Instance.SwitchOff();
 
     }
     public void SwitchInventoryCamera()
@@ -34,7 +34,7 @@ public class CameraSwitch : MonoBehaviour
         _inventoryObj.SetOn();
         _puzzleObj.SetOff();
 
-        InputManager.InputPlayer.SwitchCurrentActionMap("UI");
+        GameManager.Instance.SwitchOn();
 
     }
     public void SwitchPuzzleCamera()
@@ -44,7 +44,7 @@ public class CameraSwitch : MonoBehaviour
         _puzzleObj.SetOn();
         _inventoryObj.SetOff();
 
-        InputManager.InputPlayer.SwitchCurrentActionMap("UI");
+        GameManager.Instance.SwitchOn();
     }
 }
 

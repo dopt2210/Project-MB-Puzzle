@@ -72,13 +72,12 @@ public static class UITools
     }
     public static void UpdateMusicVolume(float volume, AudioMixer audioMixer)
     {
-        float newVolume = Mathf.Log10(Mathf.Clamp(volume, 0.0001f, 1f)) * 20f;
         audioMixer.SetFloat("MusicVolume", volume);
     }
     public static void UpdateSFXVolume(float volume, AudioMixer audioMixer)
     {
-        float newVolume = Mathf.Log10(Mathf.Clamp(volume, 0.0001f, 1f)) * 20f;
         audioMixer.SetFloat("SFXVolume", volume);
+
     }
     #endregion
 }

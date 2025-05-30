@@ -9,7 +9,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PairPathSO", menuName = "Scriptable Objects/PairPathSO")]
 public class PairPathSO : ScriptableObject
 {
-    [HideInInspector] public string uniqueId;
+    public string uniqueId;
 
     [Tooltip("Seed = -1 => random each play")]
     [HideInInspector] public int seed = -1;

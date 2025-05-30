@@ -4,7 +4,7 @@ using UnityEngine.Audio;
 using UnityEngine.UIElements;
 
 [System.Serializable]
-public class OptionUI
+public class OptionUI 
 {
     [SerializeField] private VisualTreeAsset optionPanelAsset;
 
@@ -14,6 +14,8 @@ public class OptionUI
     private VisualElement _currentPanel;
     private Button _lastFocusedNavButton;
 
+    public Slider _musicSlider { get; set; }
+    public Slider _sfxSlider { get; set; }
     public VisualElement OptionElement => _optionElement;
     public List<Button> OptionButtons => _optionButtons;
     public Dictionary<Button, VisualElement> ButtonToPanelMap => _buttonToPanelMap;
@@ -35,10 +37,14 @@ public class OptionUI
         var sliders = _optionElement.Query<Slider>().ToList();
         if (sliders.Count >= 2)
         {
-            sliders[0].RegisterValueChangedCallback(evt => UITools.UpdateMusicVolume(evt.newValue, audioMixer));
-            sliders[1].RegisterValueChangedCallback(evt => UITools.UpdateSFXVolume(evt.newValue, audioMixer));
-        }
+            _musicSlider = sliders[0];
+            _sfxSlider = sliders[1];
 
+            _musicSlider.RegisterValueChangedCallback(evt 
+                => UITools.UpdateMusicVolume(evt.newValue, audioMixer));
+            _sfxSlider.RegisterValueChangedCallback(evt 
+                => UITools.UpdateSFXVolume(evt.newValue, audioMixer));
+        }
         foreach (var button in _optionButtons)
         {
             button.clicked += ClickButton;

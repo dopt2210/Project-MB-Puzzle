@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, IGameData
 {
     public static GameManager Instance {  get; private set; }
 
@@ -17,25 +17,28 @@ public class GameManager : MonoBehaviour
     [Header("Map Fog")]
     [SerializeField] private FogOfWarMask _fog;
 
-    #region Const data
-    [Header("Datas")]
-    [SerializeField] public PlayerSO _playerSO;
-    [SerializeField] public MazeSO _mazeSO;
-    public GameObject PlayerObj { get; private set; }
-    public GameObject GoalObj { get; private set; }
-    public Vector3 PlayerSpawnPoint {  get; private set; }
-    public Vector3 GoalSpawnPoint {  get; private set; }
-    public CharacterController CharacterCtrl { get; private set; }
-    #endregion
-
-    #region For puzzle
-    [Header("Pool For Item")]
-    public Transform PoolClone;
-    #endregion
-
-    #region Cell
+    #region Private vars
+    private Vector3 PlayerSpawnPoint;
+    private Vector3 GoalSpawnPoint;
 
     private Cell _currentPlayerCell;
+
+    private int _currentLevelIndex = 0;
+
+
+    #endregion
+
+    #region Public vars
+    [Header("Datas")]
+    public PlayerSO _playerSO;
+    public MazeSO _mazeSO;
+    [Header("Pool For Item")]
+    [Tooltip("Assign pool for spawn puzzle item")]
+    public Transform PoolClone;
+    public GameObject PlayerObj { get; private set; }
+    public GameObject GoalObj { get; private set; }
+    public CharacterController CharacterCtrl { get; private set; }
+    public int CurrentLevel => _currentLevelIndex + 1;
     public Cell CurrentCell
     {
         get => _currentPlayerCell;
@@ -49,14 +52,6 @@ public class GameManager : MonoBehaviour
         }
     }
     #endregion
-
-    #region Level
-
-    private int _currentLevelIndex = 0;
-    public int CurrentLevel => _currentLevelIndex + 1;
-
-    #endregion
-
     private void Reset()
     {
         _mazeSO = Resources.Load<MazeSO>($"Scriptable/MazeLevel/Level{_currentLevelIndex + 1}");
@@ -65,7 +60,7 @@ public class GameManager : MonoBehaviour
         _mapFixed = GetComponentInChildren<MapCamera>();
         _fog = GetComponent<FogOfWarMask>();
     }
-    void Awake()
+    private void Awake()
     {
         if (Instance != null && Instance != this)
         {
@@ -74,8 +69,6 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
-
-        LoadNewLevel();
     }
     private void Start()
     {
@@ -106,7 +99,38 @@ public class GameManager : MonoBehaviour
         //List<Cell> revealCell = MazeTools.GetNeighborsInSquare(CurrentCell, MazeGenerator.boardLayout, _mazeSO.BoxSize);
         //_fog.RevealCells(revealCell);
     }
+
     #region Maze Handler
+    private void CreatePlayer()
+    {
+        PlayerObj = Instantiate(_playerSO.playerPrefab, PlayerSpawnPoint, Quaternion.identity, transform);
+        GoalObj = Instantiate(_mazeSO.GoalPrefab, GoalSpawnPoint, Quaternion.identity, transform);
+        CharacterCtrl = PlayerObj.GetComponent<CharacterController>();
+    }
+    private void CreateSpawnPoint(Cell cellStart, Cell cellEnd)
+    {
+        PlayerSpawnPoint = cellStart.transform.Find("SpawnPoint").position;
+        GoalSpawnPoint = cellEnd.transform.Find("SpawnPoint").position + new Vector3(0, -2.5f, 2f);
+    }
+    private void ResetSpawnPoint()
+    {
+        CreateSpawnPoint(MazeGenerator.MazeGrid[0, 0, 0],
+    MazeGenerator.MazeGrid[_mazeSO.Width - 1, _mazeSO.Height - 1, _mazeSO.Depth - 1]);
+
+        PlayerObj.transform.position = PlayerSpawnPoint;
+        GoalObj.transform.position = GoalSpawnPoint;
+        
+
+    }
+    private void LoadNewLevel()
+    {
+        _mazeSO = Resources.Load<MazeSO>($"Scriptable/MazeLevel/Level{_currentLevelIndex + 1}");
+        MazeGenerator.Instance.CreateGrid(_mazeSO);
+        _mazeSO.Generate();
+    }
+    #endregion
+
+    #region Public UI Handler
     public void ResetMaze()
     {
         foreach (Transform child in PoolClone)
@@ -126,36 +150,7 @@ public class GameManager : MonoBehaviour
         CharacterCtrl.enabled = true;
 
     }
-    public void CreatePlayer()
-    {
-        PlayerObj = Instantiate(_playerSO.playerPrefab, PlayerSpawnPoint, Quaternion.identity, transform);
-        GoalObj = Instantiate(_mazeSO.GoalPrefab, GoalSpawnPoint, Quaternion.identity, transform);
-        CharacterCtrl = PlayerObj.GetComponent<CharacterController>();
-    }
-    public void CreateSpawnPoint(Cell cellStart, Cell cellEnd)
-    {
-        PlayerSpawnPoint = cellStart.transform.Find("SpawnPoint").position;
-        GoalSpawnPoint = cellEnd.transform.Find("SpawnPoint").position;
-    }
-    public void ResetSpawnPoint()
-    {
-        CreateSpawnPoint(MazeGenerator.MazeGrid[0, 0, 0],
-    MazeGenerator.MazeGrid[_mazeSO.Width - 1, _mazeSO.Height - 1, _mazeSO.Depth - 1]);
-
-        PlayerObj.transform.position = PlayerSpawnPoint;
-        GoalObj.transform.position = GoalSpawnPoint;
-        
-
-    }
-    public void LoadNewLevel()
-    {
-        _mazeSO = Resources.Load<MazeSO>($"Scriptable/MazeLevel/Level{_currentLevelIndex + 1}");
-        MazeGenerator.Instance.CreateGrid(_mazeSO);
-        _mazeSO.Generate();
-    }
-    #endregion
-
-    #region UI Handler
+    int MazeCount() => System.Enum.GetValues(typeof(MazeAlgorithmType)).Length;
     public void LevelUpgrade()
     {
         if (_currentLevelIndex <  MazeCount() - 1)
@@ -170,9 +165,31 @@ public class GameManager : MonoBehaviour
 
         OnLevelUpgraded?.Invoke(); 
         ResetMaze();
+        SceneLoadManager.Instance.LoadSceneWithLoading();
+    }
+    public void SwitchOn()
+    {
+        MouseLock.Instance.UnlockMouse();
+        InputManager.InputPlayer.SwitchCurrentActionMap("UI");
+    }
+    public void SwitchOff()
+    {
+        MouseLock.Instance.LockMouse();
+        InputManager.InputPlayer.SwitchCurrentActionMap("Player");
+    }
+
+    public void LoadData(GameData gameData)
+    {
+        if (gameData == null) return;
+        _currentLevelIndex = gameData.currentLevelIndex;
+
+        LoadNewLevel();
+    }
+
+    public void SaveData(ref GameData gameData)
+    {
+        if (gameData == null) return;
+        gameData.currentLevelIndex = _currentLevelIndex;
     }
     #endregion
-    int MazeCount() => System.Enum.GetValues(typeof(MazeAlgorithmType)).Length;
 }
-
-

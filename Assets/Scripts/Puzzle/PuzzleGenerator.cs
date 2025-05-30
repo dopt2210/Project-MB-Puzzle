@@ -59,10 +59,3 @@ public class PuzzleGenerator : MonoBehaviour
     }
 
 }
-
-[System.Serializable]
-public class PuzzlePrefabs
-{
-    public MazeAlgorithmType algorithmType;
-    public List<GameObject> puzzlePrefabs; 
-}

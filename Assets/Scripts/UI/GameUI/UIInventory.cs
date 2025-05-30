@@ -80,13 +80,11 @@ public class UIInventory : MonoBehaviour
     public void OpenBag()
     {
         CameraSwitch.Instance.SwitchInventoryCamera();
-        MouseLock.Instance.UnlockMouse();
 
     }
     public void CloseBag()
     {
         CameraSwitch.Instance.SwitchPlayerCamera();
-        MouseLock.Instance.LockMouse();
     }
     private void PlayPuzzleFromItem(ItemSO item)
     {
