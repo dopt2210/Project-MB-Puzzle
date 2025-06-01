@@ -3,12 +3,27 @@
 public class MazeObjects : MonoBehaviour, IInteractable
 {
     public bool IsInteractable { get => InputManager.Instance.Action.Interact; set { } }
-    public bool IsInRange { get; set; }
+    public bool IsInRange
+    {
+        get => _isInRange; set
+        {
+            if (_isInRange != value)
+            {
+                _isInRange = value;
+                OnRangeChanged?.Invoke(_isInRange);
+                UIHandler.Instance.RegisterTarget(this);
+            }
+        }
+    }
 
     [SerializeField] private Transform _targetSprite;
     [SerializeField] private Vector3 followOffset = new Vector3(0, 0.5f, 0);
     [SerializeField] private Transform _playerTransform;
     [SerializeField] private bool _isFollowing = false;
+    private bool _isInRange;
+
+    public event System.Action<bool> OnRangeChanged;
+
     private void Start()
     {
         _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
@@ -24,7 +39,7 @@ public class MazeObjects : MonoBehaviour, IInteractable
 
         if (IsInteractable && IsInRange && InputManager.Instance.Action.Interact)
         {
-            Interact();
+            DoInteract();
         }
     }
     protected void LoadInteractImage()
@@ -64,7 +79,7 @@ public class MazeObjects : MonoBehaviour, IInteractable
     }
     public void DisableInteract() { }
 
-    public void Interact()
+    public void DoInteract()
     {
         if (!_isFollowing)
         {
@@ -75,6 +90,4 @@ public class MazeObjects : MonoBehaviour, IInteractable
             StopFollow();
         }
     }
-
-    public void SetInteract(bool value) => IsInRange = value;
 }

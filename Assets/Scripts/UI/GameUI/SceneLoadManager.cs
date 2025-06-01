@@ -1,32 +1,73 @@
+﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SceneLoadManager : MonoBehaviour
 {
-    public static SceneLoadManager instance { get; private set; }
+    public static SceneLoadManager Instance { get; private set; }
     [SerializeField] private SceneLoading loadingObject;
-    private bool _isLoading;
+    [SerializeField] private float _loadTime = 2f;
+
     private void Awake()
     {
-        if (instance != null) { Destroy(gameObject); return; }
-        instance = this;
+        if (Instance != null) { Destroy(gameObject); return; }
+        Instance = this;
         DontDestroyOnLoad(this);
-        _isLoading = false;
     }
-    private void Update()
+    private void EnableLoading() => loadingObject.gameObject.SetActive(true);
+    private void DisableLoading() => loadingObject.gameObject.SetActive(false);
+    public void LoadSceneWithLoading(string sceneName)
     {
-        StartLoading();
+        StartCoroutine(LoadSceneCoroutine(sceneName));
     }
-    public void EnableLoading() => _isLoading = true;
-    public void DisabelLoading() => _isLoading = false;
-    private void StartLoading()
+    public void LoadSceneWithLoading()
     {
-        if (_isLoading)
+        StartCoroutine(SimulateLoading());
+    }
+    private IEnumerator LoadSceneCoroutine(string sceneName)
+    {
+       EnableLoading();
+        yield return null;
+
+        float elapsed = 0f;
+        AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
+        op.allowSceneActivation = false;
+
+        while (op.progress < 0.9f)
         {
-            loadingObject.gameObject.SetActive(true);
+            yield return null;
         }
-        else
+        while (elapsed < _loadTime)
         {
-            loadingObject.gameObject.SetActive(false);
+            elapsed += Time.deltaTime;
+            float progressRatio = Mathf.Clamp01(elapsed / _loadTime);
+            loadingObject.UpdateProgress(progressRatio);
+            yield return null;
         }
+
+        op.allowSceneActivation = true;
+        yield return null;
+
+        DisableLoading();
+    }
+    private IEnumerator SimulateLoading()
+    {
+        EnableLoading();
+        if(GameManager.Instance != null)
+        {
+            GameManager.Instance.SwitchOn();
+        }
+        float elapsed = 0f;
+        while (elapsed < _loadTime)
+        {
+            elapsed += Time.deltaTime;
+            float progressRatio = Mathf.Clamp01(elapsed / _loadTime);
+
+            loadingObject.UpdateProgress(progressRatio);
+
+            yield return null;
+        }
+        GameManager.Instance.SwitchOff();
+        DisableLoading();
     }
 }

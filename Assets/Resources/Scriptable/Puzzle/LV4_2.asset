@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82abcb75c09465b45890668ad273cfda, type: 3}
+  m_Name: LV4_2
+  m_EditorClassIdentifier: 
+  puzzleType: 2
+  puzzleData: {fileID: 11400000, guid: 94789267be2bff6409fd103397477516, type: 2}
+  itemName: AldousBroder_1
+  icon: {fileID: 21300000, guid: e6fe27bacded3f0469ae6fee853b8193, type: 3}
+  itemDescription: Something awaits you in the center.
+  stackable: 1

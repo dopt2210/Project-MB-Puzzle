@@ -57,7 +57,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -116,6 +116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadingObject: {fileID: 3051079280442809732}
+  _loadTime: 2
 --- !u!1 &1392290051896636095
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,7 +191,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4046441661928185074
 CanvasRenderer:
@@ -212,9 +213,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26b683a39efeec443bad3bb085312385, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadingBar: {fileID: 6979926197159223416}
-  loadingText: {fileID: 5954129377591962786}
-  loadTime: 2
+  _loadingBar: {fileID: 6979926197159223416}
+  _loadingText: {fileID: 5954129377591962786}
 --- !u!114 &3653052163475689662
 MonoBehaviour:
   m_ObjectHideFlags: 0

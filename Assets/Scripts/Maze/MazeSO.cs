@@ -90,10 +90,6 @@ public enum MazeAlgorithmType
     RandomKruskal,
     Eller
 }
-public interface IMazeGenerator
-{
-    void GenerateMazeInstant();
-}
 [System.Serializable]
 public struct MazeAlgorithm
 {

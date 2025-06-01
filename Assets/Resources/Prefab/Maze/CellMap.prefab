@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d24bde530a6cd174cb70a68743168031, type: 2}
+  - {fileID: 2100000, guid: 61c76b13bca5b4e4c9c0090dd09a0496, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -482,7 +482,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4589572857254688032
 Transform:
   m_ObjectHideFlags: 0
@@ -529,7 +529,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 78f6c3f1d47eef84f9ee5e607fad4c0c, type: 2}
+  - {fileID: 2100000, guid: 61c76b13bca5b4e4c9c0090dd09a0496, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -638,7 +638,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d7345edb353d0794296950a9adb3ad4d, type: 2}
+  - {fileID: 2100000, guid: 61c76b13bca5b4e4c9c0090dd09a0496, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -747,7 +747,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d7345edb353d0794296950a9adb3ad4d, type: 2}
+  - {fileID: 2100000, guid: 61c76b13bca5b4e4c9c0090dd09a0496, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -856,7 +856,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d7345edb353d0794296950a9adb3ad4d, type: 2}
+  - {fileID: 2100000, guid: 61c76b13bca5b4e4c9c0090dd09a0496, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1052,7 +1052,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d7345edb353d0794296950a9adb3ad4d, type: 2}
+  - {fileID: 2100000, guid: 61c76b13bca5b4e4c9c0090dd09a0496, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

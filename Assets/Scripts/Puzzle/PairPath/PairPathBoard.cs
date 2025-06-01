@@ -44,13 +44,10 @@ public class PairPathBoard : PuzzleBoardBase<PairPathSO>
 
         LineDraw.Instance.ResetLines();
     }
-
     public override void ResetGame()
     {
-        ResetState();
+        base.ResetGame();
         remainingPairIds = new(_levelData.pairs.Select(p => p.id));
-
-        BuildBoard(_levelData);
     }
     #endregion
 

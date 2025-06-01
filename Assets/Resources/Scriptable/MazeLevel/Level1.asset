@@ -15,8 +15,8 @@ MonoBehaviour:
   width: 5
   depth: 5
   BoxSize: {x: 5, y: 1, z: 5}
-  CellMap: {fileID: 2213498992395453746, guid: 33ff6736cb8162c4996af7f5facecff8, type: 3}
+  CellMap: {fileID: 6210117556039323036, guid: 00f2980fea887c740ac80a4e532db1ce, type: 3}
   CellPuzzle: {fileID: 0}
-  GoalPrefab: {fileID: 5661638577392735144, guid: ff7a4a43d9553fa4a84ca27b2daa5933, type: 3}
+  GoalPrefab: {fileID: 4155503496674346491, guid: aa76be517239ebd4b813d64e546b353d, type: 3}
   MazeAlgorithm:
     algorithmType: 0

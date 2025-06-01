@@ -33,10 +33,10 @@ public class NotifyOfGame : MonoBehaviour, IBoardButton
     }
     private void OnEnable()
     {
-        UIHandler.Instance.PauseGame();
+        GameManager.Instance.SwitchOn();
     }
     private void OnDisable()
     {
-        UIHandler.Instance.ResumeGame();
+        GameManager.Instance.SwitchOff();
     }
 }

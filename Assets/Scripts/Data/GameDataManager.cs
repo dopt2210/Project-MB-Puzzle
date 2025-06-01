@@ -94,8 +94,12 @@ public class GameDataManager : MonoBehaviour
     {
         return gameData != null;
     }
-    public Dictionary<string, GameData> GetData()
+    public Dictionary<string, GameData> GetDataSlot()
     {
         return fileHandler.GetDatas();
+    }
+    public GameData GetGameData()
+    {
+        return gameData;
     }
 }
