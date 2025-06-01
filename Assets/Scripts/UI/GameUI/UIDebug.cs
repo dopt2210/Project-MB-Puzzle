@@ -8,7 +8,6 @@ public class UIDebug : MonoBehaviour
     [SerializeField] private TextMeshProUGUI[] coordText;
     [SerializeField] private TMP_InputField[] sizeOfMaze;
 
-    [SerializeField] private MazeSO mazeSO;
     public void Show() => gameObject.SetActive(true);
     public void Hide() => gameObject.SetActive(false);
     public void Toggle() => gameObject.SetActive(!gameObject.activeSelf);
@@ -26,9 +25,9 @@ public class UIDebug : MonoBehaviour
         sizeOfMaze[1].onEndEdit.AddListener(UpdateHeight);
         sizeOfMaze[2].onEndEdit.AddListener(UpdateDepth);
 
-        sizeOfMaze[0].text = mazeSO.Width.ToString();
-        sizeOfMaze[1].text = mazeSO.Height.ToString();
-        sizeOfMaze[2].text = mazeSO.Depth.ToString();
+        sizeOfMaze[0].text = GameManager.Instance._mazeSO.Width.ToString();
+        sizeOfMaze[1].text = GameManager.Instance._mazeSO.Height.ToString();
+        sizeOfMaze[2].text = GameManager.Instance._mazeSO.Depth.ToString();
     }
     void RemoveEventClick()
     {
@@ -43,7 +42,6 @@ public class UIDebug : MonoBehaviour
         algorithmText = transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>();
         coordText = transform.GetChild(2).GetComponentsInChildren<TextMeshProUGUI>();
         sizeOfMaze = transform.GetChild(3).GetComponentsInChildren<TMP_InputField>();
-        mazeSO = Resources.Load<MazeSO>("Scriptable/MazeSO");
     }
     public void UpdateCoord(Cell cell)
     {
@@ -71,7 +69,7 @@ public class UIDebug : MonoBehaviour
         if (int.TryParse(value, out int newWidth))
         {
             if (newWidth < 1) return;
-            mazeSO.Width = newWidth;
+            GameManager.Instance._mazeSO.Width = newWidth;
         }
     }
     private void UpdateDepth(string value)
@@ -79,7 +77,7 @@ public class UIDebug : MonoBehaviour
         if (int.TryParse(value, out int newDepth))
         {
             if (newDepth < 1) return;
-            mazeSO.Depth = newDepth;
+            GameManager.Instance._mazeSO.Depth = newDepth;
         }
     }
     private void UpdateHeight(string value)
@@ -87,7 +85,7 @@ public class UIDebug : MonoBehaviour
         if (int.TryParse(value, out int newHeight))
         {
             if (newHeight < 1) return;
-            mazeSO.Height = newHeight;
+            GameManager.Instance._mazeSO.Height = newHeight;
         }
     }
     #endregion

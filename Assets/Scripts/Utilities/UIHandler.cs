@@ -4,18 +4,20 @@ using UnityEngine.SceneManagement;
 public class UIHandler : MonoBehaviour
 {
     public static UIHandler Instance;
-    [SerializeField] private GameObject map;
+    [Header("Map UI")]
+    [Tooltip("Drag mini map here")]
+    [SerializeField] private Transform _miniMap;
     public static bool IsPaused { get; set; } = false;
     public static bool IsDebug { get; set; }
     public static bool IsPlaying { get; set; }
-
+    public bool IsInteractable { get; set; } = false;
     [Header("Sub UI Controllers")]
     [SerializeField] private UIDebug uiDebuger;
     [SerializeField] private PauseMenuUI uiPauser;
     [SerializeField] private UIInformation uiInformation;
+    [SerializeField] private Transform uiInteract;
     private void Reset()
     {
-        map = GameObject.FindGameObjectWithTag("MapHolder");
         uiDebuger = GetComponentInChildren<UIDebug>();
         uiPauser = GetComponentInChildren<PauseMenuUI>();
         uiInformation = GetComponentInChildren<UIInformation>();
@@ -31,7 +33,7 @@ public class UIHandler : MonoBehaviour
     }
     private void Start()
     {
-        map.SetActive(false);
+        _miniMap.gameObject.SetActive(false);
         UpdateUIInfomation();
         uiDebuger.Hide();
         uiPauser.Hide();
@@ -39,8 +41,8 @@ public class UIHandler : MonoBehaviour
     }
     private void Update()
     {
-        if (InputManager.Instance.Action.Pause && !IsPaused) PauseGame();
-        else if (InputManager.Instance.Action.Resume && IsPaused) ResumeGame();
+        if (InputManager.Instance.Action.Pause && !IsPaused) {  uiPauser.Show(); PauseGame(); }
+        else if (InputManager.Instance.Action.Resume && IsPaused) { uiPauser.Hide(); ResumeGame(); }
 
         if (IsPaused)
         {
@@ -55,7 +57,20 @@ public class UIHandler : MonoBehaviour
         if (InputManager.Instance.Action.OpenDebug) ToggleUI();
 
         if (InputManager.Instance.Action.OpenMap) ToggleMap();
-        
+
+        if (IsInteractable)
+        {
+            uiInteract.gameObject.SetActive(true);
+        }
+        else
+        {
+            uiInteract.gameObject.SetActive(false);
+        }
+        if (InputManager.Instance.Action.Detail && uiInteract.gameObject.activeSelf)
+        {
+            IsInteractable = false;
+            NotifyManager.Instance.StartNotifyChoice("Do you want to go on?");
+        }
 
     }
     private void LateUpdate()
@@ -82,7 +97,7 @@ public class UIHandler : MonoBehaviour
         int level = GameManager.Instance.CurrentLevel;
         uiInformation.UpdateLevel(level);
 
-        string name = GameManager.Instance.CurrentAlgorithmName;
+        string name = GameManager.Instance._mazeSO.CurrentAlgorithmName;
         uiDebuger.UpdateAlgo(name);
 
         uiInformation.ResetTime();
@@ -101,7 +116,6 @@ public class UIHandler : MonoBehaviour
         IsPaused = true;
         MouseLock.Instance.AutoHandleMouseLockByPause(IsPaused);
         InputManager.InputPlayer.SwitchCurrentActionMap("UI");
-        uiPauser.Show();
     }
 
     public void ResumeGame()
@@ -109,7 +123,6 @@ public class UIHandler : MonoBehaviour
         IsPaused = false;
         MouseLock.Instance.AutoHandleMouseLockByPause(IsPaused);
         InputManager.InputPlayer.SwitchCurrentActionMap("Player");
-        uiPauser.Hide();
     }
     public void BackToMainMenu()
     {
@@ -119,7 +132,11 @@ public class UIHandler : MonoBehaviour
     }
     public void ToggleMap()
     {
-        map.gameObject.SetActive(!map.gameObject.activeSelf);
+        _miniMap.gameObject.SetActive(!_miniMap.gameObject.activeSelf);
+    }
+    public void ShowHint(string text)
+    {
+        uiInformation.ShowHint(text);
     }
     #endregion
 }

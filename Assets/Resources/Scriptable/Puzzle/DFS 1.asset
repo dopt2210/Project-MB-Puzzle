@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82abcb75c09465b45890668ad273cfda, type: 3}
   m_Name: DFS 1
   m_EditorClassIdentifier: 
-  itemPrefab: {fileID: 0}
+  puzzleType: 2
+  puzzleData: {fileID: 11400000, guid: d3b71c9eefbe9ea42a0e33c62c4ee34f, type: 2}
   itemName: DFS_2
   icon: {fileID: 21300000, guid: d60343d228ca54740a7b396d55c84814, type: 3}
   itemDescription: "R\u1EA5t nhanh v\xE0 \u0111\u01A1n gi\u1EA3n."

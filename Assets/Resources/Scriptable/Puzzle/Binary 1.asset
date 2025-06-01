@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82abcb75c09465b45890668ad273cfda, type: 3}
   m_Name: Binary 1
   m_EditorClassIdentifier: 
-  itemPrefab: {fileID: 0}
+  puzzleType: 2
+  puzzleData: {fileID: 11400000, guid: 97df7560fb48e3b4881ccac96e0d4177, type: 2}
   itemName: Binary_2
   icon: {fileID: 21300000, guid: d60343d228ca54740a7b396d55c84814, type: 3}
   itemDescription: "M\u1ED7i \xF4 s\u1EBD k\u1EBFt n\u1ED1i v\u1EDBi \xF4 b\xEAn

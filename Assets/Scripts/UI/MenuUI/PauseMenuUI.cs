@@ -105,6 +105,7 @@ public class PauseMenuUI : MonoBehaviour
     private void Continue()
     {
         UIHandler.Instance.ResumeGame();
+        Hide();
     }
     private void ResetGame()
     {

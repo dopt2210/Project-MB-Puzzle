@@ -3,17 +3,16 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PairPathBoard : MonoBehaviour, IBoardButton
+public class PairPathBoard : PuzzleBoardBase<PairPathSO> 
 {
     [Header("Refs")]
-    [SerializeField] private PairPathSO levelData;
     [SerializeField] private TilePath tilePrefab;
 
     [SerializeField] GridLayoutGroup boardLayout;
 
     #region Process vars
     int _size;
-    [SerializeField] bool _isEndGame = true;
+    float _cellSize;
     TilePath[,] _tiles;
     HashSet<int> remainingPairIds;
     #endregion
@@ -24,52 +23,48 @@ public class PairPathBoard : MonoBehaviour, IBoardButton
     }
     private void OnEnable()
     {
-        if (levelData == null || tilePrefab == null)
+        if (tilePrefab == null)
         {
             Debug.LogWarning("You must drag prefab Resources/Prefab/PuzzleGame/PairPath/TilePath");
-            Debug.LogWarning("You must drag level data Resources/Scriptabel/PairPathSO");
             return;
         }
-        remainingPairIds = new(levelData.pairs.Select(p => p.id));
-        _size = levelData.boardSize;
 
         LineDraw.OnThisPairCompleted += PairIsSolved;
     }
+    private void OnDisable()
+    {
+        LineDraw.OnThisPairCompleted -= PairIsSolved;
+
+    }
 
     #region UI function
-    public void StartGame()
+    protected override void ResetState()
     {
-        if (_isEndGame)
-        {
-            BuildBoard();
-        }
-        else Debug.Log("You must finish game first");
-    }
-
-    public void CloseGame() => transform.gameObject.SetActive(false);
-    
-    public void ResetGame()
-    {
-        // 1) Xoá tile cũ
         foreach (Transform t in boardLayout.transform) Destroy(t.gameObject);
 
-        // 2) Dọn LineDraw
         LineDraw.Instance.ResetLines();
-
-        // 3) Tạo lại danh sách id còn lại
-        remainingPairIds = new(levelData.pairs.Select(p => p.id));
-
-        // 4) Build lại lưới
-        BuildBoard();
     }
 
+    public override void ResetGame()
+    {
+        ResetState();
+        remainingPairIds = new(_levelData.pairs.Select(p => p.id));
+
+        BuildBoard(_levelData);
+    }
     #endregion
 
     #region Build game
-    private void BuildBoard()
+    protected override void BuildBoard(PairPathSO levelData)
     {
-        _isEndGame = false;
+        remainingPairIds = new(levelData.pairs.Select(p => p.id));
+        _size = levelData.boardSize;
+
+        _cellSize = boardLayout.GetComponent<RectTransform>().rect.width / _size;
+        boardLayout.cellSize = new Vector2(_cellSize, _cellSize);
+
         _tiles = new TilePath[_size, _size];
+
         if (levelData.seed >= 0) Random.InitState(levelData.seed);
 
         for (int y = 0; y < _size; y++)
@@ -102,12 +97,6 @@ public class PairPathBoard : MonoBehaviour, IBoardButton
             OnPuzzleSolved();
     }
 
-    private void OnPuzzleSolved()
-    {
-        Debug.Log("Tile‑Path-Pair completed!");
-        // TODO: Play SFX, invoke UnityEvent, unlock door, etc.
-        _isEndGame = true;
-    }
 
     #endregion
 }

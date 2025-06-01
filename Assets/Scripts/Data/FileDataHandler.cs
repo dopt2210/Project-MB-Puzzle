@@ -1,14 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.IO;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
 public class FileDataHandler
 {
     private string dataPath = "";
     private string dataName = "";
     private bool useEncryption = false;
-    private readonly string encrypt = "JaggHeart";
+    private readonly string encrypt = "SIGEA";
 
     public FileDataHandler(string dataPath, string dataName, bool useEncryption)
     {

@@ -11,26 +11,26 @@ using UnityEngine;
 /// - Đảm bảo toàn bộ mê cung kết nối.
 /// - Không thiên vị, nhưng rất kém hiệu quả (rất nhiều bước thừa).
 /// </summary>
-public class AldousBroder
+public class AldousBroder : IMazeGenerator
 {
     private System.Random rand = new System.Random();
-    private int width, height, depth;
-    private Cell[,,] grid;
+    private Cell farCorner, centerish;
+    private List<Cell> visitedCells = new List<Cell>();
 
+    private Cell[,,] grid;
+    private int width, height, depth;
     private Vector3Int boxSize;
     private float scale;
 
-    private List<Cell> visitedCells = new List<Cell>();
-    private Cell farCorner, centerish;
-    public AldousBroder(MazeSO data)
+    public AldousBroder(MazeSO data, float scale)
     {
         width = data.Width;
         height = data.Height;
         depth = data.Depth;
-        grid = MazeGenerator.grid;
-        scale = data.cellPrefab.transform.GetChild(0).GetComponent<Renderer>().bounds.size.x;
+        boxSize = data.BoxSize;
+        this.scale = scale;
 
-        boxSize = new Vector3Int(width, height, depth);
+        grid = MazeGenerator.MazeGrid;
     }
 
     public void GenerateMazeInstant()
@@ -62,9 +62,9 @@ public class AldousBroder
         {
             farCorner = visitedCells[1]; // Vị trí xa đầu tiên
             centerish = visitedCells[visitedCells.Count / 2]; // Gần trung tâm lộ trình
-            MazeTools.PlacePuzzle(farCorner, MazeAlgorithmType.AldousBroder, scale, 0, GameManager.Instance.ItemClones);
-            MazeTools.PlacePuzzle(centerish, MazeAlgorithmType.AldousBroder, scale, 1, GameManager.Instance.ItemClones);
+            MazeTools.PlacePuzzle(farCorner, MazeAlgorithmType.AldousBroder, scale, 0, GameManager.Instance.PoolClone);
+            MazeTools.PlacePuzzle(centerish, MazeAlgorithmType.AldousBroder, scale, 1, GameManager.Instance.PoolClone);
         }
-        MazeGenerator.Instance.CreateExitPaths();
+        MazeGenerator.Instance.CreateExitPaths(width, height, depth);
     }
 }

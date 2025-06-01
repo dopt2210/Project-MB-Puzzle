@@ -23,7 +23,7 @@ public class CharacterMovement : MonoBehaviour
 
     private void Reset()
     {
-        playerSO = Resources.Load<PlayerSO>("Scriptable/playerSO");
+        playerSO = Resources.Load<PlayerSO>("Scriptable/PlayerSO");
         cam = GetComponentInChildren<CinemachineCamera>().transform;
         animator = GetComponentInChildren<Animator>();
     }

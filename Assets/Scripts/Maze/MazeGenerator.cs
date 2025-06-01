@@ -2,37 +2,27 @@
 
 public class MazeGenerator : MonoBehaviour
 {
-    private static MazeGenerator instance;
-    public static MazeGenerator Instance { get { return instance; } }
-    public bool isDoneCreatOne { get; private set; } = false;
-    public Vector3 cellSize { get; private set; }
-    
-    public static Cell[,,] grid;
+    public static MazeGenerator Instance {  get; private set; }
+    public static Cell[,,] MazeGrid { get; private set; }
+
+    private bool isDoneCreatOne = false;
+    private float _cellSize;
     private DynamicAxes? _dynamicAxes;
 
-    [SerializeField] private MazeSO mazeSO;
-    void Awake()
+    private void Awake()
     {
-        if (instance != null) { Destroy(gameObject); return; }
-        instance = this;
-        
-    }
-    private void OnEnable()
-    {
-        mazeSO.OnDataChanged += RecreateGrid;
-    }
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-    private void OnDisable()
-    {
-        mazeSO.OnDataChanged -= RecreateGrid;
-    }
-    private void Reset()
-    {
-        mazeSO = Resources.Load<MazeSO>("Scriptable/MazeSO");
+        Instance = this;
     }
     #region Grid
-    public void RecreateGrid()
+    public void ResetGrid(MazeSO mazeSO)
     {
+        if (!isDoneCreatOne) return;
         isDoneCreatOne = false;
 
         for (int x = 0; x < mazeSO.Width; x++)
@@ -41,17 +31,29 @@ public class MazeGenerator : MonoBehaviour
             {
                 for (int z = 0; z < mazeSO.Depth; z++)
                 {
-                    grid[x, y, z].ResetState();
+                    MazeGrid[x, y, z].ResetState();
                 }
             }
         }
     }
 
-    public void CreateGrid()
+    public void ResetGrid()
     {
+        if (!isDoneCreatOne) return;
         isDoneCreatOne = false;
-        grid = new Cell[mazeSO.Width, mazeSO.Height, mazeSO.Depth];
-        cellSize = mazeSO.cellPrefab.transform.GetChild(0).GetComponent<Renderer>().bounds.size;
+
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
+    public void CreateGrid(MazeSO mazeSO)
+    {
+        MazeGrid = new Cell[mazeSO.Width, mazeSO.Height, mazeSO.Depth];
+        _cellSize = mazeSO.CellMap.transform.GetChild(0).GetComponent<Renderer>().bounds.size.x;
+
+        isDoneCreatOne = false;
 
         for (int x = 0; x < mazeSO.Width; x++)
         {
@@ -59,36 +61,24 @@ public class MazeGenerator : MonoBehaviour
             {
                 for (int z = 0; z < mazeSO.Depth; z++)
                 {
-                    Vector3 position = new Vector3(x , y, z) * cellSize.x;
-                    GameObject cellObj = Instantiate(mazeSO.cellPrefab, position, Quaternion.identity, transform);
+                    Vector3 position = new Vector3(x , y, z) * _cellSize;
+                    GameObject cellObj = Instantiate(mazeSO.CellMap, position, Quaternion.identity, transform);
                     cellObj.name = $"Cell ({x},{y},{z})";
 
-                    grid[x, y, z] = cellObj.GetComponent<Cell>();
-                    grid[x, y, z].x = x;
-                    grid[x, y, z].y = y;
-                    grid[x, y, z].z = z;
+                    MazeGrid[x, y, z] = cellObj.GetComponent<Cell>();
+                    MazeGrid[x, y, z].x = x;
+                    MazeGrid[x, y, z].y = y;
+                    MazeGrid[x, y, z].z = z;
                 }
             }
         }
 
         _dynamicAxes = MazeTools.IdentifyDynamicAxes(mazeSO.Width, mazeSO.Height, mazeSO.Depth);
-        //if (_dynamicAxes.HasValue) Debug.Log($"Co truc ({_dynamicAxes.Value.primary}, {_dynamicAxes.Value.secondary})");
-        //else Debug.Log("Khong hop le");
     }
 
-    public void ResetGrid()
+    public void CreateExitPaths(int w, int h, int d)
     {
-        //foreach (Transform child in transform)
-        //{
-        //    Destroy(child.gameObject);
-        //}
-        //CreateGrid();
-        RecreateGrid();
-    }
-
-    public void CreateExitPaths()
-    {
-        Vector3Int fixedAxis = MazeTools.GetFixedAxis(mazeSO.Width, mazeSO.Height, mazeSO.Depth);
+        Vector3Int fixedAxis = MazeTools.GetFixedAxis(w, h, d);
 
         //Vector3Int entrance = Vector3Int.zero;
         //Vector3Int exit = new Vector3Int(mazeSO.Width - 1, mazeSO.Height - 1, mazeSO.Depth - 1);
@@ -100,7 +90,7 @@ public class MazeGenerator : MonoBehaviour
 
         //boardLayout[exit.x, exit.y, exit.z].RemoveWall(exitDirection);
 
-        foreach (var cell in grid)
+        foreach (var cell in MazeGrid)
         {
             cell.RemoveWall(fixedAxis);
         }

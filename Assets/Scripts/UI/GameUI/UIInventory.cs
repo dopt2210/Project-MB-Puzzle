@@ -30,19 +30,8 @@ public class UIInventory : MonoBehaviour
     }
     private void Update()
     {
-        if (InputManager.Instance.Action.OpenItem) OpenBag();
-        else if (InputManager.Instance.Action.CloseItem) CloseBag();
-    }
-    public void RefreshUI()
-    {
-        if (!gameObject.activeSelf) return;
-
-        for (int i = 0; i < contentParent.childCount; i++)
-        {
-            Transform slot = contentParent.GetChild(i);
-            InventoryData data = inventory.GetItemAt(i);
-            SetupSlotUI(slot, data);
-        }
+        if (InputManager.Instance.Action.OpenItem) { OpenBag(); }
+        else if (InputManager.Instance.Action.CloseItem) { CloseBag(); }
     }
 
     private void UpdateSlot(int index)
@@ -55,7 +44,6 @@ public class UIInventory : MonoBehaviour
 
     private void SetupSlotUI(Transform slot, InventoryData data)
     {
-        // Xóa item cũ nếu khác loại hoặc số lượng 0
         foreach (Transform child in slot)
             Destroy(child.gameObject);
 
@@ -66,35 +54,76 @@ public class UIInventory : MonoBehaviour
         item.tParrent = slot;
         item.itemData = data;
         item.image.sprite = data.item.icon;
-        item.qty.text = data.quantity.ToString();
+        item.qty.text = data.item.itemName;
 
         Button btn = item.GetComponentInChildren<Button>();
         btn.onClick.RemoveAllListeners();
-        btn.onClick.AddListener(() => ShowItemInfo(data.item));
+        btn.onClick.AddListener(() => {
+            ShowItemInfo(data.item);
+            ShowButtonInfo(data.item);
+            });
     }
 
     public void ShowItemInfo(ItemSO item)
     {
         infoText.text = $"{item.itemDescription}";
     }
+    public void ShowButtonInfo(ItemSO item)
+    {
+        buttons[1].onClick.RemoveAllListeners();
+        buttons[1].onClick.AddListener(() => PlayPuzzleFromItem(item));
+
+        buttons[0].onClick.RemoveAllListeners();
+        buttons[0].onClick.AddListener(() => UIHandler.Instance.ShowHint(item.itemDescription));
+
+    }
     public void OpenBag()
     {
-        CameraSwitch.Instance.ShowInventoryCam();
+        CameraSwitch.Instance.SwitchInventoryCamera();
         MouseLock.Instance.UnlockMouse();
 
     }
     public void CloseBag()
     {
-        CameraSwitch.Instance.ShowGameplayCam();
+        CameraSwitch.Instance.SwitchPlayerCamera();
         MouseLock.Instance.LockMouse();
     }
-    public void Toggle()
+    private void PlayPuzzleFromItem(ItemSO item)
     {
-        bool isActive = gameObject.activeSelf;
-        gameObject.SetActive(!isActive);
-        string inputMap = isActive ? "Player" : "UI";
-        InputManager.InputPlayer.SwitchCurrentActionMap(inputMap);
-        MouseLock.Instance.AutoHandleMouseLockByPause(!isActive);
+        var puzzleData = item.puzzleData;
 
+        if (puzzleData == null)
+        {
+            Debug.LogWarning($"Item {item.name} has no level data assigned.");
+            return;
+
+        }
+
+        switch (item.puzzleType)
+        {
+            case PuzzleType.TilePuzzle:
+                PuzzleManager.Instance.PlayTileSwapPuzzle(puzzleData as TileSwapSO);
+                break;
+            case PuzzleType.PairPuzzle:
+                PuzzleManager.Instance.PlayPairPathPuzzle(puzzleData as PairPathSO);
+                break;
+            case PuzzleType.WordlePuzzle:
+                PuzzleManager.Instance.PlayWordlePuzzle(puzzleData as WordleSO);
+                break;
+            default:
+                Debug.LogWarning($"No puzzle assigned to item: {item.itemName}");
+                break;
+        }
     }
 }
+    //public void RefreshUI()
+    //{
+    //    if (!gameObject.activeSelf) return;
+
+    //    for (int i = 0; i < contentParent.childCount; i++)
+    //    {
+    //        Transform slot = contentParent.GetChild(i);
+    //        InventoryData data = inventory.GetItemAt(i);
+    //        SetupSlotUI(slot, data);
+    //    }
+    //}

@@ -3,7 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ItemSO", menuName = "Scriptable Objects/ItemSO")]
 public class ItemSO : ScriptableObject
 {
-    public GameObject itemPrefab;
+    public PuzzleType puzzleType;
+    public ScriptableObject puzzleData;
     public string itemName;
     public Sprite icon;
     [TextArea(15, 20)]

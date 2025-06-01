@@ -97,15 +97,15 @@ public static class MazeTools
         return null;
     }
     /// <summary>
-    /// Tạo và trả về một hướng (Vector3Int) dựa trên các offset và các trục động.
+    /// Tạo và trả về một hướng (Vector3Int) dựa trên các _followOffset và các trục động.
     /// </summary>
     /// <param name="primaryOffset">Offset cho trục chính.</param>
     /// <param name="secondaryOffset">Offset cho trục phụ.</param>
     /// <param name="dynamicAxes">Trục động xác định các trục có thể thay đổi.</param>
-    /// <returns>Vector3Int đại diện cho hướng được tạo ra từ các offset và trục động.</returns>
+    /// <returns>Vector3Int đại diện cho hướng được tạo ra từ các _followOffset và trục động.</returns>
     /// <exception cref="System.ArgumentException">Thrown khi dynamicAxes có giá trị null.</exception>
     /// <remarks>
-    /// Phương thức này sử dụng dynamicAxes để xác định các trục có thể thay đổi và sử dụng các offset
+    /// Phương thức này sử dụng dynamicAxes để xác định các trục có thể thay đổi và sử dụng các _followOffset
     /// để tạo ra một hướng trong không gian 3D.
     /// </remarks>
     public static Vector3Int CreateDirection(int primaryOffset, int secondaryOffset, DynamicAxes? dynamicAxes)
@@ -262,7 +262,7 @@ public static class MazeTools
     /// <param name="primary">Giá trị độ dài cho trục chính (X, Y hoặc Z).</param>
     /// <param name="secondary">Giá trị độ dài cho trục phụ (X, Y hoặc Z).</param>
     /// <param name="grid">Lưới 3D chứa các đối tượng Cell.</param>
-    /// <param name="boxSize">Kích thước của lưới 3D (boxSize.x, boxSize.y, boxSize.z).</param>
+    /// <param name="boxSize">Kích thước của lưới 3D (BoxSize.x, BoxSize.y, BoxSize.z).</param>
     /// <returns>Đối tượng Cell tại tọa độ xác định trong lưới 3D, hoặc null nếu tọa độ vượt phạm vi.</returns>
     /// <remarks>
     /// Phương thức này tính toán tọa độ 3D của ô trong lưới `boardLayout` dựa trên trục chính và phụ,
@@ -305,7 +305,7 @@ public static class MazeTools
     /// </summary>
     /// <param name="obj">GameObject cần xác định ô chứa nó.</param>
     /// <param name="grid">Lưới 3D chứa các đối tượng Cell.</param>
-    /// <param name="boxSize">Kích thước của lưới 3D (boxSize.x, boxSize.y, boxSize.z).</param>
+    /// <param name="boxSize">Kích thước của lưới 3D (BoxSize.x, BoxSize.y, BoxSize.z).</param>
     /// <returns>Cell tương ứng hoặc null nếu ngoài phạm vi mê cung.</returns>
     public static Cell GetCellFromGameObject(GameObject obj, Cell[,,] grid, Vector3Int boxSize, float cellSize)
     {

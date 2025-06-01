@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0b3148f8a0906d4f9ae49207eca802a, type: 3}
+  m_Name: Level7
+  m_EditorClassIdentifier: 
+  width: 29
+  depth: 29
+  BoxSize: {x: 29, y: 1, z: 29}
+  CellMap: {fileID: 2213498992395453746, guid: 33ff6736cb8162c4996af7f5facecff8, type: 3}
+  CellPuzzle: {fileID: 0}
+  GoalPrefab: {fileID: 5661638577392735144, guid: ff7a4a43d9553fa4a84ca27b2daa5933, type: 3}
+  MazeAlgorithm:
+    algorithmType: 6

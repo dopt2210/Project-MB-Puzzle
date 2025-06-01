@@ -2,10 +2,7 @@
 
 public class GameManager : MonoBehaviour
 {
-    private static GameManager instance;
-    public static GameManager Instance { get { return instance; } }
-    [SerializeField] private MiniMapCamera miniMapCamera;
-    [SerializeField] private FogOfWarMask fog;
+    public static GameManager Instance {  get; private set; }
 
     #region Action callback
     public static event System.Action OnLevelUpgraded;
@@ -13,16 +10,31 @@ public class GameManager : MonoBehaviour
     public static event System.Action<Cell> OnPlayerCellChanged;
     #endregion
 
+    [Header("Map Cameras")]
+    [SerializeField] private MiniMapCamera _mapFollow;
+    [SerializeField] private MapCamera _mapFixed;
+
+    [Header("Map Fog")]
+    [SerializeField] private FogOfWarMask _fog;
+
     #region Const data
-    [SerializeField] private PlayerSO playerSO;
-    [SerializeField] private MazeSO mazeSO;
-    public GameObject player { get; private set; }
-    private CharacterController controller;
-    public Vector3 playerSpawnPoint {  get; set; }
+    [Header("Datas")]
+    [SerializeField] public PlayerSO _playerSO;
+    [SerializeField] public MazeSO _mazeSO;
+    public GameObject PlayerObj { get; private set; }
+    public GameObject GoalObj { get; private set; }
+    public Vector3 PlayerSpawnPoint {  get; private set; }
+    public Vector3 GoalSpawnPoint {  get; private set; }
+    public CharacterController CharacterCtrl { get; private set; }
     #endregion
 
-    #region Level des
-    private MazeAlgorithm[] mazeAlgorithms;
+    #region For puzzle
+    [Header("Pool For Item")]
+    public Transform PoolClone;
+    #endregion
+
+    #region Cell
+
     private Cell _currentPlayerCell;
     public Cell CurrentCell
     {
@@ -38,46 +50,47 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
-    #region For Ui
-    private float cellSize;
+    #region Level
+
     private int _currentLevelIndex = 0;
     public int CurrentLevel => _currentLevelIndex + 1;
-    public string CurrentAlgorithmName => _currentLevelIndex < mazeAlgorithms.Length
-    ? mazeAlgorithms[_currentLevelIndex].Name : "Unknown";
-    #endregion
 
-    #region For puzzle
-    public Transform ItemClones;
     #endregion
 
     private void Reset()
     {
-        playerSO = Resources.Load<PlayerSO>("Scriptable/playerSO");
-        mazeSO = Resources.Load<MazeSO>("Scriptable/MazeSO");
-        miniMapCamera = GetComponentInChildren<MiniMapCamera>();
-        fog = GetComponent<FogOfWarMask>();
+        _mazeSO = Resources.Load<MazeSO>($"Scriptable/MazeLevel/Level{_currentLevelIndex + 1}");
+        _playerSO = Resources.Load<PlayerSO>("Scriptable/PlayerSO");
+        _mapFollow = GetComponentInChildren<MiniMapCamera>();
+        _mapFixed = GetComponentInChildren<MapCamera>();
+        _fog = GetComponent<FogOfWarMask>();
     }
     void Awake()
     {
-        if (instance != null) { Destroy(gameObject); return; }
-        instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-        MazeGenerator.Instance.CreateGrid();
-        CreateEvent();
-        CreateLevel();
+        Instance = this;
+
+        LoadNewLevel();
     }
     private void Start()
     {
-        CreateSpawnPoint(MazeGenerator.grid[0, 0, 0]);
+        CreateSpawnPoint(MazeGenerator.MazeGrid[0, 0, 0], 
+            MazeGenerator.MazeGrid[_mazeSO.Width - 1, _mazeSO.Height - 1, _mazeSO.Depth - 1]);
         CreatePlayer();
-        cellSize = mazeSO.cellPrefab.transform.GetChild(0).GetComponent<Renderer>().bounds.size.x;
-        fog.SetUpSize(mazeSO, cellSize);
+
+        _fog.SetUpSize(_mazeSO, _mazeSO.GetSizeScale);
+        _mapFixed.ResizeMap(_mazeSO);
     }
     private void Update()
     {
-        if (player == null) return;
+        if (PlayerObj == null) return;
 
-        CurrentCell = MazeTools.GetCellFromGameObject(player, MazeGenerator.grid, mazeSO.boxSize, cellSize);
+        CurrentCell = MazeTools.GetCellFromGameObject(PlayerObj, MazeGenerator.MazeGrid, _mazeSO.BoxSize, _mazeSO.GetSizeScale);
         if (!CurrentCell.flagVisited)
         {
             CurrentCell.flagVisited = true;
@@ -87,67 +100,69 @@ public class GameManager : MonoBehaviour
     }
     private void LateUpdate()
     {
-        miniMapCamera.FollowCamera(player);
-        //List<Cell> revealCell = MazeTools.GetNeighborsInSquare(CurrentCell, MazeGenerator.boardLayout, mazeSO.boxSize);
-        //fog.RevealCells(revealCell);
-        fog.Reveal(player.transform.position);
+        _mapFollow.FollowCamera(PlayerObj.transform);
+        _fog.Reveal(PlayerObj.transform.position);
+        //For reveal by cellsize
+        //List<Cell> revealCell = MazeTools.GetNeighborsInSquare(CurrentCell, MazeGenerator.boardLayout, _mazeSO.BoxSize);
+        //_fog.RevealCells(revealCell);
     }
     #region Maze Handler
-    public void PlayGame()
-    {
-
-    }
     public void ResetMaze()
     {
+        foreach (Transform child in PoolClone)
+        {
+            child.gameObject.SetActive(false);
+        }
+
+        CharacterCtrl.enabled = false;
         MazeGenerator.Instance.ResetGrid();
-        fog.ResetFog();
-        controller.enabled = false;
-
-        player.transform.position = playerSpawnPoint;
-
-        controller.enabled = true;
 
         OnLevelReset?.Invoke();
-        CreateLevel();
-    }
-    public void CreateSpawnPoint(Cell cellPosition)
-    {
-        playerSpawnPoint = cellPosition.transform.Find("SpawnPoint").position;
+        LoadNewLevel();
+        ResetSpawnPoint();
+        _fog.SetUpSize(_mazeSO, _mazeSO.GetSizeScale);
+        _fog.ResetFog();
+        _mapFixed.ResizeMap(_mazeSO);
+        CharacterCtrl.enabled = true;
+
     }
     public void CreatePlayer()
     {
-        player = Instantiate(playerSO.playerPrefab, playerSpawnPoint, Quaternion.identity, transform);
-        controller = player.GetComponent<CharacterController>();
+        PlayerObj = Instantiate(_playerSO.playerPrefab, PlayerSpawnPoint, Quaternion.identity, transform);
+        GoalObj = Instantiate(_mazeSO.GoalPrefab, GoalSpawnPoint, Quaternion.identity, transform);
+        CharacterCtrl = PlayerObj.GetComponent<CharacterController>();
     }
-    public void CreateLevel()
+    public void CreateSpawnPoint(Cell cellStart, Cell cellEnd)
     {
-        mazeAlgorithms[_currentLevelIndex].Generate?.Invoke();
+        PlayerSpawnPoint = cellStart.transform.Find("SpawnPoint").position;
+        GoalSpawnPoint = cellEnd.transform.Find("SpawnPoint").position;
     }
-    private void CreateEvent()
+    public void ResetSpawnPoint()
     {
-        mazeAlgorithms = new MazeAlgorithm[]
-        {
-        new MazeAlgorithm("DFS",            () => new DFS(mazeSO).GenerateMazeInstant()),
-        new MazeAlgorithm("Binary Tree",    () => new BinaryTree(mazeSO).GenerateMazeInstant()),
-        new MazeAlgorithm("Sidewinder",     () => new Sidewinder(mazeSO).GenerateMazeInstant()),
-        new MazeAlgorithm("Aldous-Broder",  () => new AldousBroder(mazeSO).GenerateMazeInstant()),
-        new MazeAlgorithm("Hunt and Kill",  () => new HuntandKill(mazeSO).GenerateMazeInstant()),
-        new MazeAlgorithm("Prim's",         () => new RandomPrims(mazeSO).GenerateMazeInstant()),
-        new MazeAlgorithm("Kruskal's",      () => new RandomKruskal(mazeSO).GenerateMazeInstant()),
-        new MazeAlgorithm("Eller's",        () => new Eller(mazeSO).GenerateMazeInstant())
-        };
+        CreateSpawnPoint(MazeGenerator.MazeGrid[0, 0, 0],
+    MazeGenerator.MazeGrid[_mazeSO.Width - 1, _mazeSO.Height - 1, _mazeSO.Depth - 1]);
+
+        PlayerObj.transform.position = PlayerSpawnPoint;
+        GoalObj.transform.position = GoalSpawnPoint;
+        
+
+    }
+    public void LoadNewLevel()
+    {
+        _mazeSO = Resources.Load<MazeSO>($"Scriptable/MazeLevel/Level{_currentLevelIndex + 1}");
+        MazeGenerator.Instance.CreateGrid(_mazeSO);
+        _mazeSO.Generate();
     }
     #endregion
 
     #region UI Handler
     public void LevelUpgrade()
     {
-        if (_currentLevelIndex < mazeSO.mazeLevel - 1)
+        if (_currentLevelIndex <  MazeCount() - 1)
         {
             _currentLevelIndex++;
         }
-
-        if (_currentLevelIndex >= mazeAlgorithms.Length)
+        else
         {
             Debug.Log("You win! All levels completed!");
             return;
@@ -157,28 +172,7 @@ public class GameManager : MonoBehaviour
         ResetMaze();
     }
     #endregion
+    int MazeCount() => System.Enum.GetValues(typeof(MazeAlgorithmType)).Length;
+}
 
 
-}
-public struct MazeAlgorithm
-{
-    public string Name;
-    public System.Action Generate;
-
-    public MazeAlgorithm(string name, System.Action generate)
-    {
-        Name = name;
-        Generate = generate;
-    }
-}
-public enum MazeAlgorithmType
-{
-    DFS,
-    BinaryTree,
-    Sidewinder,
-    AldousBroder,
-    HuntandKill,
-    RandomPrims,
-    RandomKruskal,
-    Eller
-}

@@ -13,22 +13,25 @@ using UnityEngine;
 /// Đặc điểm:
 /// - Thuật toán này tạo ra mê cung với đường đi rộng rãi và không có chu trình.
 /// - Phù hợp để tạo ra các mê cung với nhiều nhánh và ít ngõ cụt.
-public class RandomPrims
+public class RandomPrims : IMazeGenerator
 {
     private System.Random rand = new System.Random();
-    private int width, height, depth;
-    private Cell[,,] grid;
-    private Vector3Int boxSize;
     private List<Edge> frontier = new List<Edge>(); // List các cạnh ngẫu nhiên cần kiểm tra
+    
+    private Cell[,,] grid;
+    private int width, height, depth;
+    private Vector3Int boxSize;
+    private float scale;
 
-    public RandomPrims(MazeSO data)
+    public RandomPrims(MazeSO data, float scale)
     {
         width = data.Width;
         height = data.Height;
         depth = data.Depth;
-        grid = MazeGenerator.grid;
+        boxSize = data.BoxSize;
+        this.scale = scale;
 
-        boxSize = new Vector3Int(width, height, depth);
+        grid = MazeGenerator.MazeGrid;
     }
 
     public void GenerateMazeInstant()
@@ -62,7 +65,7 @@ public class RandomPrims
         }
 
         // Bước 4: Tạo đường ra cho mê cung
-        MazeGenerator.Instance.CreateExitPaths();
+        MazeGenerator.Instance.CreateExitPaths(width, height, depth);
     }
 
     // Thêm các cạnh từ các cell chưa được thăm vào danh sách frontier

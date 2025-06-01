@@ -48,7 +48,7 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: b47f28cafa991224e9dd071a2fa07aa1, type: 2}
   _document: {fileID: 7541686073239181295}
   pauseSetup:
-    optionPanelAsset: {fileID: 9197481963319205126, guid: 12fca3419f436794dbd257ad1d07f0bc, type: 3}
+    optionPanelAsset: {fileID: 0}
 --- !u!114 &7541686073239181295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,8 +63,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 346a3dbd6edb49d4cb49bfe45bbf327e, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 12fca3419f436794dbd257ad1d07f0bc, type: 3}
-  m_SortingOrder: 2000
+  sourceAsset: {fileID: 9197481963319205126, guid: 64551576bd598c54389d84b6bd39e5fb, type: 3}
+  m_SortingOrder: 0
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080

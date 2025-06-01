@@ -3,22 +3,13 @@ using UnityEngine;
 public class MapCamera : MonoBehaviour
 {
     [SerializeField] private Camera _camera;
-    [SerializeField] private MazeSO mazeSO;
-    private void Start()
-    {
-        if (_camera != null && _camera.orthographic)
-        {
-            ResizeMap();
-        }
-    }
     private void Reset()
     {
-        _camera = GetComponentInChildren<Camera>();
-        mazeSO = Resources.Load<MazeSO>("Scriptable/MazeSO");
+        _camera = GetComponent<Camera>();
     }
-    void ResizeMap()
+    public void ResizeMap(MazeSO mazeSO)
     {
-        float scale = mazeSO.cellPrefab.transform.GetChild(0).GetComponent<Renderer>().bounds.size.x;
+        float scale = mazeSO.CellMap.transform.GetChild(0).GetComponent<Renderer>().bounds.size.x;
         Vector3 pos = _camera.transform.position;
         float x = (mazeSO.Width - 1) * scale / 2f;
         float z = (mazeSO.Depth - 1) * scale / 2f;

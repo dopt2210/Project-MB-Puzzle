@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82abcb75c09465b45890668ad273cfda, type: 3}
   m_Name: Binary
   m_EditorClassIdentifier: 
-  itemPrefab: {fileID: 0}
+  puzzleType: 1
+  puzzleData: {fileID: 11400000, guid: 8de77e574c0653c4f9eb2e0b2c3df55c, type: 2}
   itemName: Binary_1
   icon: {fileID: 21300000, guid: e6fe27bacded3f0469ae6fee853b8193, type: 3}
   itemDescription: "Thu\u1EADt to\xE1n Binary Tree t\u1EA1o m\xEA cung b\u1EB1ng

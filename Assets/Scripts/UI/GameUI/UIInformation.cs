@@ -43,7 +43,7 @@ public class UIInformation : MonoBehaviour
     {
         if (texts[2] != null)
         {
-            texts[2].text = $"Key Infomation \n{hint}";
+            texts[2].text = $"{hint}";
         }
     }
     public void Show() => gameObject.SetActive(true);

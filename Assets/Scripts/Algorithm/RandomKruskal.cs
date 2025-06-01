@@ -11,25 +11,27 @@ using UnityEngine;
 /// Đặc điểm:
 /// - Thuật toán này sử dụng phương pháp Union-Find để kiểm tra chu trình.
 /// - Tạo ra mê cung với các đường đi không đồng đều và nhiều ngõ cụt.
-public class RandomKruskal
+public class RandomKruskal : IMazeGenerator
 {
     private System.Random rand = new System.Random();
     private List<Edge> edges = new List<Edge>();
     private Dictionary<Cell, Cell> parent = new Dictionary<Cell, Cell>();
     private Dictionary<Cell, int> rank = new Dictionary<Cell, int>();
 
-    private int width, height, depth;
     private Cell[,,] grid;
+    private int width, height, depth;
     private Vector3Int boxSize;
+    private float scale;
 
-    public RandomKruskal(MazeSO data)
+    public RandomKruskal(MazeSO data, float scale)
     {
         width = data.Width;
         height = data.Height;
         depth = data.Depth;
-        grid = MazeGenerator.grid;
+        boxSize = data.BoxSize;
+        this.scale = scale;
 
-        boxSize = new Vector3Int(width, height, depth);
+        grid = MazeGenerator.MazeGrid;
     }
 
     public void GenerateMazeInstant()
@@ -75,7 +77,7 @@ public class RandomKruskal
             }
         }
 
-        MazeGenerator.Instance.CreateExitPaths();
+        MazeGenerator.Instance.CreateExitPaths(width, height, depth);
     }
 
     private Cell Find(Cell cell)

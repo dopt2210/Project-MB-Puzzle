@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74717941ccbe7424b8f35a5d4bcbc751, type: 3}
+  m_Name: Lv2
+  m_EditorClassIdentifier: 
+  uniqueId: 956a0ee0-3072-40de-998a-d69fa0db5f5d
+  seed: -1
+  boardSize: 6
+  pairs:
+  - id: 0
+    start: {x: 3, y: 4}
+    end: {x: 2, y: 2}
+    color: {r: 0.19906805, g: 0.5137009, b: 0.96070874, a: 1}
+  - id: 1
+    start: {x: 4, y: 2}
+    end: {x: 0, y: 0}
+    color: {r: 0.9687765, g: 0.93576145, b: 0.3489527, a: 1}
+  - id: 2
+    start: {x: 0, y: 1}
+    end: {x: 1, y: 2}
+    color: {r: 0.083114296, g: 0.5587056, b: 0.9371032, a: 1}

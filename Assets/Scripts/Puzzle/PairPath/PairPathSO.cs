@@ -1,20 +1,24 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
+
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
 [CreateAssetMenu(fileName = "PairPathSO", menuName = "Scriptable Objects/PairPathSO")]
 public class PairPathSO : ScriptableObject
 {
+    [HideInInspector] public string uniqueId;
+
+    [Tooltip("Seed = -1 => random each play")]
+    [HideInInspector] public int seed = -1;
+
     [Range(2, 32)] public int boardSize = 4;
     public Vector2Int GridSize => new(boardSize, boardSize);
 
     public List<Pair> pairs = new();
 
-    [HideInInspector] public int seed = -1;
 
     [Serializable]
     public struct Pair
@@ -58,9 +62,17 @@ public class PairPathSO : ScriptableObject
             };
             pairs.Add(p);
         }
-
-#if UNITY_EDITOR
-        EditorUtility.SetDirty(this);      // lưu lại asset
-#endif
     }
+
+#if UNITY_EDITOR 
+    private void OnValidate()
+    {
+        if (string.IsNullOrEmpty(uniqueId))
+        {
+            uniqueId = System.Guid.NewGuid().ToString();
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+    } 
+#endif
+
 }

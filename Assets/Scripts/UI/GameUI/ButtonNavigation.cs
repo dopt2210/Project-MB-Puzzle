@@ -8,7 +8,7 @@ public class ButtonNavigation : MonoBehaviour
     private IBoardButton board;
     private void Reset()
     {
-        buttons = GetComponentsInChildren<Button>();
+        buttons = GetComponentsInChildren<Button>(true);
     }
     private void OnEnable()
     {
