@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class GameManager : MonoBehaviour, IGameData
 {
@@ -83,7 +84,7 @@ public class GameManager : MonoBehaviour, IGameData
     {
         if (PlayerObj == null) return;
 
-        CurrentCell = MazeTools.GetCellFromGameObject(PlayerObj, MazeGenerator.MazeGrid, _mazeSO.BoxSize, _mazeSO.GetSizeScale);
+        CurrentCell = GetTargetCell(PlayerObj);
         if (!CurrentCell.flagVisited)
         {
             CurrentCell.flagVisited = true;
@@ -98,6 +99,23 @@ public class GameManager : MonoBehaviour, IGameData
         //For reveal by cellsize
         //List<Cell> revealCell = MazeTools.GetNeighborsInSquare(CurrentCell, MazeGenerator.boardLayout, _mazeSO.BoxSize);
         //_fog.RevealCells(revealCell);
+    }
+
+    public void FindPlayerToTarget(Cell target)
+    {
+        MazeTools.ColorPath(Color.yellow, CurrentCell, target, _mazeSO);
+    }
+    public Cell GetTargetCell(GameObject obj)
+    {
+        var cell = MazeTools.GetCellFromGameObject(obj, MazeGenerator.MazeGrid, _mazeSO.BoxSize, _mazeSO.GetSizeScale);
+        return cell;
+
+    }
+    public Cell GetTargetCell()
+    {
+        var cell = MazeTools.GetCellFromGameObject(GoalObj, MazeGenerator.MazeGrid, _mazeSO.BoxSize, _mazeSO.GetSizeScale);
+        return cell;
+
     }
 
     #region Maze Handler
@@ -177,7 +195,15 @@ public class GameManager : MonoBehaviour, IGameData
         MouseLock.Instance.LockMouse();
         InputManager.InputPlayer.SwitchCurrentActionMap("Player");
     }
+    public string GetFormattedTime(float timeUsed)
+    {
+        TimeSpan time = TimeSpan.FromSeconds(timeUsed);
 
+        if (time.TotalHours >= 1)
+            return string.Format("{0:D2}:{1:D2}:{2:D2}", (int)time.TotalHours, time.Minutes, time.Seconds);
+        else
+            return string.Format("{0:D2}:{1:D2}", time.Minutes, time.Seconds);
+    }
     public void LoadData(GameData gameData)
     {
         if (gameData == null) return;

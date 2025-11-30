@@ -1,13 +1,14 @@
 using TMPro;
 using UnityEngine;
 
-public class UIInformation : MonoBehaviour
+public class UIInformation : MonoBehaviour, IGameData
 {
     [SerializeField] private TextMeshProUGUI[] texts;
 
     [SerializeField] private bool autoUpdateTime = true;
 
     public float timePlay = 0;
+    private float totalTime = 0;
     private void Reset()
     {
         texts = GetComponentsInChildren<TextMeshProUGUI>();
@@ -33,6 +34,7 @@ public class UIInformation : MonoBehaviour
     }
     public void ResetTime()
     {
+        totalTime += timePlay;
         timePlay = 0;
         if (texts[1] != null)
         {
@@ -49,4 +51,13 @@ public class UIInformation : MonoBehaviour
     public void Show() => gameObject.SetActive(true);
     public void Hide() => gameObject.SetActive(false);
 
+    public void LoadData(GameData gameData)
+    {
+        timePlay = gameData.timeUsed;
+    }
+
+    public void SaveData(ref GameData gameData)
+    {
+        gameData.timeUsed = totalTime;
+    }
 }

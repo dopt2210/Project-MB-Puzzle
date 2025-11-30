@@ -15,8 +15,7 @@ public class DFS: IMazeGenerator
 {
     private List<Cell> stack = new List<Cell>();
 
-    private Cell puzzle1Cell, farthestDeadEnd;
-
+    private MazeKeyPoint keyPoint;
     private Cell[,,] grid;
     private int width, height, depth;
     private Vector3Int boxSize;
@@ -31,6 +30,7 @@ public class DFS: IMazeGenerator
         this.scale = scale;
 
         grid = MazeGenerator.MazeGrid;
+        keyPoint = MazeGenerator.KeyPoint;
     }
 
     public void GenerateMazeInstant()
@@ -39,9 +39,10 @@ public class DFS: IMazeGenerator
         startCell.visited = true;
         stack.Add(startCell);
 
-        puzzle1Cell = grid[1, 0, 1];
-        MazeTools.PlacePuzzle(puzzle1Cell, MazeAlgorithmType.DFS, scale, 0, GameManager.Instance.PoolClone);
-        farthestDeadEnd = startCell;
+        var puzzleCell = grid[1, 0, 1];
+        keyPoint.AddKeyPoint(MazeAlgorithmType.DFS, puzzleCell);
+        MazeTools.PlacePuzzle(puzzleCell, MazeAlgorithmType.DFS, scale, 0, GameManager.Instance.PoolClone);
+        var puzzleCell2 = startCell;
         int maxDistance = 0;
 
         while (stack.Count > 0)
@@ -63,14 +64,15 @@ public class DFS: IMazeGenerator
                     if (dist > maxDistance)
                     {
                         maxDistance = dist;
-                        farthestDeadEnd = current;
+                        puzzleCell2 = current;
                     }
                 }
 
                 stack.RemoveAt(stack.Count - 1);
             }
         }
-        MazeTools.PlacePuzzle(farthestDeadEnd, MazeAlgorithmType.DFS, scale, 1, GameManager.Instance.PoolClone);
+        keyPoint.AddKeyPoint(MazeAlgorithmType.DFS, puzzleCell2);
+        MazeTools.PlacePuzzle(puzzleCell2, MazeAlgorithmType.DFS, scale, 1, GameManager.Instance.PoolClone);
 
         MazeGenerator.Instance.CreateExitPaths(width, height, depth);
     }

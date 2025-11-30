@@ -930,9 +930,9 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 200, y: 200}
+  m_CellSize: {x: 100, y: 100}
   m_Spacing: {x: 0, y: 0}
-  m_Constraint: 1
+  m_Constraint: 0
   m_ConstraintCount: 5
 --- !u!1 &7182215344888033868
 GameObject:
@@ -1060,11 +1060,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc4b60cad3e927f4a9952ee2080e03df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelData: {fileID: 11400000, guid: 83eea0b919d05654d950d68c29bb101e, type: 2}
   tilePrefab: {fileID: 8088089434093504119, guid: 63b33df0ff6994a47aabbbe5871f78f5, type: 3}
   blankPrefab: {fileID: 8088089434093504119, guid: 30a08701144a4f844bb16a1b4d678066, type: 3}
   boardLayout: {fileID: 6204352402581471263}
-  _isEndGame: 1
 --- !u!1 &8119567358253143191
 GameObject:
   m_ObjectHideFlags: 0

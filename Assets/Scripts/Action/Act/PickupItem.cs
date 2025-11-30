@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 public class PickupItem : Action, IInteractable
 {
     private bool _isInRange;
@@ -36,10 +38,28 @@ public class PickupItem : Action, IInteractable
         if (success)
         {
             Destroy(triggerActionCtrl.transform.parent.gameObject);
+            if (CheckCurrentCell())
+            {
+                MazeGenerator.KeyPoint.RemoveKeyPoint(itemData.algorithmType, GameManager.Instance.CurrentCell);
+            }
+            else
+            {
+                NotifyManager.Instance.Notify($"You have picked up {itemData.itemName}");
+            }
         }
         NotifyManager.Instance.StartNotify(itemData);
     }
-
+    private bool CheckCurrentCell()
+    {
+        foreach(var cell in MazeGenerator.KeyPoint.GetKeyPoints(itemData.algorithmType))
+        {
+            if (cell == GameManager.Instance.CurrentCell)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     private void Update()
     {
         if (IsInteractable && IsInRange)

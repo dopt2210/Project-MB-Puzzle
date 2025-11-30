@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class UIHandler : MonoBehaviour
 {
@@ -13,13 +12,11 @@ public class UIHandler : MonoBehaviour
     public static bool IsPlaying { get; set; }
     [Header("Sub UI Controllers")]
     [SerializeField] private UIDebug uiDebuger;
-    [SerializeField] private PauseMenuUI uiPauser;
     [SerializeField] private UIInformation uiInformation;
     [SerializeField] private Transform uiInteract;
     private void Reset()
     {
         uiDebuger = GetComponentInChildren<UIDebug>();
-        uiPauser = GetComponentInChildren<PauseMenuUI>();
         uiInformation = GetComponentInChildren<UIInformation>();
     }
     private void Awake()
@@ -36,13 +33,12 @@ public class UIHandler : MonoBehaviour
         _miniMap.gameObject.SetActive(false);
         UpdateUIInfomation();
         uiDebuger.Hide();
-        uiPauser.Hide();
         uiInformation.Show();
     }
     private void Update()
     {
-        if (InputManager.Instance.Action.Pause && !IsPaused) {  uiPauser.Show(); PauseGame(); }
-        else if (InputManager.Instance.Action.Resume && IsPaused) { uiPauser.Hide(); ResumeGame(); }
+        if (InputManager.Instance.Action.Pause && !IsPaused) { UIInstance.Instance.ShowPauseUI(); PauseGame(); }
+        else if (InputManager.Instance.Action.Resume && IsPaused) { UIInstance.Instance.HidePauseUI(); ResumeGame(); }
 
         if (IsPaused)
         {
@@ -57,20 +53,13 @@ public class UIHandler : MonoBehaviour
         if (InputManager.Instance.Action.OpenDebug) ToggleUI();
 
         if (InputManager.Instance.Action.OpenMap) ToggleMap();
-        
-    }
-    private void LateUpdate()
-    {
-        
     }
     private void OnEnable()
     {
         GameManager.OnLevelUpgraded += UpdateUIInfomation;
         GameManager.OnLevelReset += UpdateUIInfomation;
         GameManager.OnPlayerCellChanged += UpdatePlayerPosition;
-
     }
-
     private void OnDisable()
     {
         GameManager.OnLevelUpgraded -= UpdateUIInfomation;
@@ -81,6 +70,7 @@ public class UIHandler : MonoBehaviour
             _interactable.OnRangeChanged -= HandleRangeChanged;
         }
     }
+
     public void RegisterTarget(IInteractable target)
     {
         if (_interactable != null)
@@ -131,10 +121,13 @@ public class UIHandler : MonoBehaviour
         IsPaused = false;
         GameManager.Instance.SwitchOff();
     }
+
     public void BackToMainMenu()
     {
         IsPaused = false;
         SceneLoadManager.Instance.LoadSceneWithLoading("MenuScene");
+        UIInstance.Instance.HidePauseUI();
+        UIInstance.Instance.ShowMainMenuUI();
     }
     public void ToggleMap()
     {

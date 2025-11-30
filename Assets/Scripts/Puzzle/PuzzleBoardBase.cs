@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PuzzleBoardBase<T> : MonoBehaviour, IGameData, IBoardButton where T : ScriptableObject
+public class PuzzleBoardBase<T> : BaseBoard, IGameData, IBoardButton where T : ScriptableObject
 {
     public T _levelData {  get; private set; }
     private PuzzleState _currentState = PuzzleState.NotStarted;
@@ -8,16 +8,24 @@ public class PuzzleBoardBase<T> : MonoBehaviour, IGameData, IBoardButton where T
     public virtual void LoadLevelData(T data, GameData gameData = null)
     {
         _levelData = data;
-
+        Debug.Log($"Loading level data: {_levelData.name}");
         if (gameData != null)
         {
             string uid = GetUIDFromLevelData(_levelData);
             if (gameData.puzzleStates.TryGetValue(uid, out bool solved))
             {
                 _isSolved = solved;
+                Debug.Log($"Puzzle state loaded for {uid}: {_isSolved}");
                 _currentState = solved ? PuzzleState.Solved : PuzzleState.NotStarted;
             }
+            else
+            {
+                Debug.Log($"Puzzle state not found for {uid}, defaulting to NotStarted.");
+                _currentState = PuzzleState.NotStarted;
+                _isSolved = false;
+            }
         }
+        else Debug.LogWarning("GameData is null, puzzle state will not be loaded.");
     }
 
     public virtual void StartGame()
@@ -78,6 +86,10 @@ public class PuzzleBoardBase<T> : MonoBehaviour, IGameData, IBoardButton where T
     {
         _currentState = PuzzleState.Solved;
         _isSolved = true;
+        string uid = GetUIDFromLevelData(_levelData);
+        OnSolved?.Invoke(uid, _isSolved);
+        GameData data = GameDataManager.Instance.GetGameData();
+        SaveData(ref data);
         NotifyManager.Instance.Notify("Clear!");
         CloseGame();
     }

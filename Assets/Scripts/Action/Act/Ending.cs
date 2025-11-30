@@ -1,7 +1,7 @@
 public class Ending : Action, IInteractable
 {
     private bool _isInRange;
-    public bool IsInteractable { get => InputManager.Instance.Action.Detail; set { } }
+    public bool IsInteractable { get => InputManager.Instance.Action.Interact; set { } }
     public bool IsInRange
     {
         get => _isInRange; set

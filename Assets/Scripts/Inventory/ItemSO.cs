@@ -4,6 +4,7 @@ using UnityEngine;
 public class ItemSO : ScriptableObject
 {
     public PuzzleType puzzleType;
+    public MazeAlgorithmType algorithmType;
     public ScriptableObject puzzleData;
     public string itemName;
     public Sprite icon;

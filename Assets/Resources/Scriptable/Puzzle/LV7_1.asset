@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: LV7_1
   m_EditorClassIdentifier: 
   puzzleType: 3
+  algorithmType: 6
   puzzleData: {fileID: 11400000, guid: e366a129ffca53040bbb3bd126506304, type: 2}
   itemName: Kruskal_1
   icon: {fileID: 21300000, guid: e6fe27bacded3f0469ae6fee853b8193, type: 3}

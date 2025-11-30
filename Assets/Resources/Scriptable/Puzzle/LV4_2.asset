@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: LV4_2
   m_EditorClassIdentifier: 
   puzzleType: 2
+  algorithmType: 3
   puzzleData: {fileID: 11400000, guid: 94789267be2bff6409fd103397477516, type: 2}
   itemName: AldousBroder_1
   icon: {fileID: 21300000, guid: e6fe27bacded3f0469ae6fee853b8193, type: 3}

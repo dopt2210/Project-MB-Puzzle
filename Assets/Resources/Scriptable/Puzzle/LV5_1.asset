@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: LV5_1
   m_EditorClassIdentifier: 
   puzzleType: 1
+  algorithmType: 4
   puzzleData: {fileID: 11400000, guid: 9392006030d85f242b17224b93281b59, type: 2}
   itemName: HuntAndKill_1
   icon: {fileID: 21300000, guid: e6fe27bacded3f0469ae6fee853b8193, type: 3}

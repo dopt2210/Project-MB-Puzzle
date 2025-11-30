@@ -8,7 +8,7 @@ public class InventorySystem : MonoBehaviour
     public int MaxSlots = 32;
     public List<InventoryData> InventoryDatas = new List<InventoryData>();
 
-    public event System.Action<int> OnItemAdd;
+    public static event System.Action<int> OnItemAdd;
     private void Awake()
     {
         if (Instance != null && Instance != this)

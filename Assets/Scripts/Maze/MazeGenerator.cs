@@ -4,6 +4,7 @@ public class MazeGenerator : MonoBehaviour
 {
     public static MazeGenerator Instance {  get; private set; }
     public static Cell[,,] MazeGrid { get; private set; }
+    public static MazeKeyPoint KeyPoint { get; private set; } = new MazeKeyPoint();
 
     private bool isDoneCreatOne = false;
     private float _cellSize;

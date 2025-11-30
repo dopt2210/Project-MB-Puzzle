@@ -50,35 +50,29 @@ public class PlayerMovementInput
 public class PlayerActionInput
 {
     private readonly InputAction _interact;
-    private readonly InputAction _detail;
+    private readonly InputAction _openMap;
+    private readonly InputAction _openItem;
+    private readonly InputAction _openMouse;
+    private readonly InputAction _openDebug;
     private readonly InputAction _openPause;
     private readonly InputAction _closePause;
-    private readonly InputAction _openMap;
-    private readonly InputAction _openDebug;
-    private readonly InputAction _openItem;
-    private readonly InputAction _closeItem;
-    private readonly InputAction _openMouse;
 
     public bool Interact => _interact.WasPressedThisFrame();
-    public bool Detail => _detail.WasPressedThisFrame();
     public bool Pause => _openPause.WasPressedThisFrame();
     public bool Resume => _closePause.WasPressedThisFrame();
     public bool OpenMap => _openMap.WasPressedThisFrame();
     public bool OpenDebug => _openDebug.WasPressedThisFrame();
     public bool OpenItem => _openItem.WasPressedThisFrame();
-    public bool CloseItem => _closeItem.WasPressedThisFrame();
     public bool OpenMouse => _openMouse.WasPressedThisFrame();
 
     public PlayerActionInput(PlayerInput playerInput)
     {
         _interact = playerInput.actions["Interact"];
-        _detail = playerInput.actions["Detail"];
+        _openMap = playerInput.actions["Map"];
+        _openItem = playerInput.actions["Bag"];
+        _openMouse = playerInput.actions["OpenMouse"];
+        _openDebug = playerInput.actions["OpenDebug"];
         _openPause = playerInput.actions["OpenPause"];
         _closePause = playerInput.actions["ClosePause"];
-        _openMap = playerInput.actions["OpenMap"];
-        _openDebug = playerInput.actions["OpenDebug"];
-        _openMouse = playerInput.actions["OpenMouse"];
-        _openItem = playerInput.actions["OpenItem"];
-        _closeItem = playerInput.actions["CloseItem"];
     }
 }

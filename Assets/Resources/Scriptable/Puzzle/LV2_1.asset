@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: LV2_1
   m_EditorClassIdentifier: 
   puzzleType: 1
+  algorithmType: 1
   puzzleData: {fileID: 11400000, guid: 22a9f017dae130a4eb7c303f885d756a, type: 2}
   itemName: Binary_1
   icon: {fileID: 21300000, guid: e6fe27bacded3f0469ae6fee853b8193, type: 3}

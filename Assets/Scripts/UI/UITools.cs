@@ -43,33 +43,15 @@ public static class UITools
         return true;
     }
     #region event
-    public static IEnumerator DelayedAction(System.Action action)
-    {
-        SoundManager.Instance.PlaySound2D("Click");
-        Debug.Log("invoke");
-        yield return new WaitForSeconds(0.15f);
-        action?.Invoke();
-    }
-    public static void OnPointerEnter(PointerEnterEvent data)
-    {
-        SoundManager.Instance.PlaySound2D("Hover");
-    }
-    public static void OnPointerEnter(FocusInEvent data)
-    {
-        SoundManager.Instance.PlaySound2D("Hover");
-    }
-    public static void OnPointerClick(PointerDownEvent data)
-    {
-        SoundManager.Instance.PlaySound2D("Click");
-    }  
-    public static void OnPointerClick(ClickEvent data)
-    {
-        SoundManager.Instance.PlaySound2D("Click");
-    }
-    public static void OnPointerClick(KeyDownEvent data)
-    {
-        SoundManager.Instance.PlaySound2D("Click");
-    }
+    public static void OnPointerEnter(BaseEventData data) => SoundManager.Instance.PlaySound2D("Hover");
+    public static void OnPointerEnter(PointerEnterEvent data) => SoundManager.Instance.PlaySound2D("Hover");
+    public static void OnPointerEnter(FocusInEvent data) => SoundManager.Instance.PlaySound2D("Hover");
+
+    public static void OnPointerClick(BaseEventData data) => SoundManager.Instance.PlaySound2D("Click");
+    public static void OnPointerClick(PointerDownEvent data) => SoundManager.Instance.PlaySound2D("Click");
+    public static void OnPointerClick(ClickEvent data) => SoundManager.Instance.PlaySound2D("Click");
+    public static void OnPointerClick(KeyDownEvent data) => SoundManager.Instance.PlaySound2D("Click");
+
     public static void UpdateMusicVolume(float volume, AudioMixer audioMixer)
     {
         audioMixer.SetFloat("MusicVolume", volume);
