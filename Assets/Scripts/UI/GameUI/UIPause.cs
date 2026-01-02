@@ -30,7 +30,7 @@ public class UIPause : MonoBehaviour
         }
         buttons[0].onClick.AddListener(ResumeGame);
         buttons[1].onClick.AddListener(ResetGame);
-        buttons[2].onClick.AddListener(OpitonGame);
+        buttons[2].onClick.AddListener(OptionGame);
         buttons[3].onClick.AddListener(QuitGame);
     }
     private void ResumeGame()
@@ -43,7 +43,7 @@ public class UIPause : MonoBehaviour
         GameManager.Instance.ResetMaze();
         ResumeGame();
     }
-    private void OpitonGame()
+    private void OptionGame()
     {
         UIInstance.Instance.ShowOptionUI();
     }
@@ -52,7 +52,7 @@ public class UIPause : MonoBehaviour
         GameDataManager.Instance.SaveGame();
         UIHandler.Instance.BackToMainMenu();
     }
-    #region Ultilities
+    #region Utilities
     public void Show() => gameObject.SetActive(true);
     public void Hide() => gameObject.SetActive(false);
 

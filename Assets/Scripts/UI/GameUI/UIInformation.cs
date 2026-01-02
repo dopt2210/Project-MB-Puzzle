@@ -7,7 +7,7 @@ public class UIInformation : MonoBehaviour, IGameData
 
     [SerializeField] private bool autoUpdateTime = true;
 
-    public float timePlay = 0;
+    public static float timePlay = 0;
     private float totalTime = 0;
     private void Reset()
     {

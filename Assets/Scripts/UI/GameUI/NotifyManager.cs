@@ -31,13 +31,6 @@ public class NotifyManager : MonoBehaviour
         nGame.gameObject.SetActive(true);
         nGame.SetElement(data);
     }
-    public void StartNotify(string text)
-    {
-        isNotifying = true;
-
-        nGame.gameObject.SetActive(true);
-        nGame.SetElement(text);
-    }
     public void Notify(string text)
     {
         isNotifying = true;

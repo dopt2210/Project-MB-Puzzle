@@ -6,7 +6,7 @@ public class MazeGenerator : MonoBehaviour
     public static Cell[,,] MazeGrid { get; private set; }
     public static MazeKeyPoint KeyPoint { get; private set; } = new MazeKeyPoint();
 
-    private bool isDoneCreatOne = false;
+    private bool isDoneCreateOne = false;
     private float _cellSize;
     private DynamicAxes? _dynamicAxes;
 
@@ -23,8 +23,8 @@ public class MazeGenerator : MonoBehaviour
     #region Grid
     public void ResetGrid(MazeSO mazeSO)
     {
-        if (!isDoneCreatOne) return;
-        isDoneCreatOne = false;
+        if (!isDoneCreateOne) return;
+        isDoneCreateOne = false;
 
         for (int x = 0; x < mazeSO.Width; x++)
         {
@@ -40,8 +40,8 @@ public class MazeGenerator : MonoBehaviour
 
     public void ResetGrid()
     {
-        if (!isDoneCreatOne) return;
-        isDoneCreatOne = false;
+        if (!isDoneCreateOne) return;
+        isDoneCreateOne = false;
 
         foreach (Transform child in transform)
         {
@@ -54,7 +54,7 @@ public class MazeGenerator : MonoBehaviour
         MazeGrid = new Cell[mazeSO.Width, mazeSO.Height, mazeSO.Depth];
         _cellSize = mazeSO.CellMap.transform.GetChild(0).GetComponent<Renderer>().bounds.size.x;
 
-        isDoneCreatOne = false;
+        isDoneCreateOne = false;
 
         for (int x = 0; x < mazeSO.Width; x++)
         {
@@ -95,7 +95,7 @@ public class MazeGenerator : MonoBehaviour
         {
             cell.RemoveWall(fixedAxis);
         }
-        isDoneCreatOne = true;
+        isDoneCreateOne = true;
     }
     #endregion
 

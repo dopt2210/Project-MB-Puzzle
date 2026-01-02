@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour, IGameData
     public static event System.Action OnLevelUpgraded;
     public static event System.Action OnLevelReset;
     public static event System.Action<Cell> OnPlayerCellChanged;
+    public static event System.Action OnPlayerGoalReached;
+    public static event System.Action<int, int> OnScoreChanged; // playerScore, aiScore
     #endregion
 
     [Header("Map Cameras")]
@@ -25,6 +27,10 @@ public class GameManager : MonoBehaviour, IGameData
     private Cell _currentPlayerCell;
 
     private int _currentLevelIndex = 0;
+    private int _playerMazeCount = 0;
+    private int _aiMazeCount = 0;
+    private bool _isRaceActive = false;
+    private bool _playerFinished = false;
 
 
     #endregion
@@ -36,10 +42,16 @@ public class GameManager : MonoBehaviour, IGameData
     [Header("Pool For Item")]
     [Tooltip("Assign pool for spawn puzzle item")]
     public Transform PoolClone;
-    public GameObject PlayerObj { get; private set; }
+    public GameObject PlayerObj ;//{ get; private set; }
+    [Header("AI Settings")]
+    [Tooltip("Assign AI prefab for chase player")]
+    public GameObject AIObj ;//{ get; private set; }
+    public GameObject AIprefab;
     public GameObject GoalObj { get; private set; }
     public CharacterController CharacterCtrl { get; private set; }
     public int CurrentLevel => _currentLevelIndex + 1;
+    public int PlayerMazeCount => _playerMazeCount;
+    public int AIMazeCount => _aiMazeCount;
     public Cell CurrentCell
     {
         get => _currentPlayerCell;
@@ -71,14 +83,26 @@ public class GameManager : MonoBehaviour, IGameData
 
         Instance = this;
     }
+
+    private void OnEnable()
+    {
+        CharacterAIMovement.OnAIGoalReached += HandleAIGoalReached;
+    }
+
+    private void OnDisable()
+    {
+        CharacterAIMovement.OnAIGoalReached -= HandleAIGoalReached;
+    }
+
     private void Start()
     {
         CreateSpawnPoint(MazeGenerator.MazeGrid[0, 0, 0], 
             MazeGenerator.MazeGrid[_mazeSO.Width - 1, _mazeSO.Height - 1, _mazeSO.Depth - 1]);
         CreatePlayer();
-
         _fog.SetUpSize(_mazeSO, _mazeSO.GetSizeScale);
         _mapFixed.ResizeMap(_mazeSO);
+        _isRaceActive = true;
+        
     }
     private void Update()
     {
@@ -89,6 +113,17 @@ public class GameManager : MonoBehaviour, IGameData
         {
             CurrentCell.flagVisited = true;
             CurrentCell.HighlightForMiniMap(Color.red);
+        }
+
+        // Check if player reached goal
+        if (_isRaceActive && !_playerFinished)
+        {
+            var goalCell = GetTargetCell();
+            if (CurrentCell == goalCell)
+            {
+                _playerFinished = true;
+                HandlePlayerGoalReached();
+            }
         }
         
     }
@@ -122,6 +157,8 @@ public class GameManager : MonoBehaviour, IGameData
     private void CreatePlayer()
     {
         PlayerObj = Instantiate(_playerSO.playerPrefab, PlayerSpawnPoint, Quaternion.identity, transform);
+        AIObj = Instantiate(AIprefab, PlayerSpawnPoint, Quaternion.identity, transform);
+
         GoalObj = Instantiate(_mazeSO.GoalPrefab, GoalSpawnPoint, Quaternion.identity, transform);
         CharacterCtrl = PlayerObj.GetComponent<CharacterController>();
     }
@@ -137,14 +174,61 @@ public class GameManager : MonoBehaviour, IGameData
 
         PlayerObj.transform.position = PlayerSpawnPoint;
         GoalObj.transform.position = GoalSpawnPoint;
-        
+        // AIObj position sẽ được set bởi ResetAIState(), không set ở đây để tránh conflict
+    }
 
+    private void ResetAIControllers()
+    {
+        var aiControllers = FindObjectsByType<CharacterAIMovement>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        
+        foreach (var ai in aiControllers)
+        {
+            ai.ResetAIState(PlayerSpawnPoint);
+        }
     }
     private void LoadNewLevel()
     {
         _mazeSO = Resources.Load<MazeSO>($"Scriptable/MazeLevel/Level{_currentLevelIndex + 1}");
         MazeGenerator.Instance.CreateGrid(_mazeSO);
         _mazeSO.Generate();
+    }
+
+    private void HandlePlayerGoalReached()
+    {
+        _playerMazeCount++;
+        Debug.Log($"Player hoàn thành mê cung! Tổng: {_playerMazeCount}");
+        OnPlayerGoalReached?.Invoke();
+        OnScoreChanged?.Invoke(_playerMazeCount, _aiMazeCount);
+        AutoProgressToNextMaze("Player");
+    }
+
+    private void HandleAIGoalReached()
+    {
+        if (!_isRaceActive) return;
+        _aiMazeCount++;
+        Debug.Log($"AI hoàn thành mê cung! Tổng: {_aiMazeCount}");
+        OnScoreChanged?.Invoke(_playerMazeCount, _aiMazeCount);
+        AutoProgressToNextMaze("AI");
+    }
+
+    private void AutoProgressToNextMaze(string winner)
+    {
+        Debug.Log($"{winner} về đích trước! Chuyển sang mê cung mới...");
+        
+        if (_currentLevelIndex < MazeCount() - 1)
+        {
+            _currentLevelIndex++;
+            _playerFinished = false;
+            ResetMaze();
+        }
+        else
+        {
+            // Hết level, kết thúc cuộc đua
+            _isRaceActive = false;
+            string finalWinner = _playerMazeCount > _aiMazeCount ? "Player" : 
+                                _aiMazeCount > _playerMazeCount ? "AI" : "Hòa";
+            Debug.Log($"Kết thúc! {finalWinner} thắng! Player: {_playerMazeCount}, AI: {_aiMazeCount}");
+        }
     }
     #endregion
 
@@ -157,6 +241,7 @@ public class GameManager : MonoBehaviour, IGameData
         }
 
         CharacterCtrl.enabled = false;
+        CharacterAIMovement.AiEnabled = false;
         MazeGenerator.Instance.ResetGrid();
 
         OnLevelReset?.Invoke();
@@ -165,8 +250,9 @@ public class GameManager : MonoBehaviour, IGameData
         _fog.SetUpSize(_mazeSO, _mazeSO.GetSizeScale);
         _fog.ResetFog();
         _mapFixed.ResizeMap(_mazeSO);
+        ResetAIControllers();
         CharacterCtrl.enabled = true;
-
+        _isRaceActive = true;
     }
     int MazeCount() => System.Enum.GetValues(typeof(MazeAlgorithmType)).Length;
     public void LevelUpgrade()

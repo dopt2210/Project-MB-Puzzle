@@ -19,40 +19,9 @@ public class UIInstance : MonoBehaviour, IGameData
     {
         MusicManager.Instance.PlayMusic("Start");
         QuickSetting();
-        //if (optionPrefab == null)
-        //{
-        //    optionPrefab = Instantiate(Resources.Load<UIOptionComponent>("Prefab/Canvas/CanvasOption"), transform);
-        //    QuickSetting();
-        //    optionPrefab.gameObject.SetActive(false);
-        //}
-        //else
-        //{
-        //    Instantiate(optionPrefab, transform);
-        //    QuickSetting();
             optionPrefab.gameObject.SetActive(false);
-        //}
-
-        //if (pausePrefab == null)
-        //{
-        //    pausePrefab = Instantiate(Resources.Load<UIPause>("Prefab/Canvas/CanvasPause"), transform);
-        //    pausePrefab.gameObject.SetActive(false);
-        //}
-        //else
-        //{
-        //    Instantiate(pausePrefab, transform);
             pausePrefab.gameObject.SetActive(false);
-        //}
-
-        //if (mainMenuPrefab == null)
-        //{
-        //    mainMenuPrefab = Instantiate(Resources.Load<UIMainMenu>("Prefab/Canvas/CanvasMainMenu"), transform);
-        //    mainMenuPrefab.gameObject.SetActive(false);
-        //}
-        //else
-        //{
-        //    Instantiate(mainMenuPrefab, transform);
             mainMenuPrefab.gameObject.SetActive(false);
-        //}
         ShowMainMenuUI();
 
     }
@@ -98,7 +67,6 @@ public class UIInstance : MonoBehaviour, IGameData
 
     public void SaveData(ref GameData gameData)
     {
-
         gameData.musicVolume = optionPrefab.sliders[0].value;
         gameData.sfxVolume = optionPrefab.sliders[1].value;
     }

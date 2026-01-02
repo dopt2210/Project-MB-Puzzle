@@ -28,17 +28,6 @@ public class UIMainMenu : MonoBehaviour
             UITools.AddEventTrigger(button.gameObject, EventTriggerType.PointerEnter, UITools.OnPointerEnter);
             UITools.AddEventTrigger(button.gameObject, EventTriggerType.PointerClick, UITools.OnPointerClick);
         }
-        buttons[0].onClick.AddListener(StartGame); // Start Game
-        buttons[1].onClick.AddListener(OpitonGame); // Option Game
-        buttons[2].onClick.AddListener(IntroductionGame); // Introduction Game
-        buttons[3].onClick.AddListener(QuitGame); // Quit Game
-        buttons[4].onClick.AddListener(NewGame); // New Game
-        buttons[5].onClick.AddListener(LoadGame); // Load Game
-        buttons[6].onClick.AddListener(() => panelSelect.gameObject.SetActive(false)); // Back to Main Menu
-    }
-    private void StartGame()
-    {
-        panelSelect.gameObject.SetActive(true);
     }
     public void NewGame()
     {
@@ -54,19 +43,19 @@ public class UIMainMenu : MonoBehaviour
         MusicManager.Instance.PlayMusic("BGM");
         Hide();
     }
-    private void IntroductionGame()
+    public void IntroductionGame()
     {
         Debug.Log("Introduction Game Clicked");
     }
-    private void OpitonGame()
+    public void OptionGame()
     {
         UIInstance.Instance.ShowOptionUI();
     }
-    private void QuitGame()
+    public void QuitGame()
     {
         Application.Quit();
     }
-    #region Ultilities
+    #region Utilities
     public void Show() => gameObject.SetActive(true);
     public void Hide()
     {
