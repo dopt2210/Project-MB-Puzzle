@@ -126,6 +126,7 @@ public class UIHandler : MonoBehaviour
     {
         IsPaused = false;
         SceneLoadManager.Instance.LoadSceneWithLoading("MenuScene");
+        MusicManager.Instance.PlayMusic("Start");
         UIInstance.Instance.HidePauseUI();
         UIInstance.Instance.ShowMainMenuUI();
     }

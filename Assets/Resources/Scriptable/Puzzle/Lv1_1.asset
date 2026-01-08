@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Lv1_1
   m_EditorClassIdentifier: 
   puzzleType: 3
+  algorithmType: 0
   puzzleData: {fileID: 11400000, guid: 93161d82eff2bed40b0e741534ee46c8, type: 2}
-  itemName: DFS 1
+  itemName: Lv-1-1
   icon: {fileID: 21300000, guid: e6fe27bacded3f0469ae6fee853b8193, type: 3}
   itemDescription: Follows the main corridor.
   stackable: 1

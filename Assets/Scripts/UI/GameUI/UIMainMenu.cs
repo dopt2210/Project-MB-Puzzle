@@ -4,8 +4,10 @@ using UnityEngine.UI;
 
 public class UIMainMenu : MonoBehaviour
 {
+    public static bool IsAIMode {get;private set;} = false;
     [SerializeField] private Button[] buttons;
     [SerializeField] private Transform panelSelect;
+
     private void Reset()
     {
         buttons = GetComponentsInChildren<Button>(true);
@@ -31,6 +33,7 @@ public class UIMainMenu : MonoBehaviour
     }
     public void NewGame()
     {
+        IsAIMode = false;
         GameDataManager.Instance.NewGame();
         SceneLoadManager.Instance.LoadSceneWithLoading("GameScene");
         MusicManager.Instance.PlayMusic("BGM");
@@ -45,7 +48,12 @@ public class UIMainMenu : MonoBehaviour
     }
     public void IntroductionGame()
     {
-        Debug.Log("Introduction Game Clicked");
+        IsAIMode = true;
+
+        GameDataManager.Instance.NewGame();
+        SceneLoadManager.Instance.LoadSceneWithLoading("GameScene");
+        MusicManager.Instance.PlayMusic("BGM");
+        Hide();
     }
     public void OptionGame()
     {

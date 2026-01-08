@@ -15,7 +15,7 @@ MonoBehaviour:
   puzzleType: 3
   algorithmType: 2
   puzzleData: {fileID: 11400000, guid: 35b260b1742c81644ae274b11f79129e, type: 2}
-  itemName: Sidewinder_1
+  itemName: Lv3-1
   icon: {fileID: 21300000, guid: e6fe27bacded3f0469ae6fee853b8193, type: 3}
   itemDescription: Follow the horizontal corridor.
   stackable: 1

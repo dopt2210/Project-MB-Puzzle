@@ -18,7 +18,7 @@ MonoBehaviour:
   pairs:
   - id: 0
     start: {x: 3, y: 1}
-    end: {x: 3, y: 1}
+    end: {x: 1, y: 3}
     color: {r: 0.3061891, g: 0.28966427, b: 0.94949657, a: 1}
   - id: 1
     start: {x: 2, y: 1}

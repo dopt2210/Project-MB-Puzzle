@@ -157,7 +157,11 @@ public class GameManager : MonoBehaviour, IGameData
     private void CreatePlayer()
     {
         PlayerObj = Instantiate(_playerSO.playerPrefab, PlayerSpawnPoint, Quaternion.identity, transform);
-        AIObj = Instantiate(AIprefab, PlayerSpawnPoint, Quaternion.identity, transform);
+        
+        if (UIMainMenu.IsAIMode)
+        {
+            AIObj = Instantiate(AIprefab, PlayerSpawnPoint + new Vector3(1f, 0, 1f), Quaternion.identity, transform);
+        }
 
         GoalObj = Instantiate(_mazeSO.GoalPrefab, GoalSpawnPoint, Quaternion.identity, transform);
         CharacterCtrl = PlayerObj.GetComponent<CharacterController>();
@@ -176,7 +180,6 @@ public class GameManager : MonoBehaviour, IGameData
         GoalObj.transform.position = GoalSpawnPoint;
         // AIObj position sẽ được set bởi ResetAIState(), không set ở đây để tránh conflict
     }
-
     private void ResetAIControllers()
     {
         var aiControllers = FindObjectsByType<CharacterAIMovement>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
@@ -228,6 +231,7 @@ public class GameManager : MonoBehaviour, IGameData
             string finalWinner = _playerMazeCount > _aiMazeCount ? "Player" : 
                                 _aiMazeCount > _playerMazeCount ? "AI" : "Hòa";
             Debug.Log($"Kết thúc! {finalWinner} thắng! Player: {_playerMazeCount}, AI: {_aiMazeCount}");
+            NotifyManager.Instance.StartNotifyChoice($"{finalWinner} have completed all levels! Quit??");
         }
     }
     #endregion
@@ -254,7 +258,7 @@ public class GameManager : MonoBehaviour, IGameData
         CharacterCtrl.enabled = true;
         _isRaceActive = true;
     }
-    int MazeCount() => System.Enum.GetValues(typeof(MazeAlgorithmType)).Length;
+    public int MazeCount() => System.Enum.GetValues(typeof(MazeAlgorithmType)).Length;
     public void LevelUpgrade()
     {
         if (_currentLevelIndex <  MazeCount() - 1)
@@ -263,7 +267,8 @@ public class GameManager : MonoBehaviour, IGameData
         }
         else
         {
-            Debug.Log("You win! All levels completed!");
+            // Debug.Log("You win! All levels completed!");
+            NotifyManager.Instance.StartNotifyChoice("You have completed all levels! Quit?");
             return;
         }
 
@@ -290,6 +295,10 @@ public class GameManager : MonoBehaviour, IGameData
         else
             return string.Format("{0:D2}:{1:D2}", time.Minutes, time.Seconds);
     }
+    public void EndGame()
+    {
+        this._currentLevelIndex = 0;
+    }   
     public void LoadData(GameData gameData)
     {
         if (gameData == null) return;

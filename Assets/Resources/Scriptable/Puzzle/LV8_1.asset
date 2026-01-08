@@ -15,7 +15,7 @@ MonoBehaviour:
   puzzleType: 2
   algorithmType: 7
   puzzleData: {fileID: 11400000, guid: 2a3ec1afb5c03cf43a14f4a92e42aad9, type: 2}
-  itemName: Eller_1
+  itemName: Lv8-1
   icon: {fileID: 21300000, guid: e6fe27bacded3f0469ae6fee853b8193, type: 3}
   itemDescription: Move horizontally to continue.
   stackable: 1

@@ -42,10 +42,10 @@ public class PickupItem : Action, IInteractable
             {
                 MazeGenerator.KeyPoint.RemoveKeyPoint(itemData.algorithmType, GameManager.Instance.CurrentCell);
             }
-            else
-            {
-                NotifyManager.Instance.Notify($"You have picked up {itemData.itemName}");
-            }
+            // else
+            // {
+            //     NotifyManager.Instance.Notify($"You have picked up {itemData.itemName}");
+            // }
         }
         NotifyManager.Instance.StartNotify(itemData);
     }

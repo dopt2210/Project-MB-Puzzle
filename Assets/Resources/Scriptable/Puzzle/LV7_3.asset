@@ -15,7 +15,7 @@ MonoBehaviour:
   puzzleType: 3
   algorithmType: 6
   puzzleData: {fileID: 11400000, guid: 07632e1dd5d72db4b97ce1ec4376aa7b, type: 2}
-  itemName: Kruskal_3
+  itemName: Lv7-4
   icon: {fileID: 21300000, guid: 0a0b6ed3a39b99e4596907d5dd53ad93, type: 3}
   itemDescription: Keep going down this branch to find the exit.
   stackable: 1

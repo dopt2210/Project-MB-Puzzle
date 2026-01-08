@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -27,6 +28,7 @@ public class CharacterAIMovement : MonoBehaviour
     private float totalTime = 0f;
     private bool isFinished = false;
     private bool hasReachedCurrentTarget = false; // Flag để chỉ quyết định khi đã đến
+    private bool hasRevealedGoal = false; // AI đã được reveal đích chưa
 
     private CharacterController controller;
     [SerializeField] private Animator animator;
@@ -49,6 +51,7 @@ public class CharacterAIMovement : MonoBehaviour
         controller = GetComponent<CharacterController>();
         scale = GameManager.Instance._mazeSO.GetSizeScale;
         AiEnabled = true;
+        hasRevealedGoal = false;
         // Discover initial cell and its neighbors
         var startCell = MazeTools.GetCellFromGameObject(gameObject, MazeGenerator.MazeGrid, mazeSO.BoxSize, scale);
         if (startCell != null)
@@ -61,7 +64,7 @@ public class CharacterAIMovement : MonoBehaviour
             hasReachedCurrentTarget = true; // Bắt đầu đã ở cell
         }
         targetCell = MazeTools.GetCellFromGameObject(target.gameObject, MazeGenerator.MazeGrid, mazeSO.BoxSize, scale);
-        Debug.Log("Initial targetCell: " + (targetCell != null ? $"({targetCell.x},{targetCell.y},{targetCell.z})" : "null"));
+        // Debug.Log("Initial targetCell: " + (targetCell != null ? $"({targetCell.x},{targetCell.y},{targetCell.z})" : "null"));
 
     }
 
@@ -77,15 +80,31 @@ public class CharacterAIMovement : MonoBehaviour
             return;
         }
 
+        // AI Difficulty: Reveal goal after time threshold
+        if (!hasRevealedGoal && targetCell != null && !knownCells.Contains(targetCell))
+        {
+
+            float threshold = GameManager.Instance.CurrentLevel <= 5 ? 30f : 60f;
+            if (UIInformation.timePlay >= threshold)
+            {
+                hasRevealedGoal = true;
+                addKnowncells();
+                
+                NotifyManager.Instance.Notify("AI has found goal! you need get faster");
+                StopAI(3f);
+            }
+        }
+
         if(targetCell != null && visitedCells.Contains(targetCell))
         {
+            // Debug.Log("targetCell đã được thăm" + (targetCell != null ? $"({targetCell.x},{targetCell.y},{targetCell.z})" : "null"));
             if (!isFinished)
             {
                 isFinished = true;
                 OnAIGoalReached?.Invoke();
-                Debug.Log("AI đã hoàn thành mê cung!");
+                // Debug.Log("AI đã hoàn thành mê cung!");
             }
-            StopAI();
+            StopAI(1f);
             return;
         }
 
@@ -102,7 +121,7 @@ public class CharacterAIMovement : MonoBehaviour
                 visitedCells.Add(reachedCell);
                 DiscoverCell(reachedCell);
 
-                Debug.Log($"Đã đến cell ({reachedCell.x}, {reachedCell.y}, {reachedCell.z})");
+                // Debug.Log($"Đã đến cell ({reachedCell.x}, {reachedCell.y}, {reachedCell.z})");
             }
         }
         
@@ -115,7 +134,13 @@ public class CharacterAIMovement : MonoBehaviour
 
         MoveTowardWaypoint();
     }
-
+    void addKnowncells()
+    {
+        foreach(var p in MazeGenerator.MazeGrid)
+        {
+            knownCells.Add(p);
+        }
+    }
     /// <summary>
     /// Khám phá cell và tất cả các cell kề cạnh của nó
     /// Gọi mỗi khi AI ĐẾN cell để discover neighbors
@@ -166,21 +191,9 @@ public class CharacterAIMovement : MonoBehaviour
             return;
         }
 
-        // TRÁNH quay lại cell vừa rời đi nếu có lựa chọn khác
-        var filteredNeighbors = new List<Cell>(walkableNeighbors);
-        if (previousCell != null && filteredNeighbors.Contains(previousCell) && filteredNeighbors.Count > 1)
-        {
-            filteredNeighbors.Remove(previousCell);
-        }
-
-        // Nếu sau khi filter không còn gì, dùng lại walkableNeighbors (trường hợp deadend)
-        if (filteredNeighbors.Count == 0)
-        {
-            filteredNeighbors = walkableNeighbors;
-        }
-
         // Chiến lược: Ưu tiên di chuyển về phía target (nếu biết)
-        Cell nextCell = pickGreedyCell(currentCell, filteredNeighbors);
+        // Truyền walkableNeighbors, để pickGreedyCell tự quyết định filter previousCell
+        Cell nextCell = pickGreedyCell(currentCell, walkableNeighbors);
         
         previousCell = currentCell; // Lưu lại cell hiện tại
         currentTargetCell = nextCell;
@@ -201,56 +214,102 @@ public class CharacterAIMovement : MonoBehaviour
             return current;
         }
 
-        // var targetCell = MazeTools.GetCellFromGameObject(target.gameObject, MazeGenerator.MazeGrid, mazeSO.BoxSize, scale);
-        // Debug.Log("targetCell: " + (targetCell != null ? $"({targetCell.x},{targetCell.y},{targetCell.z})" : "null"));
         // ƯU TIÊN 1: Nếu biết vị trí đích, dùng PathFinding_Astar để tìm đường
         if (targetCell != null && knownCells.Contains(targetCell))
         {
+            // Debug.Log($"uu tiên 1: AI biết đích ({targetCell.x},{targetCell.y},{targetCell.z}), dùng A* từ ({current.x},{current.y},{current.z})");
             var pathToTarget = new PathFinding_Astar(mazeSO).FindPath(current, targetCell);
-            if (pathToTarget != null && pathToTarget.Count > 1)
+            
+            if (pathToTarget != null && pathToTarget.Count > 0)
             {
-                // Trả về bước tiếp theo trên đường đi
-                Cell nextStep = pathToTarget[1]; // pathToTarget[0] là current
+                // Debug.Log($"A* tìm thấy đường {pathToTarget.Count} bước");
+                // Path đầu tiên là cell tiếp theo (vì ReconstructPath không bao gồm start)
+                Cell nextStep = pathToTarget[0];
+                // Debug.Log($"NextStep từ A*: ({nextStep.x},{nextStep.y},{nextStep.z})");
+                
                 if (options.Contains(nextStep))
                 {
+                    // Debug.Log($"NextStep có trong options → đi theo A*");
                     return nextStep;
                 }
+                else
+                {
+                    // Debug.Log($"NextStep KHÔNG trong options ({options.Count} options). Chọn gần target nhất.");
+                    // Chọn neighbor gần targetCell nhất
+                    Cell bestOption = options[0];
+                    float bestDist = Vector3.Distance(bestOption.GetWorldPosition(scale), targetCell.GetWorldPosition(scale));
+                    foreach (var opt in options)
+                    {
+                        float dist = Vector3.Distance(opt.GetWorldPosition(scale), targetCell.GetWorldPosition(scale));
+                        if (dist < bestDist)
+                        {
+                            bestDist = dist;
+                            bestOption = opt;
+                        }
+                    }
+                    // Debug.Log($"Chọn neighbor gần nhất: ({bestOption.x},{bestOption.y},{bestOption.z})");
+                    return bestOption;
+                }
             }
-
+            else
+            {
+                Debug.LogWarning($"A* KHÔNG tìm được đường từ ({current.x},{current.y},{current.z}) tới ({targetCell.x},{targetCell.y},{targetCell.z})");
+            }
         }
 
-        // ƯU TIÊN 2: Nếu không có đường đến target, ưu tiên cell chưa đi thăm
-        foreach (var cell in options)
+        // ƯU TIÊN 2: Tránh quay lại previousCell nếu có lựa chọn khác
+        var filteredOptions = new List<Cell>(options);
+        if (previousCell != null && filteredOptions.Contains(previousCell) && filteredOptions.Count > 1)
         {
-            // Nếu cell này chưa thăm (không trong visitedCells)
+            // Debug.Log("uu tiên 2: tránh quay lại previousCell");
+            filteredOptions.Remove(previousCell);
+        }
+
+        // ƯU TIÊN 3: Ưu tiên cell chưa đi thăm
+        foreach (var cell in filteredOptions)
+        {
             if (!visitedCells.Contains(cell))
             {
+                // Debug.Log("uu tiên 3: chọn cell chưa thăm");
                 return cell;
             }
         }
 
-        // Nếu không có cell chưa thăm, chọn cell có neighbor chưa khám phá
-        foreach (var cell in options)
+        // ƯU TIÊN 4: Chọn cell có neighbor chưa khám phá
+        foreach (var cell in filteredOptions)
         {
             var cellNeighbors = MazeTools.GetNeighborsByCondition(cell, MazeGenerator.MazeGrid, mazeSO.BoxSize, null);
             foreach (var neighbor in cellNeighbors)
             {
                 if (!knownCells.Contains(neighbor) && !MazeTools.HasWallBetween(cell, neighbor))
                 {
+                    // Debug.Log("uu tiên 4: chọn cell có neighbor chưa khám phá");
                     return cell;
                 }
             }
         }
 
-        // ƯU TIÊN 3: Tất cả đã thăm và không có frontier → chọn ngẫu nhiên
-        return options[Random.Range(0, options.Count)];
+        // ƯU TIÊN 5: Tất cả đã thăm và không có frontier → chọn ngẫu nhiên
+        return filteredOptions[Random.Range(0, filteredOptions.Count)];
     }
 
-    private void StopAI()
+    private void StopAI(float duration = 0f)
     {
         AiEnabled = false;
         animator.SetFloat("Speed", 0f);
         velocity = Vector3.zero;
+        
+        // Nếu duration > 0, tạm dừng và bật lại sau khoảng thời gian
+        if (duration > 0f)
+        {
+            CancelInvoke(nameof(ResumeAI));
+            Invoke(nameof(ResumeAI), duration);
+        }
+    }
+
+    private void ResumeAI()
+    {
+        AiEnabled = true;
     }
 
     public void ResetAIState(Vector3 position)
@@ -277,6 +336,7 @@ public class CharacterAIMovement : MonoBehaviour
         finishTime = 0f;
         totalTime = 0f;
         isFinished = false;
+        hasRevealedGoal = false;
         
         // Discover start cell từ vị trí mới
         var startCell = MazeTools.GetCellFromGameObject(gameObject, MazeGenerator.MazeGrid, mazeSO.BoxSize, scale);

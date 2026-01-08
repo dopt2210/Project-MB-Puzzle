@@ -15,7 +15,7 @@ MonoBehaviour:
   puzzleType: 1
   algorithmType: 1
   puzzleData: {fileID: 11400000, guid: 22a9f017dae130a4eb7c303f885d756a, type: 2}
-  itemName: Binary_1
+  itemName: Lv-2-1
   icon: {fileID: 21300000, guid: e6fe27bacded3f0469ae6fee853b8193, type: 3}
   itemDescription: The deepest place at the bottom holds a secret.
   stackable: 1

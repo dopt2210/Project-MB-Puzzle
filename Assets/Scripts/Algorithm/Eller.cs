@@ -15,6 +15,8 @@ public class Eller : IMazeGenerator
     private Dictionary<int, List<Cell>> sets;
     private int nextSetID = 1;
     private float randomSeed = 0.5f;
+    private List<Cell> horizontalJoins = new List<Cell>();
+    private List<Cell> verticalJoins = new List<Cell>();
 
     private Cell[,,] grid;
     private int width, height, depth;
@@ -84,6 +86,7 @@ public class Eller : IMazeGenerator
             if (current.setID != next.setID && Random.value > randomSeed)
             {
                 MergeSets(current, next);
+                horizontalJoins.Add(next);
             }
         }
 
@@ -123,6 +126,7 @@ public class Eller : IMazeGenerator
                                 MazeTools.RemoveWallsBetween(current, below);
                                 Debug.Log($"Xóa tường xuống Current({current.x},{current.y},{current.z}) và Below({below.x},{below.y},{below.z})");
                                 below.setID = current.setID;
+                                verticalJoins.Add(current);
                                 count++;
                             }
                         }
@@ -162,6 +166,19 @@ public class Eller : IMazeGenerator
         {
             Debug.Log($"Set {set.Key} chứa {set.Value.Count} ô.");
         }
+
+        // Đặt 3 puzzle theo gợi ý: ngang, dọc, nhìn thấy lối ra cuối đường
+        Cell p1 = horizontalJoins.Count > 0
+            ? horizontalJoins[horizontalJoins.Count / 2]
+            : MazeTools.GetCellByAxes(primarySize / 2, secondarySize / 2, grid, boxSize);
+        Cell p2 = verticalJoins.Count > 0
+            ? verticalJoins[verticalJoins.Count / 2]
+            : MazeTools.GetCellByAxes(primarySize / 2, Mathf.Min(1, secondarySize - 1), grid, boxSize);
+        Cell p3 = MazeTools.GetCellByAxes(primarySize / 2, secondarySize - 1, grid, boxSize);
+
+        MazeTools.PlacePuzzle(p1, MazeAlgorithmType.Eller, scale, 0, GameManager.Instance.PoolClone);
+        MazeTools.PlacePuzzle(p2, MazeAlgorithmType.Eller, scale, 1, GameManager.Instance.PoolClone);
+        MazeTools.PlacePuzzle(p3, MazeAlgorithmType.Eller, scale, 2, GameManager.Instance.PoolClone);
     }
 
     private void MergeSets(Cell current, Cell next)

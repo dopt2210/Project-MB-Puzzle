@@ -15,7 +15,7 @@ MonoBehaviour:
   puzzleType: 1
   algorithmType: 5
   puzzleData: {fileID: 11400000, guid: 9392006030d85f242b17224b93281b59, type: 2}
-  itemName: Prims_1
+  itemName: Lv6-1
   icon: {fileID: 21300000, guid: e6fe27bacded3f0469ae6fee853b8193, type: 3}
   itemDescription: "Then \u201Cgo straight up\u201D or \u201Cgo outward\u201D "
   stackable: 1

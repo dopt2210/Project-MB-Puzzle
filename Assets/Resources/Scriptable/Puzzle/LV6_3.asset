@@ -15,7 +15,7 @@ MonoBehaviour:
   puzzleType: 2
   algorithmType: 5
   puzzleData: {fileID: 11400000, guid: 2a3ec1afb5c03cf43a14f4a92e42aad9, type: 2}
-  itemName: Prims_3
+  itemName: Lv6-3
   icon: {fileID: 21300000, guid: 0a0b6ed3a39b99e4596907d5dd53ad93, type: 3}
   itemDescription: Go down to the bottom to find the exit.
   stackable: 1
