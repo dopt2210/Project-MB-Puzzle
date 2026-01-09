@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: LV5_2
   m_EditorClassIdentifier: 
   puzzleType: 3
+  algorithmType: 4
   puzzleData: {fileID: 11400000, guid: a1680e75ea3c5284c82658042a6faa50, type: 2}
-  itemName: HuntAndKill_2
+  itemName: Lv5-2
   icon: {fileID: 21300000, guid: d60343d228ca54740a7b396d55c84814, type: 3}
   itemDescription: Pass through the lonely wall to reach the final door
   stackable: 1

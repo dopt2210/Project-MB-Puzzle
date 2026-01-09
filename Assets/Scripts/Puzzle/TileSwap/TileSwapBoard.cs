@@ -49,9 +49,10 @@ public class TileSwapBoard : PuzzleBoardBase<TileSwapSO>
     {
         _size = levelData.boardSize;
 
+        Debug.Log($"Board size: {_size}x{_size}");
         _cellSize = boardLayout.GetComponent<RectTransform>().rect.width / _size;
         boardLayout.cellSize = new Vector2(_cellSize, _cellSize);
-
+        Debug.Log($"Cell size: {_cellSize}");
         _tiles = new TileSwap[_size, _size];
 
         var pieces = SliceSprite(levelData.sourceImage, _size);

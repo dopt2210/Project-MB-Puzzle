@@ -12,7 +12,6 @@ public class SceneLoadManager : MonoBehaviour
     {
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
-        DontDestroyOnLoad(this);
     }
     private void EnableLoading() => loadingObject.gameObject.SetActive(true);
     private void DisableLoading() => loadingObject.gameObject.SetActive(false);

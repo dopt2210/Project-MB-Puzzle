@@ -340,12 +340,20 @@ public static class MazeTools
 
     }
 
-    public static void PlacePuzzle(Cell cell, MazeAlgorithmType type, float scale, int index, Transform parent)
+    /// <summary>
+    /// Đặt một puzzle prefab vào vị trí tương ứng với ô mê cung.
+    /// </summary>
+    /// <param name="cellPos">Ô mê cung nơi đặt puzzle.</param>
+    /// <param name="algoType">Loại thuật toán mê cung để chọn nhóm puzzle tương ứng.</param>
+    /// <param name="scale">Tỉ lệ kích thước mê cung để xác định vị trí thế giới.</param>
+    /// <param name="index">Chỉ số của prefab trong danh sách cần được đặt.</param>
+    /// <param name="parent">Transform cha sẽ chứa puzzle mới sinh ra.</param>
+    public static void PlacePuzzle(Cell cellPos, MazeAlgorithmType algoType, float scale, int index, Transform parent)
     {
-        List<GameObject> prefabs = PuzzleGenerator.Instance.GetPuzzlePrefabs(type);
+        List<GameObject> prefabs = PuzzleGenerator.Instance.GetPuzzlePrefabs(algoType);
         if (prefabs != null)
         {
-            Object.Instantiate(prefabs[index], cell.GetWorldPosition(scale), Quaternion.identity, parent);
+            Object.Instantiate(prefabs[index], cellPos.GetWorldPosition(scale), Quaternion.identity, parent);
         }
         else
         {

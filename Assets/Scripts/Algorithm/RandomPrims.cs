@@ -17,6 +17,7 @@ public class RandomPrims : IMazeGenerator
 {
     private System.Random rand = new System.Random();
     private List<Edge> frontier = new List<Edge>(); // List các cạnh ngẫu nhiên cần kiểm tra
+    private List<Cell> visitedOrder = new List<Cell>();
     
     private Cell[,,] grid;
     private int width, height, depth;
@@ -39,6 +40,7 @@ public class RandomPrims : IMazeGenerator
         // Bước 1: Bắt đầu từ một cell ngẫu nhiên
         Cell startCell = grid[rand.Next(width), rand.Next(height), rand.Next(depth)];
         startCell.visited = true;
+        visitedOrder.Add(startCell);
 
         // Bước 2: Thêm các cạnh của startCell vào danh sách frontier
         AddFrontierCells(startCell);
@@ -58,10 +60,37 @@ public class RandomPrims : IMazeGenerator
             {
                 MazeTools.RemoveWallsBetween(current, neighbor);
                 neighbor.visited = true;
+                visitedOrder.Add(neighbor);
 
                 // Thêm các cell xung quanh neighbor vào frontier
                 AddFrontierCells(neighbor);
             }
+        }
+
+        // Đặt 3 puzzle dựa trên lộ trình đã mở rộng (visitedOrder)
+        if (visitedOrder.Count >= 3)
+        {
+            var axes = MazeGenerator.Instance.GetDynamicAxes().Value;
+            int secondaryAxis = axes.secondary;
+
+            Cell puzzle1 = visitedOrder[Mathf.Min(1, visitedOrder.Count - 1)]; // gần khởi đầu, hướng theo đường chính
+            Cell puzzle2 = visitedOrder[visitedOrder.Count / 2]; // giữa nhánh chính
+            // chọn ô có tọa độ nhỏ nhất theo trục phụ ("đi xuống dưới cùng")
+            Cell puzzle3 = visitedOrder[0];
+            int minSec = MazeTools.GetAxisValue(secondaryAxis, puzzle3);
+            foreach (var c in visitedOrder)
+            {
+                int sec = MazeTools.GetAxisValue(secondaryAxis, c);
+                if (sec < minSec)
+                {
+                    minSec = sec;
+                    puzzle3 = c;
+                }
+            }
+
+            MazeTools.PlacePuzzle(puzzle1, MazeAlgorithmType.RandomPrims, scale, 0, GameManager.Instance.PoolClone);
+            MazeTools.PlacePuzzle(puzzle2, MazeAlgorithmType.RandomPrims, scale, 1, GameManager.Instance.PoolClone);
+            MazeTools.PlacePuzzle(puzzle3, MazeAlgorithmType.RandomPrims, scale, 2, GameManager.Instance.PoolClone);
         }
 
         // Bước 4: Tạo đường ra cho mê cung

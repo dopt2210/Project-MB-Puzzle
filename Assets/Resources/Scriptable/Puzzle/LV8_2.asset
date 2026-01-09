@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: LV8_2
   m_EditorClassIdentifier: 
   puzzleType: 3
+  algorithmType: 7
   puzzleData: {fileID: 11400000, guid: 51a03492af69d784c96766f5273a3da8, type: 2}
-  itemName: Eller_2
+  itemName: Lv8-2
   icon: {fileID: 21300000, guid: d60343d228ca54740a7b396d55c84814, type: 3}
   itemDescription: Follow the vertical path to connect cells.
   stackable: 1

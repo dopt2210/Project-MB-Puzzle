@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: LV7_2
   m_EditorClassIdentifier: 
   puzzleType: 2
+  algorithmType: 6
   puzzleData: {fileID: 11400000, guid: 2a3ec1afb5c03cf43a14f4a92e42aad9, type: 2}
-  itemName: Kruskal_2
+  itemName: Lv7-2
   icon: {fileID: 21300000, guid: d60343d228ca54740a7b396d55c84814, type: 3}
   itemDescription: Continue along this main branch to avoid getting lost.
   stackable: 1

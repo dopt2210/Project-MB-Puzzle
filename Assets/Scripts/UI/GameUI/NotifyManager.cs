@@ -24,6 +24,7 @@ public class NotifyManager : MonoBehaviour
         startPos = transform.GetChild(0).position;
         endPos = new Vector3(0, 50, 0) + startPos;
     }
+    //notify with item data
     public void StartNotify(ItemSO data)
     {
         isNotifying = true;
@@ -31,13 +32,7 @@ public class NotifyManager : MonoBehaviour
         nGame.gameObject.SetActive(true);
         nGame.SetElement(data);
     }
-    public void StartNotify(string text)
-    {
-        isNotifying = true;
-
-        nGame.gameObject.SetActive(true);
-        nGame.SetElement(text);
-    }
+    //notify with only text
     public void Notify(string text)
     {
         isNotifying = true;
@@ -46,13 +41,16 @@ public class NotifyManager : MonoBehaviour
         nGM.SetElement(text);
 
         StartCoroutine(ShowNotify());
-
-
     }
+    //notify stop with choice
     public void StartNotifyChoice(string text)
     {
         isNotifying = true;
-
+        if(GameManager.Instance.CurrentLevel >= GameManager.Instance.MazeCount() - 1)
+        {
+            UIHandler.Instance.BackToMainMenu();
+            return;
+        }
         nChoice.gameObject.SetActive(true);
         nChoice.SetElement(text);
     } 

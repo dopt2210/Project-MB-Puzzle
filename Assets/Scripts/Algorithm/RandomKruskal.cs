@@ -17,6 +17,8 @@ public class RandomKruskal : IMazeGenerator
     private List<Edge> edges = new List<Edge>();
     private Dictionary<Cell, Cell> parent = new Dictionary<Cell, Cell>();
     private Dictionary<Cell, int> rank = new Dictionary<Cell, int>();
+    private List<Cell> carvedOrder = new List<Cell>();
+    private HashSet<Cell> carvedSeen = new HashSet<Cell>();
 
     private Cell[,,] grid;
     private int width, height, depth;
@@ -74,7 +76,34 @@ public class RandomKruskal : IMazeGenerator
             {
                 Union(edge.cellA, edge.cellB);
                 MazeTools.RemoveWallsBetween(edge.cellA, edge.cellB);
+                if (!carvedSeen.Contains(edge.cellA)) { carvedSeen.Add(edge.cellA); carvedOrder.Add(edge.cellA); }
+                if (!carvedSeen.Contains(edge.cellB)) { carvedSeen.Add(edge.cellB); carvedOrder.Add(edge.cellB); }
             }
+        }
+
+        // Đặt 3 puzzle dựa trên thứ tự khắc đường (carvedOrder)
+        if (carvedOrder.Count >= 3)
+        {
+            var axes = MazeGenerator.Instance.GetDynamicAxes().Value;
+            int secondaryAxis = axes.secondary;
+
+            Cell puzzle1 = carvedOrder[Mathf.Min(1, carvedOrder.Count - 1)];
+            Cell puzzle2 = carvedOrder[carvedOrder.Count / 2];
+            Cell puzzle3 = carvedOrder[0];
+            int minSec = MazeTools.GetAxisValue(secondaryAxis, puzzle3);
+            foreach (var c in carvedOrder)
+            {
+                int sec = MazeTools.GetAxisValue(secondaryAxis, c);
+                if (sec < minSec)
+                {
+                    minSec = sec;
+                    puzzle3 = c;
+                }
+            }
+
+            MazeTools.PlacePuzzle(puzzle1, MazeAlgorithmType.RandomKruskal, scale, 0, GameManager.Instance.PoolClone);
+            MazeTools.PlacePuzzle(puzzle2, MazeAlgorithmType.RandomKruskal, scale, 1, GameManager.Instance.PoolClone);
+            MazeTools.PlacePuzzle(puzzle3, MazeAlgorithmType.RandomKruskal, scale, 2, GameManager.Instance.PoolClone);
         }
 
         MazeGenerator.Instance.CreateExitPaths(width, height, depth);

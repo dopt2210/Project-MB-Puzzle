@@ -1109,19 +1109,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5012415328242526445}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: TileSwapBoard, Assembly-CSharp
-        m_MethodName: startGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &5645124117171669021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1246,10 +1234,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa36f9c5cf0c28942ad744700720281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelData: {fileID: 11400000, guid: d549965efd9b695469bdb62426f43b52, type: 2}
   tilePrefab: {fileID: 4425402993911595991, guid: 0ca3cf0eafd36e94d9865e1044426a89, type: 3}
   boardLayout: {fileID: 7201892017066661525}
-  _isEndGame: 1
 --- !u!114 &8685583732244703373
 MonoBehaviour:
   m_ObjectHideFlags: 0

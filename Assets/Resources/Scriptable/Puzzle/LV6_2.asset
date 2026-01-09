@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: LV6_2
   m_EditorClassIdentifier: 
   puzzleType: 2
+  algorithmType: 5
   puzzleData: {fileID: 11400000, guid: 8a325185cdb020d48affb835baee16cf, type: 2}
-  itemName: Prims_2
+  itemName: Lv6-2
   icon: {fileID: 21300000, guid: d60343d228ca54740a7b396d55c84814, type: 3}
   itemDescription: Continue following the main branch from here
   stackable: 1

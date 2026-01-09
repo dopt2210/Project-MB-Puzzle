@@ -19,7 +19,7 @@ MonoBehaviour:
   - id: 0
     start: {x: 8, y: 10}
     end: {x: 7, y: 10}
-    color: {r: 0.2716522, g: 0.9666, b: 0.4241144, a: 1}
+    color: {r: 0, g: 1, b: 0.8937981, a: 1}
   - id: 1
     start: {x: 4, y: 1}
     end: {x: 6, y: 5}
